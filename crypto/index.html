@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <title>加密貨幣看盤室</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>₿</text></svg>">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.4/chart.umd.min.js"></script>
 <style>
   :root{
     --bg:#0f1420; --panel:#171e2e; --panel2:#1d2536; --border:#2a3450;
@@ -139,6 +138,9 @@
   <div class="status-msg warn" id="fileProtocolWarning" style="display:none; margin-bottom:16px;">
     ⚠️ 偵測到您是用本機檔案直接開啟這個頁面（file://），部分瀏覽器的安全限制會導致資料抓取卡住或失敗。請改用線上網址瀏覽（電腦/手機都可直接打開，會自動更新）：<br>
     <a href="https://hh81776.github.io/stock_everday/crypto/" style="color:inherit; text-decoration:underline;">https://hh81776.github.io/stock_everday/crypto/</a>
+  </div>
+  <div class="status-msg err" id="chartLoadError" style="display:none; margin-bottom:16px;">
+    ⚠️ 圖表元件載入失敗（外部資源暫時無法使用），請點擊右上角「🔄 立即更新」重試，或稍後重新整理頁面。
   </div>
 
   <!-- BTC -->
@@ -302,9 +304,41 @@ function fmtPrice(v){
   return v.toLocaleString(undefined,{maximumFractionDigits:6});
 }
 
+/* ---------------- Chart.js loader (multi-CDN fallback) ---------------- */
+const CHARTJS_SOURCES = [
+  'https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js',
+  'https://unpkg.com/chart.js@4.4.4/dist/chart.umd.min.js',
+  'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.4/chart.umd.min.js',
+];
+let chartJsReadyPromise = null;
+function loadChartJs(){
+  if(chartJsReadyPromise) return chartJsReadyPromise;
+  chartJsReadyPromise = (async ()=>{
+    for(const src of CHARTJS_SOURCES){
+      if(typeof Chart !== 'undefined') return true;
+      try{
+        await new Promise((resolve, reject)=>{
+          const s = document.createElement('script');
+          s.src = src;
+          s.onload = ()=> (typeof Chart !== 'undefined') ? resolve() : reject(new Error('Chart still undefined after load'));
+          s.onerror = ()=> reject(new Error('script load error: ' + src));
+          document.head.appendChild(s);
+        });
+        if(typeof Chart !== 'undefined') return true;
+      }catch(e){ console.warn('Chart.js source failed', src, e); }
+    }
+    return typeof Chart !== 'undefined';
+  })();
+  return chartJsReadyPromise;
+}
+
 /* ---------------- Chart rendering ---------------- */
 const chartInstances = {};
 function renderChart(canvasId, labels, closes){
+  if(typeof Chart === 'undefined'){
+    document.getElementById('chartLoadError').style.display = 'block';
+    return;
+  }
   const ctx = document.getElementById(canvasId).getContext('2d');
   const ma5 = sma(closes,5);
   const ma10 = sma(closes,10);
@@ -458,6 +492,12 @@ function cacheGet(key){
 async function updateBtcEth(){
   document.getElementById('btcMeta').innerHTML = '<span class="spinner"></span>更新中...';
   document.getElementById('ethMeta').innerHTML = '<span class="spinner"></span>更新中...';
+  await loadChartJs();
+  if(typeof Chart === 'undefined'){
+    document.getElementById('chartLoadError').style.display = 'block';
+  } else {
+    document.getElementById('chartLoadError').style.display = 'none';
+  }
   try{
     const [btcSeries, ethSeries, simple] = await Promise.all([
       fetchCoinGeckoSeries('bitcoin'),

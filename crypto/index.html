@@ -109,6 +109,12 @@
   .sync-row button:active{opacity:.8;}
   .sync-hint{font-size:.7rem; color:var(--sub); margin-bottom:4px;}
   #importBanner{display:none;}
+  .highlight-red{color:var(--red); font-weight:600;}
+  .highlight-green{color:var(--green); font-weight:600;}
+  .highlight-yellow{color:var(--accent2); font-weight:600;}
+  #dailyNewsReportBody h4{font-size:.92rem; margin:14px 0 6px; color:var(--text);}
+  #dailyNewsReportBody h4:first-child{margin-top:0;}
+  #dailyNewsReportBody p{font-size:.86rem; line-height:1.8; margin:0 0 8px; color:var(--text);}
   .spinner{
     display:inline-block; width:14px; height:14px; border:2px solid var(--sub);
     border-top-color:var(--accent); border-radius:50%; animation:spin .7s linear infinite;
@@ -158,8 +164,20 @@
     </div>
   </section>
 
+  <!-- 每日消息面完整報告（由每日排程任務更新） -->
+  <h2 class="section-title">📰 每日消息面完整報告</h2>
+  <section class="card" id="dailyNewsReportCard">
+    <div class="sub-line" id="dailyNewsReportDate">尚未產生（每日台北時間 08:00 自動更新）</div>
+    <!-- DAILY_NEWS_REPORT_START -->
+    <div id="dailyNewsReportBody">
+      <div class="legend-note">此區塊將由每日排程任務自動搜尋當日比特幣／以太幣新聞、市場情緒與資金面消息並產生分析報告，首次排程執行前顯示此提示文字，執行後會替換為當日完整報告。</div>
+    </div>
+    <!-- DAILY_NEWS_REPORT_END -->
+    <div class="legend-note" style="margin-top:10px;">以上為每日排程任務彙整當日新聞與市場情緒後撰寫之分析，僅供參考，不構成投資建議。</div>
+  </section>
+
   <!-- 每日技術面盤勢分析 -->
-  <h2 class="section-title">📊 每日技術面盤勢分析</h2>
+  <h2 class="section-title">📊 每日技術面盤勢分析（即時計算）</h2>
   <section class="card">
     <div class="analysis-block">
       <h3>₿ 比特幣 BTC</h3>

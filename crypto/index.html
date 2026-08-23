@@ -96,6 +96,19 @@
   }
   footer{text-align:center; font-size:.72rem; color:var(--sub); padding:24px 16px 10px;}
   a{color:var(--accent);}
+  .analysis-block{margin-bottom:14px; padding-bottom:14px; border-bottom:1px solid var(--border);}
+  .analysis-block:last-child{margin-bottom:0; padding-bottom:0; border-bottom:none;}
+  .analysis-block h3{margin:0 0 4px; font-size:.95rem; display:flex; align-items:center; gap:8px;}
+  .analysis-date{font-size:.72rem; color:var(--sub); margin-bottom:6px;}
+  .analysis-text{font-size:.86rem; line-height:1.8; color:var(--text);}
+  .sync-row{display:flex; flex-wrap:wrap; gap:8px; margin:10px 0 4px;}
+  .sync-row button{
+    background:var(--panel2); border:1px solid var(--border); color:var(--text);
+    padding:7px 12px; border-radius:8px; font-size:.78rem; cursor:pointer;
+  }
+  .sync-row button:active{opacity:.8;}
+  .sync-hint{font-size:.7rem; color:var(--sub); margin-bottom:4px;}
+  #importBanner{display:none;}
   .spinner{
     display:inline-block; width:14px; height:14px; border:2px solid var(--sub);
     border-top-color:var(--accent); border-radius:50%; animation:spin .7s linear infinite;
@@ -145,6 +158,24 @@
     </div>
   </section>
 
+  <!-- 每日技術面盤勢分析 -->
+  <h2 class="section-title">📊 每日技術面盤勢分析</h2>
+  <section class="card">
+    <div class="analysis-block">
+      <h3>₿ 比特幣 BTC</h3>
+      <div class="analysis-date" id="btcAnalysisDate">--</div>
+      <div class="analysis-text" id="btcAnalysisText">載入中...</div>
+    </div>
+    <div class="analysis-block">
+      <h3>Ξ 以太幣 ETH</h3>
+      <div class="analysis-date" id="ethAnalysisDate">--</div>
+      <div class="analysis-text" id="ethAnalysisText">載入中...</div>
+    </div>
+    <div class="legend-note">
+      以上為程式依據均線排列、乖離、布林通道位置與近期漲跌幅，用固定規則自動產生的<b>技術面</b>判讀文字，不涉及新聞消息面或籌碼面，僅供參考，<b>不構成投資建議</b>。
+    </div>
+  </section>
+
   <!-- ETF -->
   <h2 class="section-title">虛擬幣相關 ETF 追蹤清單</h2>
   <section class="card">
@@ -159,6 +190,16 @@
     </div>
     <div class="etf-list" id="etfList"></div>
     <div class="etf-empty" id="etfEmptyMsg">尚未新增任何 ETF，請於上方輸入代碼後點擊「新增」。</div>
+
+    <div class="sync-hint">清單存於此裝置瀏覽器內，換裝置或換瀏覽器不會自動同步。可用下列方式跨裝置同步：</div>
+    <div class="sync-row">
+      <button id="genLinkBtn">🔗 產生同步連結</button>
+      <button id="exportJsonBtn">📤 匯出成檔案</button>
+      <button id="importJsonBtn">📥 從檔案匯入</button>
+      <input type="file" id="importJsonFile" accept="application/json" style="display:none;">
+    </div>
+    <div class="status-msg" id="syncStatus" style="display:none;"></div>
+    <div class="status-msg warn" id="importBanner"></div>
   </section>
 
   <section class="card" id="etfChartSection">
@@ -280,6 +321,63 @@ function renderChart(canvasId, labels, closes){
   });
 }
 
+/* ---------------- Daily technical analysis text ---------------- */
+function generateAnalysis(closes, labels){
+  const n = closes.length;
+  if(n < 6) return {date:'--', text:'資料不足，無法產生分析。'};
+  const last = closes[n-1];
+  const ma5 = sma(closes,5), ma10 = sma(closes,10), ma60 = sma(closes,60);
+  const boll = bollinger(closes,20,1);
+  const lastMa5 = ma5[n-1], lastMa10 = ma10[n-1], lastMa60 = ma60[n-1];
+  const lastUpper = boll.upper[n-1], lastLower = boll.lower[n-1];
+  const parts = [];
+
+  if(lastMa5!=null && lastMa10!=null && lastMa60!=null){
+    if(lastMa5 > lastMa10 && lastMa10 > lastMa60){
+      parts.push('均線呈多頭排列（MA5 > MA10 > 季線MA60），短中期趨勢偏多。');
+    } else if(lastMa5 < lastMa10 && lastMa10 < lastMa60){
+      parts.push('均線呈空頭排列（MA5 < MA10 < 季線MA60），短中期趨勢偏空。');
+    } else {
+      parts.push('均線糾結交錯，尚未形成明確多空排列，短線方向不明。');
+    }
+  }
+  if(lastMa5!=null){
+    parts.push(last > lastMa5 ? '現價站上五日線，短線動能偏強。' : '現價跌破五日線，短線動能轉弱。');
+  }
+  if(lastMa60!=null){
+    parts.push(last > lastMa60 ? '現價位於季線之上，中期架構仍屬多方。' : '現價跌破季線，中期趨勢轉弱，須留意支撐是否有效。');
+  }
+  if(lastUpper!=null && lastLower!=null){
+    const bandWidth = lastUpper - lastLower;
+    const posPct = bandWidth>0 ? (last-lastLower)/bandWidth : 0.5;
+    if(last >= lastUpper){
+      parts.push('價格觸及或站上布林上軌，短線有過熱疑慮，追高風險提高。');
+    } else if(last <= lastLower){
+      parts.push('價格觸及或跌破布林下軌，短線超跌，留意反彈機會，但也可能延續弱勢。');
+    } else if(posPct > 0.75){
+      parts.push(`價格位於布林通道上緣（約通道${(posPct*100).toFixed(0)}%位置），偏多但接近過熱區。`);
+    } else if(posPct < 0.25){
+      parts.push(`價格位於布林通道下緣（約通道${(posPct*100).toFixed(0)}%位置），偏弱但接近超跌區。`);
+    } else {
+      parts.push('價格位於布林通道中軌附近，區間震盪機率較高。');
+    }
+  }
+  if(n>=6){
+    const chg5 = (last - closes[n-6])/closes[n-6]*100;
+    parts.push(`近5日累積漲跌幅約 ${chg5>=0?'+':''}${chg5.toFixed(1)}%。`);
+  }
+  if(n>=21){
+    const chg20 = (last - closes[n-21])/closes[n-21]*100;
+    parts.push(`近20日累積漲跌幅約 ${chg20>=0?'+':''}${chg20.toFixed(1)}%。`);
+  }
+  return {date: labels[n-1], text: parts.join('')};
+}
+function renderAnalysis(prefix, closes, labels){
+  const r = generateAnalysis(closes, labels);
+  document.getElementById(prefix+'AnalysisDate').textContent = '資料日期：' + r.date;
+  document.getElementById(prefix+'AnalysisText').textContent = r.text;
+}
+
 /* ---------------- BTC / ETH (CoinGecko) ---------------- */
 async function fetchCoinGeckoSeries(id){
   const key = document.getElementById('cgApiKeyInput').value.trim();
@@ -349,6 +447,8 @@ async function updateBtcEth(){
 function applyBtcEth(btcSeries, ethSeries, simple, stale, staleTs){
   renderChart('btcChart', btcSeries.labels, btcSeries.closes);
   renderChart('ethChart', ethSeries.labels, ethSeries.closes);
+  renderAnalysis('btc', btcSeries.closes, btcSeries.labels);
+  renderAnalysis('eth', ethSeries.closes, ethSeries.labels);
   const btcPx = simple.bitcoin ? simple.bitcoin.usd : btcSeries.closes[btcSeries.closes.length-1];
   const ethPx = simple.ethereum ? simple.ethereum.usd : ethSeries.closes[ethSeries.closes.length-1];
   document.getElementById('btcPrice').textContent = '$' + fmtPrice(btcPx);
@@ -419,6 +519,97 @@ document.getElementById('etfAddBtn').addEventListener('click', ()=>{
 document.getElementById('etfSymbolInput').addEventListener('keydown', e=>{
   if(e.key==='Enter') document.getElementById('etfAddBtn').click();
 });
+
+/* ---------------- ETF list cross-device sync (link / file) ---------------- */
+function b64EncodeUnicode(str){
+  return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, (m,p1)=>String.fromCharCode('0x'+p1)));
+}
+function b64DecodeUnicode(str){
+  return decodeURIComponent(atob(str).split('').map(c=>'%'+('00'+c.charCodeAt(0).toString(16)).slice(-2)).join(''));
+}
+function showSyncStatus(msg, isErr){
+  const el = document.getElementById('syncStatus');
+  el.textContent = msg;
+  el.className = 'status-msg ' + (isErr?'err':'ok');
+  el.style.display = 'block';
+  setTimeout(()=>{ el.style.display='none'; }, 6000);
+}
+function mergeEtfList(incoming){
+  const current = loadEtfList();
+  let added = 0;
+  incoming.forEach(item=>{
+    if(item && item.symbol && !current.some(x=>x.symbol===item.symbol)){
+      current.push({symbol:String(item.symbol).toUpperCase(), name:item.name||''});
+      added++;
+    }
+  });
+  saveEtfList(current);
+  return added;
+}
+
+document.getElementById('genLinkBtn').addEventListener('click', async ()=>{
+  const list = loadEtfList();
+  if(!list.length){ showSyncStatus('目前清單是空的，沒有可分享的項目。', true); return; }
+  const payload = b64EncodeUnicode(JSON.stringify(list));
+  const url = location.origin + location.pathname + '#etflist=' + payload;
+  try{
+    await navigator.clipboard.writeText(url);
+    showSyncStatus('同步連結已複製到剪貼簿，於另一裝置開啟此連結即可匯入清單。', false);
+  }catch(e){
+    prompt('請手動複製此同步連結：', url);
+  }
+});
+
+document.getElementById('exportJsonBtn').addEventListener('click', ()=>{
+  const list = loadEtfList();
+  const blob = new Blob([JSON.stringify(list, null, 2)], {type:'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'crypto-etf-list.json';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  showSyncStatus('已匯出清單檔案。', false);
+});
+
+document.getElementById('importJsonBtn').addEventListener('click', ()=>{
+  document.getElementById('importJsonFile').click();
+});
+document.getElementById('importJsonFile').addEventListener('change', (e)=>{
+  const file = e.target.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = ()=>{
+    try{
+      const data = JSON.parse(reader.result);
+      if(!Array.isArray(data)) throw new Error('格式錯誤');
+      const added = mergeEtfList(data);
+      renderEtfList();
+      showSyncStatus(`已從檔案匯入，新增 ${added} 檔（重複代碼已略過）。`, false);
+    }catch(err){
+      showSyncStatus('檔案格式錯誤，匯入失敗。', true);
+    }
+  };
+  reader.readAsText(file);
+  e.target.value = '';
+});
+
+function handleHashImport(){
+  const m = location.hash.match(/etflist=([^&]+)/);
+  if(!m) return;
+  try{
+    const data = JSON.parse(b64DecodeUnicode(decodeURIComponent(m[1])));
+    if(Array.isArray(data) && data.length){
+      const added = mergeEtfList(data);
+      renderEtfList();
+      const banner = document.getElementById('importBanner');
+      banner.textContent = `已從分享連結匯入 ${added} 檔 ETF（重複代碼已自動略過）。`;
+      banner.style.display = 'block';
+      setTimeout(()=>{ banner.style.display='none'; }, 8000);
+    }
+  }catch(e){ console.warn('hash import failed', e); }
+  history.replaceState(null, '', location.pathname + location.search);
+}
 
 /* ---------------- ETF chart fetch (Yahoo Finance via CORS proxy) ---------------- */
 const CORS_PROXIES = [
@@ -549,6 +740,7 @@ document.getElementById('cgApiKeyInput').addEventListener('change', e=>{
   localStorage.setItem('cg_api_key', e.target.value.trim());
 });
 
+handleHashImport();
 if(!loadEtfList().length){
   saveEtfList([
     {symbol:'IBIT', name:'iShares 比特幣信託'},

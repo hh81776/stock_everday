@@ -136,6 +136,11 @@
 
 <main>
 
+  <div class="status-msg warn" id="fileProtocolWarning" style="display:none; margin-bottom:16px;">
+    ⚠️ 偵測到您是用本機檔案直接開啟這個頁面（file://），部分瀏覽器的安全限制會導致資料抓取卡住或失敗。請改用線上網址瀏覽（電腦/手機都可直接打開，會自動更新）：<br>
+    <a href="https://hh81776.github.io/stock_everday/crypto/" style="color:inherit; text-decoration:underline;">https://hh81776.github.io/stock_everday/crypto/</a>
+  </div>
+
   <!-- BTC -->
   <section class="card">
     <div class="price-row">
@@ -396,12 +401,26 @@ function renderAnalysis(prefix, closes, labels){
   document.getElementById(prefix+'AnalysisText').textContent = r.text;
 }
 
+/* ---------------- fetch with timeout (avoid infinite spinner if a request hangs) ---------------- */
+async function fetchWithTimeout(url, ms){
+  const controller = new AbortController();
+  const timer = setTimeout(()=>controller.abort(), ms || 15000);
+  try{
+    return await fetch(url, {signal: controller.signal});
+  }catch(e){
+    if(e.name === 'AbortError') throw new Error('連線逾時（15秒無回應）');
+    throw e;
+  }finally{
+    clearTimeout(timer);
+  }
+}
+
 /* ---------------- BTC / ETH (CoinGecko) ---------------- */
 async function fetchCoinGeckoSeries(id){
   const key = document.getElementById('cgApiKeyInput').value.trim();
   const keyParam = key ? `&x_cg_demo_api_key=${encodeURIComponent(key)}` : '';
   const url = `https://api.coingecko.com/api/v3/coins/${id}/market_chart?vs_currency=usd&days=200&interval=daily${keyParam}`;
-  const res = await fetch(url);
+  const res = await fetchWithTimeout(url);
   if(!res.ok) throw new Error(`CoinGecko HTTP ${res.status}`);
   const json = await res.json();
   const prices = json.prices || [];
@@ -413,7 +432,7 @@ async function fetchCoinGeckoSimple(){
   const key = document.getElementById('cgApiKeyInput').value.trim();
   const keyParam = key ? `&x_cg_demo_api_key=${encodeURIComponent(key)}` : '';
   const url = `https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum&vs_currencies=usd&include_24hr_change=true${keyParam}`;
-  const res = await fetch(url);
+  const res = await fetchWithTimeout(url);
   if(!res.ok) throw new Error(`CoinGecko HTTP ${res.status}`);
   return res.json();
 }
@@ -640,7 +659,7 @@ async function fetchYahooSeries(symbol){
   let lastErr;
   for(const proxyFn of CORS_PROXIES){
     try{
-      const res = await fetch(proxyFn(yahooUrl));
+      const res = await fetchWithTimeout(proxyFn(yahooUrl));
       if(!res.ok) throw new Error(`HTTP ${res.status}`);
       const json = await res.json();
       const result = json.chart && json.chart.result && json.chart.result[0];
@@ -752,6 +771,9 @@ function setupAutoRefresh(){
 document.getElementById('autoRefreshChk').addEventListener('change', setupAutoRefresh);
 
 /* ---------------- init ---------------- */
+if(location.protocol === 'file:'){
+  document.getElementById('fileProtocolWarning').style.display = 'block';
+}
 const savedKey = localStorage.getItem('cg_api_key');
 if(savedKey) document.getElementById('cgApiKeyInput').value = savedKey;
 document.getElementById('cgApiKeyInput').addEventListener('change', e=>{

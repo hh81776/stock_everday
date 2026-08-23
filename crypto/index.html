@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>加密貨幣看盤室</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>₿</text></svg>">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.4/chart.umd.min.js"></script>
+<style>
+  :root{
+    --bg:#0f1420; --panel:#171e2e; --panel2:#1d2536; --border:#2a3450;
+    --text:#e8ecf5; --sub:#8a93a8; --red:#ff5d5d; --green:#3ddc84;
+    --accent:#4f8cff; --accent2:#f5a623; --purple:#b06cf0; --teal:#2dd4bf;
+    --shadow:0 4px 14px rgba(0,0,0,.35);
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; background:var(--bg); color:var(--text);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Microsoft JhengHei",Roboto,sans-serif;
+    -webkit-font-smoothing:antialiased; padding-bottom:40px;
+  }
+  header{
+    padding:18px 16px 14px; background:linear-gradient(135deg,#131a2a,#1a2338);
+    border-bottom:1px solid var(--border); position:sticky; top:0; z-index:20;
+  }
+  header h1{margin:0 0 4px; font-size:1.25rem; display:flex; align-items:center; gap:8px;}
+  header .meta{font-size:.78rem; color:var(--sub); display:flex; flex-wrap:wrap; gap:10px; align-items:center;}
+  header .meta button{
+    background:var(--panel2); border:1px solid var(--border); color:var(--text);
+    padding:4px 10px; border-radius:20px; font-size:.75rem; cursor:pointer;
+  }
+  header .meta button:active{transform:scale(.96);}
+  header .meta label{display:flex; align-items:center; gap:4px; cursor:pointer;}
+  main{max-width:1100px; margin:0 auto; padding:14px;}
+  .card{
+    background:var(--panel); border:1px solid var(--border); border-radius:14px;
+    padding:14px; margin-bottom:16px; box-shadow:var(--shadow);
+  }
+  .price-row{display:flex; flex-wrap:wrap; align-items:baseline; gap:10px; margin-bottom:6px;}
+  .price-row .sym{font-weight:700; font-size:1.05rem;}
+  .price-row .px{font-size:1.6rem; font-weight:700; font-variant-numeric:tabular-nums;}
+  .chg{font-size:.9rem; font-weight:600; padding:2px 8px; border-radius:8px;}
+  .chg.up{color:var(--red); background:rgba(255,93,93,.12);}
+  .chg.down{color:var(--green); background:rgba(61,220,132,.12);}
+  .chg.flat{color:var(--sub); background:rgba(138,147,168,.12);}
+  .sub-line{font-size:.75rem; color:var(--sub); margin-bottom:10px;}
+  .chart-wrap{position:relative; height:280px;}
+  @media(min-width:720px){.chart-wrap{height:360px;}}
+  .legend-note{font-size:.72rem; color:var(--sub); margin-top:8px; line-height:1.6;}
+  .legend-note b{color:var(--text);}
+  h2.section-title{font-size:1rem; margin:26px 0 10px; padding-left:8px; border-left:4px solid var(--accent);}
+  .etf-add{display:flex; flex-wrap:wrap; gap:8px; margin-bottom:12px;}
+  .etf-add input{
+    flex:1; min-width:110px; background:var(--panel2); border:1px solid var(--border);
+    color:var(--text); padding:9px 10px; border-radius:8px; font-size:.9rem;
+  }
+  .etf-add button{
+    background:var(--accent); border:none; color:#fff; padding:9px 16px;
+    border-radius:8px; font-size:.9rem; font-weight:600; cursor:pointer; white-space:nowrap;
+  }
+  .etf-add button:active{opacity:.8;}
+  .etf-hint{font-size:.72rem; color:var(--sub); margin-bottom:14px;}
+  .etf-list{display:flex; flex-wrap:wrap; gap:8px; margin-bottom:6px;}
+  .etf-chip{
+    display:flex; align-items:center; gap:8px; background:var(--panel2);
+    border:1px solid var(--border); border-radius:20px; padding:7px 8px 7px 14px;
+    cursor:pointer; font-size:.85rem; transition:border-color .15s;
+  }
+  .etf-chip.active{border-color:var(--accent); background:rgba(79,140,255,.14);}
+  .etf-chip .del{
+    background:none; border:none; color:var(--sub); font-size:1rem; cursor:pointer;
+    width:22px; height:22px; border-radius:50%; line-height:1;
+  }
+  .etf-chip .del:hover{background:rgba(255,93,93,.2); color:var(--red);}
+  .etf-empty{font-size:.85rem; color:var(--sub); padding:10px 0;}
+  #etfChartSection{display:none;}
+  .status-msg{font-size:.8rem; padding:8px 10px; border-radius:8px; margin-bottom:10px;}
+  .status-msg.err{background:rgba(255,93,93,.12); color:var(--red);}
+  .status-msg.warn{background:rgba(245,166,35,.14); color:var(--accent2);}
+  .status-msg.ok{background:rgba(61,220,132,.12); color:var(--green);}
+  details.settings{margin-top:18px; font-size:.82rem; color:var(--sub);}
+  details.settings summary{cursor:pointer; color:var(--text);}
+  details.settings .inner{margin-top:10px; display:flex; flex-direction:column; gap:8px;}
+  details.settings input{
+    background:var(--panel2); border:1px solid var(--border); color:var(--text);
+    padding:8px 10px; border-radius:8px; font-size:.85rem;
+  }
+  textarea.manual{
+    width:100%; min-height:90px; background:var(--panel2); border:1px solid var(--border);
+    color:var(--text); border-radius:8px; padding:8px; font-size:.78rem; font-family:monospace;
+  }
+  .manual-box{display:none; margin-top:10px;}
+  .manual-box button{
+    background:var(--panel2); border:1px solid var(--border); color:var(--text);
+    padding:7px 12px; border-radius:8px; font-size:.8rem; cursor:pointer; margin-top:6px;
+  }
+  footer{text-align:center; font-size:.72rem; color:var(--sub); padding:24px 16px 10px;}
+  a{color:var(--accent);}
+  .spinner{
+    display:inline-block; width:14px; height:14px; border:2px solid var(--sub);
+    border-top-color:var(--accent); border-radius:50%; animation:spin .7s linear infinite;
+    vertical-align:middle; margin-right:6px;
+  }
+  @keyframes spin{to{transform:rotate(360deg);}}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>₿ 加密貨幣看盤室 <span style="font-size:.65em; color:var(--sub); font-weight:400;">Crypto Watch</span></h1>
+  <div class="meta">
+    <span id="lastUpdated">尚未更新</span>
+    <button id="refreshBtn">🔄 立即更新</button>
+    <label><input type="checkbox" id="autoRefreshChk" checked> 自動更新(5分鐘)</label>
+  </div>
+</header>
+
+<main>
+
+  <!-- BTC -->
+  <section class="card">
+    <div class="price-row">
+      <span class="sym">₿ BTC / USD</span>
+      <span class="px" id="btcPrice">--</span>
+      <span class="chg flat" id="btcChg">--</span>
+    </div>
+    <div class="sub-line" id="btcMeta">載入中...</div>
+    <div class="chart-wrap"><canvas id="btcChart"></canvas></div>
+    <div class="legend-note">
+      <b>指標說明：</b>收盤價、五日線(MA5)、十日線(MA10)、季線(MA60)、布林通道(20日,±1倍標準差)。點擊圖例可切換顯示/隱藏。
+    </div>
+  </section>
+
+  <!-- ETH -->
+  <section class="card">
+    <div class="price-row">
+      <span class="sym">Ξ ETH / USD</span>
+      <span class="px" id="ethPrice">--</span>
+      <span class="chg flat" id="ethChg">--</span>
+    </div>
+    <div class="sub-line" id="ethMeta">載入中...</div>
+    <div class="chart-wrap"><canvas id="ethChart"></canvas></div>
+    <div class="legend-note">
+      <b>指標說明：</b>收盤價、五日線(MA5)、十日線(MA10)、季線(MA60)、布林通道(20日,±1倍標準差)。點擊圖例可切換顯示/隱藏。
+    </div>
+  </section>
+
+  <!-- ETF -->
+  <h2 class="section-title">虛擬幣相關 ETF 追蹤清單</h2>
+  <section class="card">
+    <div class="etf-add">
+      <input type="text" id="etfSymbolInput" placeholder="代碼，例如 IBIT 或 0050.TW">
+      <input type="text" id="etfNameInput" placeholder="自訂名稱（選填）">
+      <button id="etfAddBtn">＋ 新增</button>
+    </div>
+    <div class="etf-hint">
+      常見比特幣／以太幣 ETF 代碼參考：IBIT、FBTC、ARKB、BITB、GBTC、BRRR（比特幣現貨）／ ETHA、ETHE、FETH（以太幣現貨）／ BITO（比特幣期貨）。
+      台股代碼請加 <code>.TW</code>（如 <code>00893.TW</code>）。資料來源為 Yahoo Finance，非美股/台股代碼可能查無資料。
+    </div>
+    <div class="etf-list" id="etfList"></div>
+    <div class="etf-empty" id="etfEmptyMsg">尚未新增任何 ETF，請於上方輸入代碼後點擊「新增」。</div>
+  </section>
+
+  <section class="card" id="etfChartSection">
+    <div class="price-row">
+      <span class="sym" id="etfChartTitle">--</span>
+      <span class="px" id="etfChartPrice">--</span>
+      <span class="chg flat" id="etfChartChg">--</span>
+    </div>
+    <div class="sub-line" id="etfChartMeta"></div>
+    <div id="etfStatus"></div>
+    <div class="chart-wrap"><canvas id="etfChart"></canvas></div>
+    <div class="legend-note">
+      <b>指標說明：</b>收盤價、五日線(MA5)、十日線(MA10)、季線(MA60)、布林通道(20日,±1倍標準差)。
+    </div>
+    <div class="manual-box" id="manualBox">
+      <div class="legend-note">自動抓取失敗時，可手動貼上資料備援（格式：每行「日期,收盤價」，例如 2026-08-01,42.15）：</div>
+      <textarea class="manual" id="manualInput" placeholder="2026-08-01,42.15&#10;2026-08-04,42.90&#10;..."></textarea>
+      <button id="manualParseBtn">套用手動資料</button>
+    </div>
+  </section>
+
+  <details class="settings">
+    <summary>⚙️ 進階設定</summary>
+    <div class="inner">
+      <label>CoinGecko Demo API Key（選填，可提升 BTC/ETH 資料抓取穩定度，於 coingecko.com 免費申請）</label>
+      <input type="text" id="cgApiKeyInput" placeholder="留空則使用公開額度">
+    </div>
+  </details>
+
+</main>
+
+<footer>
+  資料來源：CoinGecko（BTC/ETH）、Yahoo Finance（ETF，經 CORS 代理）。僅供個人看盤參考，非投資建議。<br>
+  頁面資料儲存於本機瀏覽器（localStorage），清除瀏覽器資料將會清空自訂 ETF 清單。
+</footer>
+
+<script>
+(function(){
+"use strict";
+
+/* ---------------- Indicator math ---------------- */
+function sma(arr, period){
+  const out = new Array(arr.length).fill(null);
+  let sum = 0;
+  for(let i=0;i<arr.length;i++){
+    sum += arr[i];
+    if(i >= period) sum -= arr[i-period];
+    if(i >= period-1) out[i] = sum/period;
+  }
+  return out;
+}
+function bollinger(arr, period, k){
+  const mid = sma(arr, period);
+  const upper = new Array(arr.length).fill(null);
+  const lower = new Array(arr.length).fill(null);
+  for(let i=0;i<arr.length;i++){
+    if(mid[i]==null) continue;
+    const slice = arr.slice(i-period+1, i+1);
+    const mean = mid[i];
+    let variance = 0;
+    for(const v of slice) variance += (v-mean)*(v-mean);
+    variance /= period;
+    const sd = Math.sqrt(variance);
+    upper[i] = mean + k*sd;
+    lower[i] = mean - k*sd;
+  }
+  return {mid, upper, lower};
+}
+function fmtDate(ts){
+  const d = new Date(ts);
+  return d.toISOString().slice(0,10);
+}
+function fmtPrice(v){
+  if(v==null || isNaN(v)) return "--";
+  if(v >= 1000) return v.toLocaleString(undefined,{maximumFractionDigits:0});
+  if(v >= 1) return v.toLocaleString(undefined,{maximumFractionDigits:2});
+  return v.toLocaleString(undefined,{maximumFractionDigits:6});
+}
+
+/* ---------------- Chart rendering ---------------- */
+const chartInstances = {};
+function renderChart(canvasId, labels, closes){
+  const ctx = document.getElementById(canvasId).getContext('2d');
+  const ma5 = sma(closes,5);
+  const ma10 = sma(closes,10);
+  const ma60 = sma(closes,60);
+  const boll = bollinger(closes,20,1);
+
+  if(chartInstances[canvasId]) chartInstances[canvasId].destroy();
+
+  chartInstances[canvasId] = new Chart(ctx, {
+    type:'line',
+    data:{
+      labels,
+      datasets:[
+        {label:'收盤價', data:closes, borderColor:'#e8ecf5', backgroundColor:'transparent', borderWidth:2, pointRadius:0, tension:.15, order:1},
+        {label:'MA5', data:ma5, borderColor:'#f5a623', backgroundColor:'transparent', borderWidth:1.3, pointRadius:0, tension:.15, order:2},
+        {label:'MA10', data:ma10, borderColor:'#b06cf0', backgroundColor:'transparent', borderWidth:1.3, pointRadius:0, tension:.15, order:2},
+        {label:'季線MA60', data:ma60, borderColor:'#2dd4bf', backgroundColor:'transparent', borderWidth:1.3, pointRadius:0, tension:.15, order:2},
+        {label:'布林上軌', data:boll.upper, borderColor:'rgba(138,147,168,.55)', backgroundColor:'rgba(79,140,255,.08)', borderWidth:1, borderDash:[4,3], pointRadius:0, tension:.15, fill:'+1', order:3},
+        {label:'布林下軌', data:boll.lower, borderColor:'rgba(138,147,168,.55)', backgroundColor:'transparent', borderWidth:1, borderDash:[4,3], pointRadius:0, tension:.15, order:3},
+      ]
+    },
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      interaction:{mode:'index', intersect:false},
+      plugins:{
+        legend:{position:'top', labels:{color:'#8a93a8', boxWidth:12, font:{size:11}, usePointStyle:true}},
+        tooltip:{
+          backgroundColor:'#1d2536', borderColor:'#2a3450', borderWidth:1,
+          callbacks:{ label: c => `${c.dataset.label}: ${fmtPrice(c.parsed.y)}` }
+        }
+      },
+      scales:{
+        x:{ticks:{color:'#8a93a8', maxRotation:0, autoSkip:true, maxTicksLimit:8}, grid:{color:'rgba(255,255,255,.04)'}},
+        y:{ticks:{color:'#8a93a8', callback:v=>fmtPrice(v)}, grid:{color:'rgba(255,255,255,.06)'}}
+      }
+    }
+  });
+}
+
+/* ---------------- BTC / ETH (CoinGecko) ---------------- */
+async function fetchCoinGeckoSeries(id){
+  const key = document.getElementById('cgApiKeyInput').value.trim();
+  const keyParam = key ? `&x_cg_demo_api_key=${encodeURIComponent(key)}` : '';
+  const url = `https://api.coingecko.com/api/v3/coins/${id}/market_chart?vs_currency=usd&days=200&interval=daily${keyParam}`;
+  const res = await fetch(url);
+  if(!res.ok) throw new Error(`CoinGecko HTTP ${res.status}`);
+  const json = await res.json();
+  const prices = json.prices || [];
+  const labels = prices.map(p=>fmtDate(p[0]));
+  const closes = prices.map(p=>p[1]);
+  return {labels, closes};
+}
+async function fetchCoinGeckoSimple(){
+  const key = document.getElementById('cgApiKeyInput').value.trim();
+  const keyParam = key ? `&x_cg_demo_api_key=${encodeURIComponent(key)}` : '';
+  const url = `https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum&vs_currencies=usd&include_24hr_change=true${keyParam}`;
+  const res = await fetch(url);
+  if(!res.ok) throw new Error(`CoinGecko HTTP ${res.status}`);
+  return res.json();
+}
+
+function setChg(el, pct){
+  if(pct==null || isNaN(pct)){ el.textContent='--'; el.className='chg flat'; return; }
+  const sign = pct>0 ? '+' : '';
+  el.textContent = `${sign}${pct.toFixed(2)}%`;
+  el.className = 'chg ' + (pct>0.001?'up':pct<-0.001?'down':'flat');
+}
+
+function cacheSet(key, data){
+  try{ localStorage.setItem(key, JSON.stringify({t:Date.now(), data})); }catch(e){}
+}
+function cacheGet(key){
+  try{
+    const raw = localStorage.getItem(key);
+    if(!raw) return null;
+    return JSON.parse(raw);
+  }catch(e){ return null; }
+}
+
+async function updateBtcEth(){
+  document.getElementById('btcMeta').innerHTML = '<span class="spinner"></span>更新中...';
+  document.getElementById('ethMeta').innerHTML = '<span class="spinner"></span>更新中...';
+  try{
+    const [btcSeries, ethSeries, simple] = await Promise.all([
+      fetchCoinGeckoSeries('bitcoin'),
+      fetchCoinGeckoSeries('ethereum'),
+      fetchCoinGeckoSimple()
+    ]);
+    cacheSet('cg_btc_series', btcSeries);
+    cacheSet('cg_eth_series', ethSeries);
+    cacheSet('cg_simple', simple);
+    applyBtcEth(btcSeries, ethSeries, simple, false);
+  }catch(e){
+    console.warn('CoinGecko fetch failed', e);
+    const cBtc = cacheGet('cg_btc_series');
+    const cEth = cacheGet('cg_eth_series');
+    const cSimple = cacheGet('cg_simple');
+    if(cBtc && cEth && cSimple){
+      applyBtcEth(cBtc.data, cEth.data, cSimple.data, true, cBtc.t);
+    } else {
+      document.getElementById('btcMeta').textContent = '資料抓取失敗，請稍後再試（' + e.message + '）';
+      document.getElementById('ethMeta').textContent = '資料抓取失敗，請稍後再試（' + e.message + '）';
+    }
+  }
+}
+function applyBtcEth(btcSeries, ethSeries, simple, stale, staleTs){
+  renderChart('btcChart', btcSeries.labels, btcSeries.closes);
+  renderChart('ethChart', ethSeries.labels, ethSeries.closes);
+  const btcPx = simple.bitcoin ? simple.bitcoin.usd : btcSeries.closes[btcSeries.closes.length-1];
+  const ethPx = simple.ethereum ? simple.ethereum.usd : ethSeries.closes[ethSeries.closes.length-1];
+  document.getElementById('btcPrice').textContent = '$' + fmtPrice(btcPx);
+  document.getElementById('ethPrice').textContent = '$' + fmtPrice(ethPx);
+  setChg(document.getElementById('btcChg'), simple.bitcoin ? simple.bitcoin.usd_24h_change : null);
+  setChg(document.getElementById('ethChg'), simple.ethereum ? simple.ethereum.usd_24h_change : null);
+  const note = stale ? `（快取資料，最後成功更新於 ${new Date(staleTs).toLocaleString()}）` : `每日資料，共 ${btcSeries.closes.length} 筆`;
+  document.getElementById('btcMeta').textContent = note;
+  document.getElementById('ethMeta').textContent = stale ? note : `每日資料，共 ${ethSeries.closes.length} 筆`;
+  document.getElementById('lastUpdated').textContent = '最後更新：' + new Date().toLocaleString();
+}
+
+/* ---------------- ETF list management ---------------- */
+const ETF_KEY = 'crypto_etf_list_v1';
+function loadEtfList(){
+  try{ return JSON.parse(localStorage.getItem(ETF_KEY)) || []; }catch(e){ return []; }
+}
+function saveEtfList(list){
+  localStorage.setItem(ETF_KEY, JSON.stringify(list));
+}
+let activeEtfSymbol = null;
+
+function renderEtfList(){
+  const list = loadEtfList();
+  const wrap = document.getElementById('etfList');
+  const empty = document.getElementById('etfEmptyMsg');
+  wrap.innerHTML = '';
+  empty.style.display = list.length ? 'none' : 'block';
+  list.forEach(item=>{
+    const chip = document.createElement('div');
+    chip.className = 'etf-chip' + (item.symbol===activeEtfSymbol ? ' active':'');
+    const label = document.createElement('span');
+    label.textContent = item.name ? `${item.name} (${item.symbol})` : item.symbol;
+    chip.appendChild(label);
+    const del = document.createElement('button');
+    del.className = 'del';
+    del.textContent = '×';
+    del.title = '移除';
+    del.onclick = (ev)=>{
+      ev.stopPropagation();
+      const nl = loadEtfList().filter(x=>x.symbol!==item.symbol);
+      saveEtfList(nl);
+      if(activeEtfSymbol===item.symbol){
+        activeEtfSymbol = null;
+        document.getElementById('etfChartSection').style.display='none';
+      }
+      renderEtfList();
+    };
+    chip.appendChild(del);
+    chip.onclick = ()=> selectEtf(item);
+    wrap.appendChild(chip);
+  });
+}
+
+document.getElementById('etfAddBtn').addEventListener('click', ()=>{
+  const symInput = document.getElementById('etfSymbolInput');
+  const nameInput = document.getElementById('etfNameInput');
+  const symbol = symInput.value.trim().toUpperCase();
+  const name = nameInput.value.trim();
+  if(!symbol) return;
+  const list = loadEtfList();
+  if(list.some(x=>x.symbol===symbol)){ symInput.value=''; nameInput.value=''; return; }
+  list.push({symbol, name});
+  saveEtfList(list);
+  symInput.value=''; nameInput.value='';
+  renderEtfList();
+});
+document.getElementById('etfSymbolInput').addEventListener('keydown', e=>{
+  if(e.key==='Enter') document.getElementById('etfAddBtn').click();
+});
+
+/* ---------------- ETF chart fetch (Yahoo Finance via CORS proxy) ---------------- */
+const CORS_PROXIES = [
+  u => `https://api.allorigins.win/raw?url=${encodeURIComponent(u)}`,
+  u => `https://corsproxy.io/?url=${encodeURIComponent(u)}`,
+];
+
+async function fetchYahooSeries(symbol){
+  const yahooUrl = `https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(symbol)}?range=1y&interval=1d`;
+  let lastErr;
+  for(const proxyFn of CORS_PROXIES){
+    try{
+      const res = await fetch(proxyFn(yahooUrl));
+      if(!res.ok) throw new Error(`HTTP ${res.status}`);
+      const json = await res.json();
+      const result = json.chart && json.chart.result && json.chart.result[0];
+      if(!result) throw new Error('查無此代碼資料');
+      const ts = result.timestamp || [];
+      const closes = (result.indicators.quote[0].close) || [];
+      const labels = [], data = [];
+      for(let i=0;i<ts.length;i++){
+        if(closes[i]!=null){ labels.push(fmtDate(ts[i]*1000)); data.push(closes[i]); }
+      }
+      if(!data.length) throw new Error('資料為空');
+      return {labels, closes:data, meta:result.meta};
+    }catch(e){ lastErr = e; }
+  }
+  throw lastErr || new Error('無法取得資料');
+}
+
+async function selectEtf(item){
+  activeEtfSymbol = item.symbol;
+  renderEtfList();
+  const section = document.getElementById('etfChartSection');
+  section.style.display = 'block';
+  section.scrollIntoView({behavior:'smooth', block:'start'});
+  document.getElementById('etfChartTitle').textContent = item.name ? `${item.name} (${item.symbol})` : item.symbol;
+  document.getElementById('etfChartPrice').textContent = '--';
+  setChg(document.getElementById('etfChartChg'), null);
+  document.getElementById('etfChartMeta').innerHTML = '<span class="spinner"></span>更新中...';
+  document.getElementById('etfStatus').innerHTML = '';
+  document.getElementById('manualBox').style.display = 'none';
+
+  try{
+    const series = await fetchYahooSeries(item.symbol);
+    cacheSet('etf_series_'+item.symbol, series);
+    applyEtfSeries(item.symbol, series, false);
+  }catch(e){
+    console.warn('Yahoo fetch failed', e);
+    const cached = cacheGet('etf_series_'+item.symbol);
+    if(cached){
+      applyEtfSeries(item.symbol, cached.data, true, cached.t);
+    } else {
+      document.getElementById('etfChartMeta').textContent = '';
+      document.getElementById('etfStatus').innerHTML = `<div class="status-msg err">自動抓取失敗（${e.message}）。可能是代碼錯誤，或 CORS 代理服務暫時無法使用，請稍後再試，或使用下方手動輸入備援。</div>`;
+      document.getElementById('manualBox').style.display = 'block';
+    }
+  }
+}
+
+function applyEtfSeries(symbol, series, stale, staleTs){
+  renderChart('etfChart', series.labels, series.closes);
+  const last = series.closes[series.closes.length-1];
+  const prev = series.closes[series.closes.length-2];
+  document.getElementById('etfChartPrice').textContent = fmtPrice(last);
+  setChg(document.getElementById('etfChartChg'), prev ? ((last-prev)/prev*100) : null);
+  document.getElementById('etfChartMeta').textContent = stale
+    ? `（快取資料，最後成功更新於 ${new Date(staleTs).toLocaleString()}）`
+    : `每日資料，共 ${series.closes.length} 筆（來源：Yahoo Finance）`;
+  document.getElementById('etfStatus').innerHTML = stale
+    ? '<div class="status-msg warn">目前顯示為快取資料，非即時最新。</div>' : '';
+  document.getElementById('manualBox').style.display = 'none';
+}
+
+document.getElementById('manualParseBtn').addEventListener('click', ()=>{
+  if(!activeEtfSymbol) return;
+  const text = document.getElementById('manualInput').value.trim();
+  if(!text) return;
+  const labels = [], closes = [];
+  text.split('\n').forEach(line=>{
+    const parts = line.split(',');
+    if(parts.length>=2){
+      const d = parts[0].trim();
+      const v = parseFloat(parts[1]);
+      if(d && !isNaN(v)){ labels.push(d); closes.push(v); }
+    }
+  });
+  if(!closes.length){
+    document.getElementById('etfStatus').innerHTML = '<div class="status-msg err">格式錯誤，請確認每行為「日期,收盤價」。</div>';
+    return;
+  }
+  const series = {labels, closes};
+  cacheSet('etf_series_'+activeEtfSymbol, series);
+  applyEtfSeries(activeEtfSymbol, series, false);
+  document.getElementById('etfStatus').innerHTML = '<div class="status-msg ok">已套用手動輸入資料。</div>';
+});
+
+/* ---------------- refresh / auto-refresh ---------------- */
+document.getElementById('refreshBtn').addEventListener('click', ()=>{
+  updateBtcEth();
+  if(activeEtfSymbol){
+    const list = loadEtfList();
+    const item = list.find(x=>x.symbol===activeEtfSymbol);
+    if(item) selectEtf(item);
+  }
+});
+
+let autoTimer = null;
+function setupAutoRefresh(){
+  if(autoTimer) clearInterval(autoTimer);
+  if(document.getElementById('autoRefreshChk').checked){
+    autoTimer = setInterval(()=>{
+      updateBtcEth();
+      if(activeEtfSymbol){
+        const list = loadEtfList();
+        const item = list.find(x=>x.symbol===activeEtfSymbol);
+        if(item) selectEtf(item);
+      }
+    }, 5*60*1000);
+  }
+}
+document.getElementById('autoRefreshChk').addEventListener('change', setupAutoRefresh);
+
+/* ---------------- init ---------------- */
+const savedKey = localStorage.getItem('cg_api_key');
+if(savedKey) document.getElementById('cgApiKeyInput').value = savedKey;
+document.getElementById('cgApiKeyInput').addEventListener('change', e=>{
+  localStorage.setItem('cg_api_key', e.target.value.trim());
+});
+
+if(!loadEtfList().length){
+  saveEtfList([
+    {symbol:'IBIT', name:'iShares 比特幣信託'},
+    {symbol:'ETHA', name:'iShares 以太幣信託'}
+  ]);
+}
+renderEtfList();
+updateBtcEth();
+setupAutoRefresh();
+
+})();
+</script>
+</body>
+</html>

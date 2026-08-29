@@ -95,7 +95,7 @@ footer{text-align:center;color:var(--gray);font-size:.76rem;padding:20px 10px 40
   <div class="sub">臺灣指數公司「臺灣璞玉指數」331檔成分股 × 合約負債／EPS基本面排名 × 5・10・20日均線＋布林通道技術篩選</div>
   <div class="meta">
     <span id="lastScanTime">尚未掃描技術面</span>
-    <span id="fundamentalAsOf">基本面資料版本：2026/08/27 建立</span>
+    <span id="fundamentalAsOf">基本面資料版本：2026/08/29 更新（新增合約負債Top50比對資料）</span>
     <span>成分股名單定審日：2026/04/21</span>
   </div>
 </header>
@@ -140,11 +140,10 @@ footer{text-align:center;color:var(--gray);font-size:.76rem;padding:20px 10px 40
   <div class="tabpanel" id="tab-liab">
     <div class="card">
       <h2>合約負債排名</h2>
-      <div class="desc">合約負債反映公司在手訂單／已收預付款尚未認列營收的部位，常被視為未來營收的領先指標。此欄位僅收錄目前已查證公布之數值，
-      其餘標示「資料待補」，將於每季財報公布後陸續補齊（見「關於本工具」說明）。</div>
+      <div class="desc">合約負債反映公司在手訂單／已收預付款尚未認列營收的部位，常被視為未來營收的領先指標。2026Q2欄位已比對使用者提供之「臺灣上市上櫃公司合約負債排行榜Top50」（資料來源：公開資訊觀測站MOPS合併財報，先行版整理表，資料日期2026/08/23），取其中屬於璞玉指數331檔成分股者共8檔納入；其餘個股仍標示「資料待補」，將視需要陸續補齊（見「關於本工具」說明）。<b>先行版數據如有出入，請以公開資訊觀測站正式公告為準。</b></div>
       <div class="table-wrap">
         <table id="liabTable">
-          <thead><tr><th data-key="rank">名次</th><th data-key="name">股票</th><th data-key="liab">合約負債(千元)</th><th data-key="period">資料期間</th><th data-key="source">資料來源</th></tr></thead>
+          <thead><tr><th data-key="rank">名次</th><th data-key="name">股票</th><th data-key="liab">2026Q2合約負債(百萬元)</th><th data-key="qoq">季增率QoQ</th><th data-key="yoy">年增率YoY</th><th data-key="ratio">負債/股本比</th><th data-key="period">資料期間</th><th data-key="source">資料來源</th></tr></thead>
           <tbody></tbody>
         </table>
       </div>
@@ -242,7 +241,7 @@ footer{text-align:center;color:var(--gray);font-size:.76rem;padding:20px 10px 40
       <h3>資料來源與更新方式</h3>
       <div class="info-box">
         <b>股價、均線、布林通道、K線圖</b>：每次開啟頁面或按下「重新掃描」時，由瀏覽器即時向證交所（TWSE）及備援來源（Yahoo奇摩股市）抓取最新盤後資料現場計算，因此永遠是「當下最新」，不需要每日另外更新程式。若遇假日或非交易日，會顯示最近一個交易日的資料。<br><br>
-        <b>合約負債／EPS</b>：屬於每季公布一次的財報數據，<u>並非每日變動</u>。由於這類細項財務數據沒有可供網頁即時查詢的公開介面，目前是由 Claude 人工查證新聞與財報網站後，內嵌於本頁面中；<b>目前僅涵蓋部分個股，其餘標示「資料待補」，將視需要於每季財報公布後分批查證補齊</b>（可另外設定每季排程任務執行）。
+        <b>合約負債／EPS</b>：屬於每季公布一次的財報數據，<u>並非每日變動</u>。由於這類細項財務數據沒有可供網頁即時查詢的公開介面，目前是由 Claude 人工查證新聞與財報網站後，內嵌於本頁面中；<b>目前僅涵蓋部分個股，其餘標示「資料待補」，將視需要於每季財報公布後分批查證補齊</b>（可另外設定每季排程任務執行）。<br><br>2026/08/29更新：合約負債部分已補入使用者提供的「2026Q2臺灣上市上櫃公司合約負債排行榜Top50」（資料來源：公開資訊觀測站MOPS合併財報，先行版整理表，資料日期2026/08/23，註明「本表為先行版，實際數據以公開資訊觀測站公告為準」），比對後共8檔屬於璞玉指數成分股，已納入頁面。其餘323檔仍待後續補齊。
       </div>
 
       <div class="disclaimer">
@@ -291,7 +290,15 @@ const FUNDAMENTALS = {
   "2207": {eps:10.03, epsPeriod:"2025Q3單季", epsTTM:32.81, epsSource:"財報狗"},
   "3596": {liabNote:"優分析統計為2026Q2合約負債「季增金額」全市場前十大個股之一（原文未附精確金額）", liabPeriod:"2026Q2 QoQ成長排名", liabSource:"優分析UAnalyze"},
   "3013": {liabNote:"優分析統計為2026Q2合約負債「季增金額」全市場前十大個股之一（原文未附精確金額）", liabPeriod:"2026Q2 QoQ成長排名", liabSource:"優分析UAnalyze"},
-  "3004": {liabNote:"優分析統計為2026Q2合約負債「季增金額」全市場前十大個股之一（原文未附精確金額）", liabPeriod:"2026Q2 QoQ成長排名", liabSource:"優分析UAnalyze"}
+  "3004": {liabNote:"優分析統計為2026Q2合約負債「季增金額」全市場前十大個股之一（原文未附精確金額）", liabPeriod:"2026Q2 QoQ成長排名", liabSource:"優分析UAnalyze"},
+  "2546": {liabQ2:11928, liabQ1:9250, liabQoQ:29.0, liabYoY:92.6, liabRatio:239.7, liabRank:1, liabPeriod:"2026Q2", liabSource:"公開資訊觀測站(MOPS)合併財報，先行版整理表(資料日期2026/08/23)"},
+  "2543": {liabQ2:1975, liabQ1:1802, liabQoQ:9.6, liabYoY:35.1, liabRatio:9.6, liabRank:10, liabPeriod:"2026Q2", liabSource:"公開資訊觀測站(MOPS)合併財報，先行版整理表(資料日期2026/08/23)"},
+  "6176": {liabQ2:4511, liabQ1:4041, liabQoQ:11.6, liabYoY:31.7, liabRatio:9.1, liabRank:11, liabPeriod:"2026Q2", liabSource:"公開資訊觀測站(MOPS)合併財報，先行版整理表(資料日期2026/08/23)"},
+  "8261": {liabQ2:1864, liabQ1:1614, liabQoQ:15.5, liabYoY:44.8, liabRatio:5.8, liabRank:19, liabPeriod:"2026Q2", liabSource:"公開資訊觀測站(MOPS)合併財報，先行版整理表(資料日期2026/08/23)"},
+  "4961": {liabQ2:1603, liabQ1:1371, liabQoQ:16.9, liabYoY:52.1, liabRatio:5.5, liabRank:21, liabPeriod:"2026Q2", liabSource:"公開資訊觀測站(MOPS)合併財報，先行版整理表(資料日期2026/08/23)"},
+  "9945": {liabQ2:4811, liabQ1:4307, liabQoQ:11.7, liabYoY:43.0, liabRatio:3.7, liabRank:33, liabPeriod:"2026Q2", liabSource:"公開資訊觀測站(MOPS)合併財報，先行版整理表(資料日期2026/08/23)"},
+  "6196": {liabQ2:2997, liabQ1:2677, liabQoQ:12.0, liabYoY:43.6, liabRatio:3.5, liabRank:35, liabPeriod:"2026Q2", liabSource:"公開資訊觀測站(MOPS)合併財報，先行版整理表(資料日期2026/08/23)"},
+  "2727": {liabQ2:1902, liabQ1:1689, liabQoQ:12.6, liabYoY:38.3, liabRatio:3.2, liabRank:38, liabPeriod:"2026Q2", liabSource:"公開資訊觀測站(MOPS)合併財報，先行版整理表(資料日期2026/08/23)"},
 };
 
 /* ========================= 資料抓取 ========================= */
@@ -449,7 +456,7 @@ function renderTop10(){
     top.map((r,i)=>{
       const f = FUNDAMENTALS[r.code] || {};
       const epsTxt = f.eps!=null ? `${f.eps} 元 <span class="data-pending">(${f.epsPeriod})</span>` : '<span class="data-pending">資料待補</span>';
-      const liabTxt = f.liab!=null ? `${f.liab.toLocaleString()} 千元` : (f.liabNote ? `<span class="data-pending">${f.liabNote}</span>` : '<span class="data-pending">資料待補</span>');
+      const liabTxt = f.liabQ2!=null ? `${f.liabQ2.toLocaleString()} 百萬元 <span class="data-pending">(QoQ ${f.liabQoQ>=0?'+':''}${f.liabQoQ}%)</span>` : (f.liabNote ? `<span class="data-pending">${f.liabNote}</span>` : '<span class="data-pending">資料待補</span>');
       return `<div class="top10-card">
         <span class="badge-rank">${i+1}</span>
         <div><div class="name">${r.name} <span class="code">${r.code}</span></div>
@@ -563,6 +570,7 @@ async function showModalChart(code){
     statHtml('MA5/10/20', `${r.last.ma5.toFixed(1)}/${r.last.ma10.toFixed(1)}/${r.last.ma20.toFixed(1)}`),
     statHtml('%B', r.last.percentB.toFixed(2), r.last.percentB>1?'highlight-red':''),
     statHtml('EPS', f.eps!=null?(f.eps+'元'):'待補'),
+    statHtml('合約負債(百萬)', f.liabQ2!=null?(f.liabQ2.toLocaleString()+' QoQ'+(f.liabQoQ>=0?'+':'')+f.liabQoQ+'%'):(f.liabNote?'部分資訊':'待補')),
   ].join('');
   bg.classList.add('show');
 }
@@ -611,16 +619,20 @@ function renderFundamentalTables(){
   const epsRows = [];
   STOCK_LIST.forEach(s=>{
     const f = FUNDAMENTALS[s.c];
-    if(f && (f.liab!=null || f.liabNote)) liabRows.push({code:s.c,name:s.n,...f});
+    if(f && (f.liabQ2!=null || f.liabNote)) liabRows.push({code:s.c,name:s.n,...f});
     if(f && f.eps!=null) epsRows.push({code:s.c,name:s.n,...f});
   });
   epsRows.sort((a,b)=> b.eps - a.eps);
+  liabRows.sort((a,b)=> (b.liabQ2!=null?b.liabQ2:-Infinity) - (a.liabQ2!=null?a.liabQ2:-Infinity));
   const liabTbody = document.querySelector('#liabTable tbody');
   liabTbody.innerHTML = liabRows.length ? liabRows.map((r,i)=>`<tr>
     <td>${i+1}</td><td>${r.name} ${r.code}</td>
-    <td>${r.liab!=null? r.liab.toLocaleString() : '<span class="data-pending">'+ (r.liabNote||'資料待補') +'</span>'}</td>
+    <td>${r.liabQ2!=null? r.liabQ2.toLocaleString() : '<span class="data-pending">'+ (r.liabNote||'資料待補') +'</span>'}</td>
+    <td>${r.liabQoQ!=null? (r.liabQoQ>=0?'+':'')+r.liabQoQ+'%' : '-'}</td>
+    <td>${r.liabYoY!=null? (r.liabYoY>=0?'+':'')+r.liabYoY+'%' : '-'}</td>
+    <td>${r.liabRatio!=null? r.liabRatio+'%' : '-'}</td>
     <td>${r.liabPeriod||'-'}</td><td>${r.liabSource||'-'}</td>
-  </tr>`).join('') : `<tr><td colspan="5" class="empty-state">目前尚無已查證之合約負債數據，待後續分批補齊</td></tr>`;
+  </tr>`).join('') : `<tr><td colspan="8" class="empty-state">目前尚無已查證之合約負債數據，待後續分批補齊</td></tr>`;
 
   const epsTbody = document.querySelector('#epsTable tbody');
   epsTbody.innerHTML = epsRows.length ? epsRows.map((r,i)=>`<tr>
@@ -657,3 +669,4 @@ renderFundamentalTables();
 </script>
 </body>
 </html>
+

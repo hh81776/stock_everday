@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
@@ -95,7 +96,7 @@ footer{text-align:center;color:var(--gray);font-size:.76rem;padding:20px 10px 40
   <div class="sub">臺灣指數公司「臺灣璞玉指數」331檔成分股 × 合約負債／EPS基本面排名 × 5・10・20日均線＋布林通道技術篩選</div>
   <div class="meta">
     <span id="lastScanTime">尚未掃描技術面</span>
-    <span id="fundamentalAsOf">基本面資料版本：2026/08/29 更新（新增合約負債Top50比對資料）</span>
+    <span id="fundamentalAsOf">基本面資料版本：2026/08/29 更新（合約負債改採全產業資料表，190/331檔有數據）</span>
     <span>成分股名單定審日：2026/04/21</span>
   </div>
 </header>
@@ -140,10 +141,10 @@ footer{text-align:center;color:var(--gray);font-size:.76rem;padding:20px 10px 40
   <div class="tabpanel" id="tab-liab">
     <div class="card">
       <h2>合約負債排名</h2>
-      <div class="desc">合約負債反映公司在手訂單／已收預付款尚未認列營收的部位，常被視為未來營收的領先指標。2026Q2欄位已比對使用者提供之「臺灣上市上櫃公司合約負債排行榜Top50」（資料來源：公開資訊觀測站MOPS合併財報，先行版整理表，資料日期2026/08/23），取其中屬於璞玉指數331檔成分股者共8檔納入；其餘個股仍標示「資料待補」，將視需要陸續補齊（見「關於本工具」說明）。<b>先行版數據如有出入，請以公開資訊觀測站正式公告為準。</b></div>
+      <div class="desc">合約負債反映公司在手訂單／已收預付款尚未認列營收的部位，常被視為未來營收的領先指標。2026Q2欄位取自使用者提供之全產業合約負債資料表（依產業別彙整，資料日期2026/8/15，單位：億元），比對後331檔成分股中有 <b>190檔</b> 有數據，其餘141檔於原始資料表中無此科目或金額掛零，標示「資料待補」。「季年皆增」欄位標示該股合約負債是否季增率與年增率同時為正成長。</div>
       <div class="table-wrap">
         <table id="liabTable">
-          <thead><tr><th data-key="rank">名次</th><th data-key="name">股票</th><th data-key="liab">2026Q2合約負債(百萬元)</th><th data-key="qoq">季增率QoQ</th><th data-key="yoy">年增率YoY</th><th data-key="ratio">負債/股本比</th><th data-key="period">資料期間</th><th data-key="source">資料來源</th></tr></thead>
+          <thead><tr><th data-key="rank">名次</th><th data-key="name">股票</th><th data-key="liab">2026Q2合約負債(億元)</th><th data-key="qoq">季增率QoQ</th><th data-key="yoy">年增率YoY</th><th data-key="ratio">佔營收比</th><th data-key="both">季年皆增</th><th data-key="source">資料來源</th></tr></thead>
           <tbody></tbody>
         </table>
       </div>
@@ -241,7 +242,7 @@ footer{text-align:center;color:var(--gray);font-size:.76rem;padding:20px 10px 40
       <h3>資料來源與更新方式</h3>
       <div class="info-box">
         <b>股價、均線、布林通道、K線圖</b>：每次開啟頁面或按下「重新掃描」時，由瀏覽器即時向證交所（TWSE）及備援來源（Yahoo奇摩股市）抓取最新盤後資料現場計算，因此永遠是「當下最新」，不需要每日另外更新程式。若遇假日或非交易日，會顯示最近一個交易日的資料。<br><br>
-        <b>合約負債／EPS</b>：屬於每季公布一次的財報數據，<u>並非每日變動</u>。由於這類細項財務數據沒有可供網頁即時查詢的公開介面，目前是由 Claude 人工查證新聞與財報網站後，內嵌於本頁面中；<b>目前僅涵蓋部分個股，其餘標示「資料待補」，將視需要於每季財報公布後分批查證補齊</b>（可另外設定每季排程任務執行）。<br><br>2026/08/29更新：合約負債部分已補入使用者提供的「2026Q2臺灣上市上櫃公司合約負債排行榜Top50」（資料來源：公開資訊觀測站MOPS合併財報，先行版整理表，資料日期2026/08/23，註明「本表為先行版，實際數據以公開資訊觀測站公告為準」），比對後共8檔屬於璞玉指數成分股，已納入頁面。其餘323檔仍待後續補齊。
+        <b>合約負債／EPS</b>：屬於每季公布一次的財報數據，<u>並非每日變動</u>。EPS目前是由 Claude 人工查證新聞與財報網站取得，僅涵蓋10檔個股，其餘標示「資料待補」。<br><br>2026/08/29更新：合約負債部分改採使用者提供的「2026Q2全產業合約負債資料表」（依產業別彙整，資料日期2026/8/15，單位：億元），取代先前查證涵蓋率極低的Top50比對版本。比對331檔成分股後，<b>190檔（約57%）</b>有完整的2026Q2／2026Q1／2025Q2金額、季增率、年增率與佔營收比數據，其餘141檔於原始資料表中查無此科目或金額為零，標示「資料待補」。
       </div>
 
       <div class="disclaimer">
@@ -273,32 +274,209 @@ footer{text-align:center;color:var(--gray);font-size:.76rem;padding:20px 10px 40
 /* ========================= 成分股清單（331檔） ========================= */
 const STOCK_LIST = [{"c": "1102", "n": "亞泥"}, {"c": "1104", "n": "環泥"}, {"c": "1210", "n": "大成"}, {"c": "1215", "n": "卜蜂"}, {"c": "1216", "n": "統一"}, {"c": "1225", "n": "福懋油"}, {"c": "1227", "n": "佳格"}, {"c": "1229", "n": "聯華"}, {"c": "1231", "n": "聯華食"}, {"c": "1232", "n": "大統益"}, {"c": "1256", "n": "鮮活果汁-KY"}, {"c": "1319", "n": "東陽"}, {"c": "1342", "n": "八貫"}, {"c": "1402", "n": "遠東新"}, {"c": "1416", "n": "廣豐"}, {"c": "1419", "n": "新紡"}, {"c": "1442", "n": "名軒"}, {"c": "1472", "n": "三洋實業"}, {"c": "1476", "n": "儒鴻"}, {"c": "1477", "n": "聚陽"}, {"c": "1503", "n": "士電"}, {"c": "1525", "n": "江申"}, {"c": "1535", "n": "中宇"}, {"c": "1537", "n": "廣隆"}, {"c": "1558", "n": "伸興"}, {"c": "1560", "n": "中砂"}, {"c": "1568", "n": "倉佑"}, {"c": "1590", "n": "亞德客-KY"}, {"c": "1597", "n": "直得"}, {"c": "1603", "n": "華電"}, {"c": "1608", "n": "華榮"}, {"c": "1612", "n": "宏泰"}, {"c": "1615", "n": "大山"}, {"c": "1618", "n": "合機"}, {"c": "1702", "n": "南僑"}, {"c": "1707", "n": "葡萄王"}, {"c": "1712", "n": "興農"}, {"c": "1713", "n": "國化"}, {"c": "1714", "n": "和桐"}, {"c": "1720", "n": "生達"}, {"c": "1723", "n": "中碳"}, {"c": "1731", "n": "美吾華"}, {"c": "1733", "n": "五鼎"}, {"c": "1734", "n": "杏輝"}, {"c": "1736", "n": "喬山"}, {"c": "1737", "n": "臺鹽"}, {"c": "1752", "n": "南光"}, {"c": "1760", "n": "寶齡富錦"}, {"c": "1773", "n": "勝一"}, {"c": "1783", "n": "和康生"}, {"c": "1789", "n": "神隆"}, {"c": "1795", "n": "美時"}, {"c": "1817", "n": "凱撒衛"}, {"c": "2006", "n": "東和鋼鐵"}, {"c": "2010", "n": "春源"}, {"c": "2013", "n": "中鋼構"}, {"c": "2020", "n": "美亞"}, {"c": "2049", "n": "上銀"}, {"c": "2107", "n": "厚生"}, {"c": "2108", "n": "南帝"}, {"c": "2201", "n": "裕隆"}, {"c": "2204", "n": "中華"}, {"c": "2206", "n": "三陽工業"}, {"c": "2207", "n": "和泰車"}, {"c": "2211", "n": "長榮鋼"}, {"c": "2228", "n": "劍麟"}, {"c": "2247", "n": "汎德永業"}, {"c": "2248", "n": "華勝-KY"}, {"c": "2250", "n": "IKKA-KY"}, {"c": "2316", "n": "楠梓電"}, {"c": "2328", "n": "廣宇"}, {"c": "2347", "n": "聯強"}, {"c": "2348", "n": "海悅"}, {"c": "2352", "n": "佳世達"}, {"c": "2354", "n": "鴻準"}, {"c": "2364", "n": "倫飛"}, {"c": "2374", "n": "佳能"}, {"c": "2376", "n": "技嘉"}, {"c": "2377", "n": "微星"}, {"c": "2385", "n": "群光"}, {"c": "2387", "n": "精元"}, {"c": "2393", "n": "億光"}, {"c": "2395", "n": "研華"}, {"c": "2397", "n": "友通"}, {"c": "2402", "n": "毅嘉"}, {"c": "2412", "n": "中華電"}, {"c": "2414", "n": "精技"}, {"c": "2420", "n": "新巨"}, {"c": "2421", "n": "建準"}, {"c": "2423", "n": "固緯"}, {"c": "2427", "n": "三商電"}, {"c": "2428", "n": "興勤"}, {"c": "2432", "n": "倚天酷碁-創"}, {"c": "2436", "n": "偉詮電"}, {"c": "2439", "n": "美律"}, {"c": "2441", "n": "超豐"}, {"c": "2442", "n": "新美齊"}, {"c": "2453", "n": "凌群"}, {"c": "2458", "n": "義隆"}, {"c": "2468", "n": "華經"}, {"c": "2471", "n": "資通"}, {"c": "2472", "n": "立隆電"}, {"c": "2476", "n": "鉅祥"}, {"c": "2477", "n": "美隆電"}, {"c": "2478", "n": "大毅"}, {"c": "2480", "n": "敦陽科"}, {"c": "2488", "n": "漢平"}, {"c": "2493", "n": "揚博"}, {"c": "2496", "n": "卓越"}, {"c": "2501", "n": "國建"}, {"c": "2504", "n": "國產"}, {"c": "2511", "n": "太子"}, {"c": "2520", "n": "冠德"}, {"c": "2528", "n": "皇普"}, {"c": "2534", "n": "宏盛"}, {"c": "2535", "n": "達欣工"}, {"c": "2539", "n": "櫻花建"}, {"c": "2543", "n": "皇昌"}, {"c": "2546", "n": "根基"}, {"c": "2597", "n": "潤弘"}, {"c": "2606", "n": "裕民"}, {"c": "2607", "n": "榮運"}, {"c": "2612", "n": "中航"}, {"c": "2613", "n": "中櫃"}, {"c": "2617", "n": "台航"}, {"c": "2630", "n": "亞航"}, {"c": "2633", "n": "台灣高鐵"}, {"c": "2636", "n": "台驊控股"}, {"c": "2645", "n": "長榮航太"}, {"c": "2707", "n": "晶華"}, {"c": "2727", "n": "王品"}, {"c": "2731", "n": "雄獅"}, {"c": "2753", "n": "八方雲集"}, {"c": "2762", "n": "世界健身-KY"}, {"c": "2812", "n": "台中銀"}, {"c": "2820", "n": "華票"}, {"c": "2832", "n": "台產"}, {"c": "2836", "n": "高雄銀"}, {"c": "2845", "n": "遠東銀"}, {"c": "2850", "n": "新產"}, {"c": "2851", "n": "中再保"}, {"c": "2852", "n": "第一保"}, {"c": "2889", "n": "國票金"}, {"c": "2897", "n": "王道銀行"}, {"c": "2903", "n": "遠百"}, {"c": "2912", "n": "統一超"}, {"c": "2915", "n": "潤泰全"}, {"c": "2945", "n": "三商家購"}, {"c": "3004", "n": "豐達科"}, {"c": "3005", "n": "神基"}, {"c": "3010", "n": "華立"}, {"c": "3013", "n": "晟銘電"}, {"c": "3014", "n": "聯陽"}, {"c": "3015", "n": "全漢"}, {"c": "3019", "n": "亞光"}, {"c": "3023", "n": "信邦"}, {"c": "3029", "n": "零壹"}, {"c": "3030", "n": "德律"}, {"c": "3031", "n": "佰鴻"}, {"c": "3035", "n": "智原"}, {"c": "3042", "n": "晶技"}, {"c": "3045", "n": "台灣大"}, {"c": "3046", "n": "建碁"}, {"c": "3052", "n": "夆典"}, {"c": "3059", "n": "華晶科"}, {"c": "3090", "n": "日電貿"}, {"c": "3130", "n": "一零四"}, {"c": "3257", "n": "虹冠電"}, {"c": "3311", "n": "閎暉"}, {"c": "3338", "n": "泰碩"}, {"c": "3406", "n": "玉晶光"}, {"c": "3413", "n": "京鼎"}, {"c": "3416", "n": "融程電"}, {"c": "3501", "n": "維熹"}, {"c": "3515", "n": "華擎"}, {"c": "3588", "n": "通嘉"}, {"c": "3592", "n": "瑞鼎"}, {"c": "3596", "n": "智易"}, {"c": "3617", "n": "碩天"}, {"c": "3622", "n": "洋華"}, {"c": "3652", "n": "精聯"}, {"c": "3694", "n": "海華"}, {"c": "3703", "n": "欣陸"}, {"c": "3705", "n": "永信"}, {"c": "3716", "n": "中化控股"}, {"c": "4104", "n": "佳醫"}, {"c": "4106", "n": "雃博"}, {"c": "4119", "n": "旭富"}, {"c": "4137", "n": "麗豐-KY"}, {"c": "4164", "n": "承業醫"}, {"c": "4439", "n": "冠星-KY"}, {"c": "4441", "n": "振大環球"}, {"c": "4532", "n": "瑞智"}, {"c": "4536", "n": "拓凱"}, {"c": "4552", "n": "力達-KY"}, {"c": "4560", "n": "強信-KY"}, {"c": "4571", "n": "鈞興-KY"}, {"c": "4576", "n": "大銀微系統"}, {"c": "4581", "n": "光隆精密-KY"}, {"c": "4583", "n": "台灣精銳"}, {"c": "4588", "n": "玖鼎電力"}, {"c": "4722", "n": "國精化"}, {"c": "4755", "n": "三福化"}, {"c": "4763", "n": "材料*-KY"}, {"c": "4766", "n": "南寶"}, {"c": "4770", "n": "上品"}, {"c": "4771", "n": "望隼"}, {"c": "4904", "n": "遠傳"}, {"c": "4915", "n": "致伸"}, {"c": "4935", "n": "茂林-KY"}, {"c": "4938", "n": "和碩"}, {"c": "4942", "n": "嘉彰"}, {"c": "4952", "n": "凌通"}, {"c": "4961", "n": "天鈺"}, {"c": "5222", "n": "全訊"}, {"c": "5225", "n": "東科-KY"}, {"c": "5234", "n": "達興材料"}, {"c": "5243", "n": "乙盛-KY"}, {"c": "5258", "n": "虹堡"}, {"c": "5284", "n": "jpp-KY"}, {"c": "5285", "n": "界霖"}, {"c": "5288", "n": "豐祥-KY"}, {"c": "5306", "n": "桂盟"}, {"c": "5388", "n": "中磊"}, {"c": "5434", "n": "崇越"}, {"c": "5469", "n": "瀚宇博"}, {"c": "5471", "n": "松翰"}, {"c": "5515", "n": "建國"}, {"c": "5519", "n": "隆大"}, {"c": "5534", "n": "長虹"}, {"c": "5607", "n": "遠雄港"}, {"c": "5706", "n": "鳳凰"}, {"c": "5871", "n": "中租-KY"}, {"c": "5876", "n": "上海商銀"}, {"c": "6005", "n": "群益證"}, {"c": "6024", "n": "群益期"}, {"c": "6112", "n": "邁達特"}, {"c": "6165", "n": "浪凡"}, {"c": "6176", "n": "瑞儀"}, {"c": "6191", "n": "精成科"}, {"c": "6192", "n": "巨路"}, {"c": "6196", "n": "帆宣"}, {"c": "6197", "n": "佳必琪"}, {"c": "6206", "n": "飛捷"}, {"c": "6214", "n": "精誠"}, {"c": "6215", "n": "和椿"}, {"c": "6235", "n": "華孚"}, {"c": "6271", "n": "同欣電"}, {"c": "6277", "n": "宏正"}, {"c": "6278", "n": "台表科"}, {"c": "6409", "n": "旭隼"}, {"c": "6412", "n": "群電"}, {"c": "6414", "n": "樺漢"}, {"c": "6416", "n": "瑞祺電通"}, {"c": "6438", "n": "迅得"}, {"c": "6449", "n": "鈺邦"}, {"c": "6472", "n": "保瑞"}, {"c": "6491", "n": "晶碩"}, {"c": "6525", "n": "捷敏-KY"}, {"c": "6526", "n": "達發"}, {"c": "6585", "n": "鼎基"}, {"c": "6591", "n": "動力-KY"}, {"c": "6592", "n": "和潤企業"}, {"c": "6605", "n": "帝寶"}, {"c": "6625", "n": "必應"}, {"c": "6670", "n": "復盛應用"}, {"c": "6689", "n": "伊雲谷"}, {"c": "6691", "n": "洋基工程"}, {"c": "6719", "n": "力智"}, {"c": "6753", "n": "龍德造船"}, {"c": "6754", "n": "匯僑設計"}, {"c": "6756", "n": "威鋒電子"}, {"c": "6768", "n": "志強-KY"}, {"c": "6771", "n": "平和環保-創"}, {"c": "6781", "n": "AES-KY"}, {"c": "6782", "n": "視陽"}, {"c": "6789", "n": "采鈺"}, {"c": "6790", "n": "永豐實"}, {"c": "6792", "n": "詠業"}, {"c": "6807", "n": "峰源-KY"}, {"c": "6873", "n": "泓德能源"}, {"c": "6890", "n": "來億-KY"}, {"c": "6914", "n": "阜爾運通"}, {"c": "6923", "n": "中台"}, {"c": "6924", "n": "榮惠-KY創"}, {"c": "6933", "n": "AMAX-KY"}, {"c": "6936", "n": "永鴻生技"}, {"c": "6937", "n": "天虹"}, {"c": "6944", "n": "兆聯實業"}, {"c": "6951", "n": "青新-創"}, {"c": "6957", "n": "裕慶-KY"}, {"c": "6962", "n": "奕力-KY"}, {"c": "6994", "n": "富威電力"}, {"c": "7631", "n": "聚賢研發-創"}, {"c": "7705", "n": "三商餐飲"}, {"c": "7736", "n": "虎山"}, {"c": "7765", "n": "中華資安"}, {"c": "7791", "n": "皇家可口"}, {"c": "8016", "n": "矽創"}, {"c": "8081", "n": "致新"}, {"c": "8114", "n": "振樺電"}, {"c": "8163", "n": "達方"}, {"c": "8213", "n": "志超"}, {"c": "8249", "n": "菱光"}, {"c": "8261", "n": "富鼎"}, {"c": "8341", "n": "日友"}, {"c": "8442", "n": "威宏-KY"}, {"c": "8454", "n": "富邦媒"}, {"c": "8462", "n": "柏文"}, {"c": "8463", "n": "潤泰材"}, {"c": "8464", "n": "億豐"}, {"c": "8476", "n": "台境*"}, {"c": "8478", "n": "東哥遊艇"}, {"c": "8482", "n": "商億-KY"}, {"c": "8487", "n": "愛爾達-創"}, {"c": "8499", "n": "鼎炫-KY"}, {"c": "8926", "n": "台汽電"}, {"c": "9802", "n": "鈺齊-KY"}, {"c": "9904", "n": "寶成"}, {"c": "9907", "n": "統一實"}, {"c": "9910", "n": "豐泰"}, {"c": "9911", "n": "櫻花"}, {"c": "9917", "n": "中保科"}, {"c": "9927", "n": "泰銘"}, {"c": "9930", "n": "中聯資源"}, {"c": "9938", "n": "百和"}, {"c": "9939", "n": "宏全"}, {"c": "9941", "n": "裕融"}, {"c": "9942", "n": "茂順"}, {"c": "9945", "n": "潤泰新"}, {"c": "9958", "n": "世紀鋼"}];
 
-/* ========================= 基本面種子資料（人工查證，涵蓋率有限） =========================
-   格式：eps=最新單季EPS，epsPeriod=所屬期間，epsTTM=近四季EPS(若查得到)，epsSource=資料來源
-        liab=合約負債金額(千元，若查得到)，liabPeriod/liabSource，liabNote=定性說明(無精確金額時)
+/* ========================= 基本面種子資料 =========================
+   EPS: eps=最新單季EPS，epsPeriod=所屬期間，epsTTM=近四季EPS(若查得到)，epsSource=資料來源
+   合約負債(2026/08/29改版，資料來源為使用者提供之全產業合約負債表，取代先前的Top50比對版本)：
+     liabQ2/liabQ1/liabQ2LY = 2026Q2/2026Q1/2025Q2合約負債金額(億元)
+     liabQoQ/liabYoY = 季增率/年增率(%)，liabRatio = 合約負債佔營收比例(%)
+     liabBothUp = 季增率與年增率是否皆為正成長，liabPeriod/liabSource = 資料期間與來源
+   331檔成分股中，190檔有合約負債數據(涵蓋率57%)，其餘為原始資料表中無此科目或金額掛零，標示「資料待補」。
 */
 const FUNDAMENTALS = {
-  "2412": {eps:1.38, epsPeriod:"2026Q2單季", epsSource:"ETtoday／三立／鉅亨網 2026Q2財報新聞"},
+  "6414": {liabQ2:277, liabQ1:243, liabQ2LY:165, liabQoQ:12.3, liabYoY:40.4, liabRatio:57.3, liabBothUp:true, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "6196": {liabQ2:246, liabQ1:212, liabQ2LY:130, liabQoQ:13.8, liabYoY:47.2, liabRatio:116, liabBothUp:true, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "2412": {eps:1.38, epsPeriod:"2026Q2單季", epsSource:"ETtoday／三立／鉅亨網 2026Q2財報新聞", liabQ2:236, liabQ1:226, liabQ2LY:165, liabQoQ:4.2, liabYoY:30.1, liabRatio:38.4, liabBothUp:true, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "3703": {liabQ2:159, liabQ1:145, liabQ2LY:139, liabQoQ:8.8, liabYoY:12.6, liabRatio:214.4, liabBothUp:true, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "2501": {liabQ2:143, liabQ1:135, liabQ2LY:127, liabQoQ:5.6, liabYoY:11.2, liabRatio:435.5, liabBothUp:true, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "2376": {liabQ2:102, liabQ1:75.8, liabQ2LY:149, liabQoQ:25.7, liabYoY:-46.1, liabRatio:7, liabBothUp:false, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "1503": {liabQ2:83.9, liabQ1:82, liabQ2LY:67.5, liabQoQ:2.3, liabYoY:19.5, liabRatio:87.8, liabBothUp:true, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "3596": {liabQ2:77.9, liabQ1:79.9, liabQ2LY:31, liabQoQ:-2.6, liabYoY:60.2, liabRatio:56.1, liabBothUp:false, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "2535": {liabQ2:48.5, liabQ1:48, liabQ2LY:30.6, liabQoQ:1, liabYoY:36.9, liabRatio:77.4, liabBothUp:true, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "2520": {liabQ2:43.5, liabQ1:50.2, liabQ2LY:26.7, liabQoQ:-15.4, liabYoY:38.6, liabRatio:52, liabBothUp:false, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "2731": {liabQ2:40.9, liabQ1:39.8, liabQ2LY:36.8, liabQoQ:2.7, liabYoY:10, liabRatio:49, liabBothUp:true, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "9945": {liabQ2:39.4, liabQ1:42, liabQ2LY:53.5, liabQoQ:-6.6, liabYoY:-35.8, liabRatio:28.7, liabBothUp:false, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "4904": {liabQ2:38, liabQ1:37.9, liabQ2LY:31, liabQoQ:0.3, liabYoY:18.4, liabRatio:13.3, liabBothUp:true, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "5534": {liabQ2:37.6, liabQ1:33.2, liabQ2LY:41.2, liabQoQ:11.7, liabYoY:-9.6, liabRatio:260.3, liabBothUp:false, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "2348": {liabQ2:36.6, liabQ1:35.8, liabQ2LY:33.8, liabQoQ:2.2, liabYoY:7.7, liabRatio:202.3, liabBothUp:true, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "2546": {liabQ2:35, liabQ1:45.7, liabQ2LY:23.2, liabQoQ:-30.6, liabYoY:33.7, liabRatio:50.2, liabBothUp:false, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "6192": {liabQ2:33.5, liabQ1:33.7, liabQ2LY:27.5, liabQoQ:-0.6, liabYoY:17.9, liabRatio:163.1, liabBothUp:false, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "6214": {liabQ2:33.3, liabQ1:35.5, liabQ2LY:24.7, liabQoQ:-6.6, liabYoY:25.8, liabRatio:21.6, liabBothUp:false, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "5434": {eps:6.86, epsPeriod:"2026Q1單季", epsTTM:23.57, epsSource:"財報狗", liabQ2:32.7, liabQ1:34.5, liabQ2LY:20.9, liabQoQ:-5.5, liabYoY:36.1, liabRatio:15.7, liabBothUp:false, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "4938": {liabQ2:32.5, liabQ1:17.9, liabQ2LY:19.7, liabQoQ:44.9, liabYoY:39.4, liabRatio:1.2, liabBothUp:true, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "5515": {liabQ2:31.9, liabQ1:26.9, liabQ2LY:12.6, liabQoQ:15.7, liabYoY:60.5, liabRatio:159.2, liabBothUp:true, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "2352": {liabQ2:30.6, liabQ1:36, liabQ2LY:31.5, liabQoQ:-17.6, liabYoY:-2.9, liabRatio:5.8, liabBothUp:false, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "2727": {liabQ2:30.4, liabQ1:30.1, liabQ2LY:29, liabQoQ:1, liabYoY:4.6, liabRatio:47.5, liabBothUp:true, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "6944": {liabQ2:28, liabQ1:29.5, liabQ2LY:14.8, liabQoQ:-5.4, liabYoY:47.1, liabRatio:55.1, liabBothUp:false, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "6691": {liabQ2:27.7, liabQ1:34.5, liabQ2LY:28.1, liabQoQ:-24.5, liabYoY:-1.4, liabRatio:24.9, liabBothUp:false, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "3045": {eps:1.37, epsPeriod:"2026Q1單季", epsTTM:4.93, epsSource:"財報狗", liabQ2:26, liabQ1:25.4, liabQ2LY:23.9, liabQoQ:2.3, liabYoY:8.1, liabRatio:5.3, liabBothUp:true, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "2597": {liabQ2:25.6, liabQ1:20.7, liabQ2LY:29.3, liabQoQ:19.1, liabYoY:-14.5, liabRatio:29.3, liabBothUp:false, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "2480": {liabQ2:24.2, liabQ1:22.8, liabQ2LY:17.4, liabQoQ:5.8, liabYoY:28.1, liabRatio:98.4, liabBothUp:true, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "2539": {liabQ2:24.2, liabQ1:36, liabQ2LY:42.4, liabQoQ:-48.8, liabYoY:-75.2, liabRatio:39.8, liabBothUp:false, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "2207": {eps:10.03, epsPeriod:"2025Q3單季", epsTTM:32.81, epsSource:"財報狗", liabQ2:22, liabQ1:18.3, liabQ2LY:18.4, liabQoQ:16.8, liabYoY:16.4, liabRatio:2.5, liabBothUp:true, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "2511": {liabQ2:21.9, liabQ1:18.7, liabQ2LY:11.5, liabQoQ:14.6, liabYoY:47.5, liabRatio:86.7, liabBothUp:true, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "3035": {liabQ2:20.9, liabQ1:22.4, liabQ2LY:18.5, liabQoQ:-7.2, liabYoY:11.5, liabRatio:63, liabBothUp:false, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "9917": {eps:1.73, epsPeriod:"2025Q3單季", epsTTM:6.59, epsSource:"財報狗", liabQ2:19.3, liabQ1:19.1, liabQ2LY:17.1, liabQoQ:1, liabYoY:11.4, liabRatio:39.7, liabBothUp:true, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "2395": {liabQ2:19.3, liabQ1:18.5, liabQ2LY:10.6, liabQoQ:4.1, liabYoY:45.1, liabRatio:7.4, liabBothUp:true, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "2247": {liabQ2:17, liabQ1:15.1, liabQ2LY:21.8, liabQoQ:11.2, liabYoY:-28.2, liabRatio:14.6, liabBothUp:false, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "1535": {liabQ2:16.1, liabQ1:13.7, liabQ2LY:16.4, liabQoQ:14.9, liabYoY:-1.9, liabRatio:81.2, liabBothUp:false, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "3023": {liabQ2:15.8, liabQ1:13, liabQ2LY:12.2, liabQoQ:17.7, liabYoY:22.8, liabRatio:17.5, liabBothUp:true, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "2528": {liabQ2:15.8, liabQ1:18, liabQ2LY:34.1, liabQoQ:-13.9, liabYoY:-115.8, liabRatio:95.4, liabBothUp:false, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "3515": {liabQ2:15.4, liabQ1:4.5, liabQ2LY:8.55, liabQoQ:70.8, liabYoY:44.5, liabRatio:15.2, liabBothUp:true, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "3130": {liabQ2:13.6, liabQ1:13.2, liabQ2LY:12.3, liabQoQ:2.9, liabYoY:9.6, liabRatio:177.2, liabBothUp:true, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "2493": {liabQ2:12.9, liabQ1:12.6, liabQ2LY:4.37, liabQoQ:2.3, liabYoY:66.1, liabRatio:119.3, liabBothUp:true, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "6753": {liabQ2:11.2, liabQ1:16, liabQ2LY:28, liabQoQ:-42.9, liabYoY:-150, liabRatio:73.2, liabBothUp:false, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "2442": {liabQ2:9.9, liabQ1:11.6, liabQ2LY:31.4, liabQoQ:-17.2, liabYoY:-217.2, liabRatio:269.5, liabBothUp:false, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "2427": {liabQ2:9.68, liabQ1:10.8, liabQ2LY:7.11, liabQoQ:-11.6, liabYoY:26.5, liabRatio:77.2, liabBothUp:false, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "1472": {liabQ2:9.37, liabQ1:14, liabQ2LY:15.8, liabQoQ:-49.4, liabYoY:-68.6, liabRatio:94.1, liabBothUp:false, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "6112": {liabQ2:8.19, liabQ1:14.2, liabQ2LY:9.99, liabQoQ:-73.4, liabYoY:-22, liabRatio:12.5, liabBothUp:false, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "5388": {liabQ2:8.02, liabQ1:8.94, liabQ2LY:5.52, liabQoQ:-11.5, liabYoY:31.2, liabRatio:3.9, liabBothUp:false, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "3005": {liabQ2:7.97, liabQ1:8.63, liabQ2LY:6.95, liabQoQ:-8.3, liabYoY:12.8, liabRatio:6.9, liabBothUp:false, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "2206": {liabQ2:7.5, liabQ1:6.4, liabQ2LY:6.02, liabQoQ:14.7, liabYoY:19.7, liabRatio:4.8, liabBothUp:true, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "6689": {liabQ2:7.08, liabQ1:7.34, liabQ2LY:6.83, liabQoQ:-3.7, liabYoY:3.5, liabRatio:22.7, liabBothUp:false, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "2385": {liabQ2:6.96, liabQ1:7.64, liabQ2LY:9.08, liabQoQ:-9.8, liabYoY:-30.5, liabRatio:3.1, liabBothUp:false, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "3010": {liabQ2:6.91, liabQ1:3.35, liabQ2LY:4.74, liabQoQ:51.5, liabYoY:31.4, liabRatio:2.9, liabBothUp:true, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "1714": {liabQ2:6.38, liabQ1:6.49, liabQ2LY:2.47, liabQoQ:-1.7, liabYoY:61.3, liabRatio:6.5, liabBothUp:false, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "5706": {liabQ2:5.96, liabQ1:5.61, liabQ2LY:4.74, liabQoQ:5.9, liabYoY:20.5, liabRatio:73, liabBothUp:true, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "6438": {liabQ2:5.86, liabQ1:3.64, liabQ2LY:4.26, liabQoQ:37.9, liabYoY:27.3, liabRatio:32.1, liabBothUp:true, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "2707": {liabQ2:5.54, liabQ1:5.67, liabQ2LY:5.16, liabQoQ:-2.3, liabYoY:6.9, liabRatio:33.3, liabBothUp:false, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "4104": {liabQ2:5.45, liabQ1:5.72, liabQ2LY:5.35, liabQoQ:-5, liabYoY:1.8, liabRatio:22.9, liabBothUp:false, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "2543": {liabQ2:5.09, liabQ1:11.4, liabQ2LY:22.3, liabQoQ:-124, liabYoY:-338.1, liabRatio:10.5, liabBothUp:false, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "8114": {liabQ2:4.95, liabQ1:4.53, liabQ2LY:3.49, liabQoQ:8.5, liabYoY:29.5, liabRatio:9.5, liabBothUp:true, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "2414": {liabQ2:4.79, liabQ1:1.95, liabQ2LY:1.61, liabQoQ:59.3, liabYoY:66.4, liabRatio:3.9, liabBothUp:true, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "6412": {liabQ2:4.51, liabQ1:5.05, liabQ2LY:4.53, liabQoQ:-12, liabYoY:-0.4, liabRatio:5.3, liabBothUp:false, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "6605": {liabQ2:4.36, liabQ1:4.09, liabQ2LY:3.62, liabQoQ:6.2, liabYoY:17, liabRatio:8.9, liabBothUp:true, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "2534": {liabQ2:4.18, liabQ1:4.06, liabQ2LY:4.24, liabQoQ:2.9, liabYoY:-1.4, liabRatio:140.8, liabBothUp:false, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "2496": {liabQ2:4.13, liabQ1:2.9, liabQ2LY:4.09, liabQoQ:29.8, liabYoY:1, liabRatio:201.4, liabBothUp:true, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "4770": {liabQ2:4.12, liabQ1:3.37, liabQ2LY:4.97, liabQoQ:18.2, liabYoY:-20.6, liabRatio:31.5, liabBothUp:false, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "2377": {liabQ2:4.12, liabQ1:6.17, liabQ2LY:2.46, liabQoQ:-49.8, liabYoY:40.3, liabRatio:0.8, liabBothUp:false, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "2453": {liabQ2:3.9, liabQ1:4.32, liabQ2LY:4.63, liabQoQ:-10.8, liabYoY:-18.7, liabRatio:21.7, liabBothUp:false, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "3406": {liabQ2:3.74, liabQ1:3.25, liabQ2LY:2.65, liabQoQ:13.1, liabYoY:29.1, liabRatio:6.6, liabBothUp:true, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "2471": {liabQ2:3.49, liabQ1:3.14, liabQ2LY:3.07, liabQoQ:10, liabYoY:12, liabRatio:143.9, liabBothUp:true, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "3019": {liabQ2:3.45, liabQ1:3.39, liabQ2LY:3.28, liabQoQ:1.7, liabYoY:4.9, liabRatio:4.3, liabBothUp:true, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "2441": {liabQ2:3.22, liabQ1:3.11, liabQ2LY:1.76, liabQoQ:3.4, liabYoY:45.3, liabRatio:6.1, liabBothUp:true, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "6472": {liabQ2:3.15, liabQ1:3.07, liabQ2LY:2.39, liabQoQ:2.5, liabYoY:24.1, liabRatio:5.4, liabBothUp:true, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "2397": {liabQ2:3.09, liabQ1:3.1, liabQ2LY:1.15, liabQoQ:-0.3, liabYoY:62.8, liabRatio:8.3, liabBothUp:false, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "1603": {liabQ2:2.82, liabQ1:3.28, liabQ2LY:3.27, liabQoQ:-16.3, liabYoY:-16, liabRatio:18.7, liabBothUp:false, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "2421": {liabQ2:2.63, liabQ1:2.54, liabQ2LY:1.17, liabQoQ:3.4, liabYoY:55.5, liabRatio:4.9, liabBothUp:true, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "6409": {liabQ2:2.51, liabQ1:2.51, liabQ2LY:3, liabQoQ:0, liabYoY:-19.5, liabRatio:4.5, liabBothUp:false, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "6491": {liabQ2:2.47, liabQ1:1.12, liabQ2LY:0.72, liabQoQ:54.7, liabYoY:70.9, liabRatio:11.7, liabBothUp:true, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "8487": {liabQ2:2.42, liabQ1:2.68, liabQ2LY:0.55, liabQoQ:-10.7, liabYoY:77.3, liabRatio:null, liabBothUp:false, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "1789": {liabQ2:2.35, liabQ1:1.93, liabQ2LY:1.66, liabQoQ:17.9, liabYoY:29.4, liabRatio:34.6, liabBothUp:true, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "2439": {liabQ2:2.29, liabQ1:6.12, liabQ2LY:2.75, liabQoQ:-167.2, liabYoY:-20.1, liabRatio:2.2, liabBothUp:false, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "6962": {liabQ2:2.21, liabQ1:2.43, liabQ2LY:2.66, liabQoQ:-10, liabYoY:-20.4, liabRatio:4.6, liabBothUp:false, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "1442": {liabQ2:2.15, liabQ1:1.13, liabQ2LY:1.22, liabQoQ:47.4, liabYoY:43.3, liabRatio:40.6, liabBothUp:true, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "3416": {liabQ2:1.99, liabQ1:1.66, liabQ2LY:0.65, liabQoQ:16.6, liabYoY:67.3, liabRatio:16.9, liabBothUp:true, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "3059": {liabQ2:1.96, liabQ1:3.14, liabQ2LY:2.25, liabQoQ:-60.2, liabYoY:-14.8, liabRatio:8.3, liabBothUp:false, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "1712": {liabQ2:1.91, liabQ1:4.16, liabQ2LY:1.69, liabQoQ:-117.8, liabYoY:11.5, liabRatio:3.6, liabBothUp:false, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "8454": {liabQ2:1.88, liabQ1:1.16, liabQ2LY:2.87, liabQoQ:38.3, liabYoY:-52.7, liabRatio:0.7, liabBothUp:false, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "6873": {liabQ2:1.85, liabQ1:1.28, liabQ2LY:1.27, liabQoQ:30.8, liabYoY:31.4, liabRatio:11.2, liabBothUp:true, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "4961": {liabQ2:1.82, liabQ1:0.63, liabQ2LY:0.26, liabQoQ:65.4, liabYoY:85.7, liabRatio:3.4, liabBothUp:true, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "3413": {liabQ2:1.81, liabQ1:1.85, liabQ2LY:2.01, liabQoQ:-2.2, liabYoY:-11, liabRatio:2.9, liabBothUp:false, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "8081": {liabQ2:1.8, liabQ1:1.81, liabQ2LY:1.56, liabQoQ:-0.6, liabYoY:13.3, liabRatio:8.1, liabBothUp:false, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "6165": {liabQ2:1.73, liabQ1:1.45, liabQ2LY:1.23, liabQoQ:16.2, liabYoY:28.9, liabRatio:19.7, liabBothUp:true, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "1612": {liabQ2:1.7, liabQ1:1.54, liabQ2LY:2.04, liabQoQ:9.4, liabYoY:-20, liabRatio:8.3, liabBothUp:false, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "3694": {liabQ2:1.7, liabQ1:null, liabQ2LY:1.29, liabQoQ:100, liabYoY:24.1, liabRatio:5.9, liabBothUp:true, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "6278": {liabQ2:1.62, liabQ1:1.65, liabQ2LY:2.34, liabQoQ:-1.9, liabYoY:-44.4, liabRatio:1.2, liabBothUp:false, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "9930": {liabQ2:1.58, liabQ1:1.27, liabQ2LY:0.59, liabQoQ:19.6, liabYoY:62.7, liabRatio:4.7, liabBothUp:true, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "3052": {liabQ2:1.58, liabQ1:1.95, liabQ2LY:1.51, liabQoQ:-23.4, liabYoY:4.4, liabRatio:15.2, liabBothUp:false, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "5258": {liabQ2:1.55, liabQ1:0.82, liabQ2LY:0.81, liabQoQ:47.1, liabYoY:47.7, liabRatio:6.6, liabBothUp:true, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "3030": {liabQ2:1.52, liabQ1:0.67, liabQ2LY:0.69, liabQoQ:55.9, liabYoY:54.6, liabRatio:5.2, liabBothUp:true, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "5288": {liabQ2:1.5, liabQ1:1.03, liabQ2LY:0.66, liabQoQ:31.3, liabYoY:56, liabRatio:6.2, liabBothUp:true, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "2477": {liabQ2:1.5, liabQ1:1.32, liabQ2LY:1.22, liabQoQ:12, liabYoY:18.7, liabRatio:25.9, liabBothUp:true, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "7765": {liabQ2:1.5, liabQ1:1.38, liabQ2LY:1.49, liabQoQ:8, liabYoY:0.7, liabRatio:25.7, liabBothUp:true, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "8341": {liabQ2:1.42, liabQ1:1.44, liabQ2LY:1.46, liabQoQ:-1.4, liabYoY:-2.8, liabRatio:12.7, liabBothUp:false, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "3592": {liabQ2:1.42, liabQ1:0.32, liabQ2LY:0.93, liabQoQ:77.5, liabYoY:34.5, liabRatio:2.1, liabBothUp:true, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "1707": {liabQ2:1.41, liabQ1:1.3, liabQ2LY:1.36, liabQoQ:7.8, liabYoY:3.5, liabRatio:5.8, liabBothUp:true, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "1795": {liabQ2:1.4, liabQ1:1.51, liabQ2LY:1.68, liabQoQ:-7.9, liabYoY:-20, liabRatio:1.6, liabBothUp:false, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "1416": {liabQ2:1.39, liabQ1:0.91, liabQ2LY:0.45, liabQoQ:34.5, liabYoY:67.6, liabRatio:115.1, liabBothUp:true, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "6271": {liabQ2:1.33, liabQ1:1.22, liabQ2LY:1.41, liabQoQ:8.3, liabYoY:-6, liabRatio:4.2, liabBothUp:false, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "2328": {liabQ2:1.26, liabQ1:0.78, liabQ2LY:1.26, liabQoQ:38.1, liabYoY:0, liabRatio:2.3, liabBothUp:false, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "1720": {liabQ2:1.25, liabQ1:1, liabQ2LY:1.09, liabQoQ:20, liabYoY:12.8, liabRatio:6.7, liabBothUp:true, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "6206": {liabQ2:1.1, liabQ1:0.59, liabQ2LY:0.66, liabQoQ:46.4, liabYoY:40, liabRatio:5.9, liabBothUp:true, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "1752": {liabQ2:1.01, liabQ1:1.12, liabQ2LY:1.14, liabQoQ:-10.9, liabYoY:-12.9, liabRatio:18.7, liabBothUp:false, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "1734": {liabQ2:1, liabQ1:1.03, liabQ2LY:1.07, liabQoQ:-3, liabYoY:-7, liabRatio:11.5, liabBothUp:false, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "2472": {liabQ2:0.99, liabQ1:0.85, liabQ2LY:1.05, liabQoQ:14.1, liabYoY:-6.1, liabRatio:2.7, liabBothUp:false, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "3652": {liabQ2:0.9, liabQ1:0.79, liabQ2LY:0.61, liabQoQ:12.2, liabYoY:32.2, liabRatio:11.9, liabBothUp:true, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "2049": {eps:1.64, epsPeriod:"2026Q1單季", epsTTM:4.59, epsSource:"財報狗", liabQ2:0.88, liabQ1:0.84, liabQ2LY:0.64, liabQoQ:4.5, liabYoY:27.3, liabRatio:1.2, liabBothUp:true, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "2374": {liabQ2:0.8, liabQ1:1.2, liabQ2LY:1, liabQoQ:-50, liabYoY:-25, liabRatio:2.6, liabBothUp:false, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "6937": {liabQ2:0.8, liabQ1:0.24, liabQ2LY:0.64, liabQoQ:70, liabYoY:20, liabRatio:11.1, liabBothUp:true, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "6914": {liabQ2:0.79, liabQ1:0.88, liabQ2LY:1.29, liabQoQ:-11.4, liabYoY:-63.3, liabRatio:5.3, liabBothUp:false, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "1615": {liabQ2:0.77, liabQ1:0.73, liabQ2LY:0.67, liabQoQ:5.2, liabYoY:13, liabRatio:4.8, liabBothUp:true, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "2468": {liabQ2:0.77, liabQ1:0.84, liabQ2LY:0.68, liabQoQ:-9.1, liabYoY:11.7, liabRatio:11.6, liabBothUp:false, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "9907": {liabQ2:0.75, liabQ1:0.6, liabQ2LY:0.69, liabQoQ:20, liabYoY:8, liabRatio:0.7, liabBothUp:true, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "2316": {liabQ2:0.68, liabQ1:0.8, liabQ2LY:0.63, liabQoQ:-17.6, liabYoY:7.4, liabRatio:6, liabBothUp:false, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "4164": {liabQ2:0.68, liabQ1:1.73, liabQ2LY:1.99, liabQoQ:-154.4, liabYoY:-192.6, liabRatio:5.7, liabBothUp:false, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "6951": {liabQ2:0.67, liabQ1:0.67, liabQ2LY:0.64, liabQoQ:0, liabYoY:4.5, liabRatio:null, liabBothUp:false, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "4119": {liabQ2:0.64, liabQ1:0.35, liabQ2LY:0.35, liabQoQ:45.3, liabYoY:45.3, liabRatio:23.6, liabBothUp:true, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "2488": {liabQ2:0.6, liabQ1:0.64, liabQ2LY:0.75, liabQoQ:-6.7, liabYoY:-25, liabRatio:6.4, liabBothUp:false, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "9938": {liabQ2:0.58, liabQ1:0.36, liabQ2LY:0.3, liabQoQ:37.9, liabYoY:48.3, liabRatio:1.5, liabBothUp:true, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "2612": {liabQ2:0.58, liabQ1:0.61, liabQ2LY:0.58, liabQoQ:-5.2, liabYoY:0, liabRatio:4.3, liabBothUp:false, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "6197": {liabQ2:0.57, liabQ1:0.56, liabQ2LY:0.26, liabQoQ:1.8, liabYoY:54.4, liabRatio:2.3, liabBothUp:true, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "6782": {liabQ2:0.56, liabQ1:0.47, liabQ2LY:0.35, liabQoQ:16.1, liabYoY:37.5, liabRatio:4.4, liabBothUp:true, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "4755": {liabQ2:0.54, liabQ1:0.35, liabQ2LY:0.06, liabQoQ:35.2, liabYoY:88.9, liabRatio:4.4, liabBothUp:true, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "6525": {liabQ2:0.54, liabQ1:0.49, liabQ2LY:0.37, liabQoQ:9.3, liabYoY:31.5, liabRatio:3.3, liabBothUp:true, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "6526": {liabQ2:0.54, liabQ1:1.14, liabQ2LY:0.72, liabQoQ:-111.1, liabYoY:-33.3, liabRatio:0.9, liabBothUp:false, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "1558": {liabQ2:0.52, liabQ1:0.39, liabQ2LY:0.51, liabQoQ:25, liabYoY:1.9, liabRatio:2.3, liabBothUp:true, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "6994": {liabQ2:0.52, liabQ1:0.38, liabQ2LY:0.13, liabQoQ:26.9, liabYoY:75, liabRatio:9, liabBothUp:true, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "4576": {liabQ2:0.49, liabQ1:0.37, liabQ2LY:0.33, liabQoQ:24.5, liabYoY:32.7, liabRatio:4.8, liabBothUp:true, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "1773": {liabQ2:0.49, liabQ1:0.23, liabQ2LY:0.09, liabQoQ:53.1, liabYoY:81.6, liabRatio:1.4, liabBothUp:true, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "2607": {liabQ2:0.48, liabQ1:0.3, liabQ2LY:0.26, liabQoQ:37.5, liabYoY:45.8, liabRatio:0.9, liabBothUp:true, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "6416": {liabQ2:0.48, liabQ1:null, liabQ2LY:0, liabQoQ:100, liabYoY:100, liabRatio:3.6, liabBothUp:true, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "2423": {liabQ2:0.47, liabQ1:0.51, liabQ2LY:0.43, liabQoQ:-8.5, liabYoY:8.5, liabRatio:5.3, liabBothUp:false, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "1618": {liabQ2:0.46, liabQ1:0.63, liabQ2LY:0.33, liabQoQ:-37, liabYoY:28.3, liabRatio:4.1, liabBothUp:false, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "3716": {liabQ2:0.43, liabQ1:0.69, liabQ2LY:0.32, liabQoQ:-60.5, liabYoY:25.6, liabRatio:2.1, liabBothUp:false, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "1525": {liabQ2:0.42, liabQ1:0.05, liabQ2LY:0.09, liabQoQ:88.1, liabYoY:78.6, liabRatio:11.8, liabBothUp:true, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "8463": {liabQ2:0.42, liabQ1:0.46, liabQ2LY:0.28, liabQoQ:-9.5, liabYoY:33.3, liabRatio:2.4, liabBothUp:false, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "1568": {liabQ2:0.41, liabQ1:0.32, liabQ2LY:0.45, liabQoQ:22, liabYoY:-9.8, liabRatio:13.3, liabBothUp:false, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "1723": {liabQ2:0.38, liabQ1:0.37, liabQ2LY:0.71, liabQoQ:2.6, liabYoY:-86.8, liabRatio:1.9, liabBothUp:false, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "2432": {liabQ2:0.38, liabQ1:0.39, liabQ2LY:0.56, liabQoQ:-2.6, liabYoY:-47.4, liabRatio:null, liabBothUp:false, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "6789": {liabQ2:0.37, liabQ1:0.15, liabQ2LY:0.28, liabQoQ:59.5, liabYoY:24.3, liabRatio:1.5, liabBothUp:false, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "6923": {liabQ2:0.36, liabQ1:0.37, liabQ2LY:0.22, liabQoQ:-2.8, liabYoY:38.9, liabRatio:9.8, liabBothUp:false, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "2387": {liabQ2:0.35, liabQ1:0.24, liabQ2LY:0.08, liabQoQ:31.4, liabYoY:77.1, liabRatio:0.8, liabBothUp:true, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "1608": {liabQ2:0.33, liabQ1:0.23, liabQ2LY:0.15, liabQoQ:30.3, liabYoY:54.5, liabRatio:1, liabBothUp:true, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "7631": {liabQ2:0.33, liabQ1:0.38, liabQ2LY:0.57, liabQoQ:-15.2, liabYoY:-72.7, liabRatio:null, liabBothUp:false, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "8476": {liabQ2:0.29, liabQ1:0.4, liabQ2LY:0.49, liabQoQ:-37.9, liabYoY:-69, liabRatio:8.7, liabBothUp:false, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "2364": {liabQ2:0.27, liabQ1:0.78, liabQ2LY:0.45, liabQoQ:-188.9, liabYoY:-66.7, liabRatio:5.2, liabBothUp:false, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "2420": {liabQ2:0.26, liabQ1:0.22, liabQ2LY:0.15, liabQoQ:15.4, liabYoY:42.3, liabRatio:4.3, liabBothUp:true, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "6625": {liabQ2:0.25, liabQ1:0.1, liabQ2LY:0.22, liabQoQ:60, liabYoY:12, liabRatio:1.8, liabBothUp:true, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "4583": {liabQ2:0.24, liabQ1:0.21, liabQ2LY:0.23, liabQoQ:12.5, liabYoY:4.2, liabRatio:2.7, liabBothUp:true, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "2476": {liabQ2:0.23, liabQ1:0.19, liabQ2LY:0.22, liabQoQ:17.4, liabYoY:4.3, liabRatio:0.9, liabBothUp:true, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "5519": {liabQ2:0.23, liabQ1:0.26, liabQ2LY:7.18, liabQoQ:-13, liabYoY:-3021.7, liabRatio:5, liabBothUp:false, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "4766": {liabQ2:0.23, liabQ1:0.59, liabQ2LY:0.19, liabQoQ:-156.5, liabYoY:17.4, liabRatio:0.4, liabBothUp:false, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "7705": {liabQ2:0.23, liabQ1:0.18, liabQ2LY:0.26, liabQoQ:21.7, liabYoY:-13, liabRatio:1.4, liabBothUp:false, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "7736": {liabQ2:0.2, liabQ1:0.23, liabQ2LY:0.3, liabQoQ:-15, liabYoY:-50, liabRatio:5.6, liabBothUp:false, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "2630": {liabQ2:0.19, liabQ1:0.09, liabQ2LY:0.45, liabQoQ:52.6, liabYoY:-136.8, liabRatio:1.9, liabBothUp:false, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "2402": {liabQ2:0.19, liabQ1:0.19, liabQ2LY:0.01, liabQoQ:0, liabYoY:94.7, liabRatio:0.6, liabBothUp:false, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "2393": {liabQ2:0.17, liabQ1:0.34, liabQ2LY:0.48, liabQoQ:-100, liabYoY:-182.4, liabRatio:0.3, liabBothUp:false, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "6719": {liabQ2:0.16, liabQ1:0.13, liabQ2LY:0.08, liabQoQ:18.8, liabYoY:50, liabRatio:1.4, liabBothUp:true, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "5222": {liabQ2:0.16, liabQ1:0.06, liabQ2LY:0.05, liabQoQ:62.5, liabYoY:68.8, liabRatio:6.8, liabBothUp:true, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "1733": {liabQ2:0.14, liabQ1:0.1, liabQ2LY:0.14, liabQoQ:28.6, liabYoY:0, liabRatio:3.1, liabBothUp:false, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "1342": {liabQ2:0.14, liabQ1:0.14, liabQ2LY:0.03, liabQoQ:0, liabYoY:78.6, liabRatio:1.4, liabBothUp:false, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "3622": {liabQ2:0.14, liabQ1:0.11, liabQ2LY:0.04, liabQoQ:21.4, liabYoY:71.4, liabRatio:3.4, liabBothUp:true, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "3014": {liabQ2:0.13, liabQ1:0.17, liabQ2LY:0.02, liabQoQ:-30.8, liabYoY:84.6, liabRatio:0.7, liabBothUp:false, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "4771": {liabQ2:0.12, liabQ1:0.16, liabQ2LY:0.09, liabQoQ:-33.3, liabYoY:25, liabRatio:1, liabBothUp:false, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "1783": {liabQ2:0.12, liabQ1:0.33, liabQ2LY:0.13, liabQoQ:-175, liabYoY:-8.3, liabRatio:5.5, liabBothUp:false, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "2250": {liabQ2:0.11, liabQ1:0.04, liabQ2LY:0.01, liabQoQ:63.6, liabYoY:90.9, liabRatio:1.5, liabBothUp:true, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "6585": {liabQ2:0.1, liabQ1:0.09, liabQ2LY:0.11, liabQoQ:10, liabYoY:-10, liabRatio:1.1, liabBothUp:false, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "3013": {liabQ2:0.08, liabQ1:0.05, liabQ2LY:0.21, liabQoQ:37.5, liabYoY:-162.5, liabRatio:0.2, liabBothUp:false, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "6215": {liabQ2:0.06, liabQ1:0.09, liabQ2LY:0.04, liabQoQ:-50, liabYoY:33.3, liabRatio:0.6, liabBothUp:false, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "3090": {liabQ2:0.06, liabQ1:0.1, liabQ2LY:0.05, liabQoQ:-66.7, liabYoY:16.7, liabRatio:0.1, liabBothUp:false, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "5285": {liabQ2:0.05, liabQ1:0.06, liabQ2LY:0.07, liabQoQ:-20, liabYoY:-40, liabRatio:0.3, liabBothUp:false, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "2478": {liabQ2:0.04, liabQ1:0.05, liabQ2LY:0.05, liabQoQ:-25, liabYoY:-25, liabRatio:0.2, liabBothUp:false, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "2645": {liabQ2:0.03, liabQ1:0.02, liabQ2LY:0.42, liabQoQ:33.3, liabYoY:-1300, liabRatio:0.1, liabBothUp:false, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "4722": {liabQ2:0.03, liabQ1:0.05, liabQ2LY:0.03, liabQoQ:-66.7, liabYoY:0, liabRatio:0.3, liabBothUp:false, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "1597": {liabQ2:0.02, liabQ1:0.02, liabQ2LY:0.01, liabQoQ:0, liabYoY:50, liabRatio:0.4, liabBothUp:false, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "3046": {liabQ2:0.01, liabQ1:0.03, liabQ2LY:0.02, liabQoQ:-200, liabYoY:-100, liabRatio:0.1, liabBothUp:false, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "4588": {liabQ2:0.01, liabQ1:0, liabQ2LY:0.01, liabQoQ:100, liabYoY:0, liabRatio:0.5, liabBothUp:false, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "3705": {liabQ2:0.01, liabQ1:0.02, liabQ2LY:0.01, liabQoQ:-100, liabYoY:0, liabRatio:0.1, liabBothUp:false, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "3031": {liabQ2:0.01, liabQ1:0, liabQ2LY:0.18, liabQoQ:100, liabYoY:-1700, liabRatio:0.1, liabBothUp:false, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "2228": {liabQ2:0, liabQ1:0, liabQ2LY:0, liabQoQ:null, liabYoY:null, liabRatio:0, liabBothUp:false, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "9927": {liabQ2:0, liabQ1:0.3, liabQ2LY:0.2, liabQoQ:null, liabYoY:null, liabRatio:0, liabBothUp:false, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
+  "3042": {liabQ2:0, liabQ1:0, liabQ2LY:0, liabQoQ:null, liabYoY:null, liabRatio:0, liabBothUp:false, liabPeriod:"2026Q2", liabSource:"使用者提供之2026Q2合約負債全產業資料表（依產業別彙整，資料日期2026/8/15，單位：億元）"},
   "2912": {eps:3.06, epsPeriod:"2026Q2單季", epsTTM:11.1, epsSource:"財報狗"},
-  "3045": {eps:1.37, epsPeriod:"2026Q1單季", epsTTM:4.93, epsSource:"財報狗"},
-  "5871": {eps:5.84, epsPeriod:"2026上半年累計", epsSource:"經濟日報"},
-  "2049": {eps:1.64, epsPeriod:"2026Q1單季", epsTTM:4.59, epsSource:"財報狗"},
-  "5434": {eps:6.86, epsPeriod:"2026Q1單季", epsTTM:23.57, epsSource:"財報狗"},
-  "9904": {eps:1.06, epsPeriod:"2025Q4單季", epsTTM:4.1, epsSource:"財報狗"},
-  "9917": {eps:1.73, epsPeriod:"2025Q3單季", epsTTM:6.59, epsSource:"財報狗"},
   "1216": {eps:1.15, epsPeriod:"2026Q1單季", epsTTM:3.7, epsSource:"財報狗"},
-  "2207": {eps:10.03, epsPeriod:"2025Q3單季", epsTTM:32.81, epsSource:"財報狗"},
-  "3596": {liabNote:"優分析統計為2026Q2合約負債「季增金額」全市場前十大個股之一（原文未附精確金額）", liabPeriod:"2026Q2 QoQ成長排名", liabSource:"優分析UAnalyze"},
-  "3013": {liabNote:"優分析統計為2026Q2合約負債「季增金額」全市場前十大個股之一（原文未附精確金額）", liabPeriod:"2026Q2 QoQ成長排名", liabSource:"優分析UAnalyze"},
-  "3004": {liabNote:"優分析統計為2026Q2合約負債「季增金額」全市場前十大個股之一（原文未附精確金額）", liabPeriod:"2026Q2 QoQ成長排名", liabSource:"優分析UAnalyze"},
-  "2546": {liabQ2:11928, liabQ1:9250, liabQoQ:29.0, liabYoY:92.6, liabRatio:239.7, liabRank:1, liabPeriod:"2026Q2", liabSource:"公開資訊觀測站(MOPS)合併財報，先行版整理表(資料日期2026/08/23)"},
-  "2543": {liabQ2:1975, liabQ1:1802, liabQoQ:9.6, liabYoY:35.1, liabRatio:9.6, liabRank:10, liabPeriod:"2026Q2", liabSource:"公開資訊觀測站(MOPS)合併財報，先行版整理表(資料日期2026/08/23)"},
-  "6176": {liabQ2:4511, liabQ1:4041, liabQoQ:11.6, liabYoY:31.7, liabRatio:9.1, liabRank:11, liabPeriod:"2026Q2", liabSource:"公開資訊觀測站(MOPS)合併財報，先行版整理表(資料日期2026/08/23)"},
-  "8261": {liabQ2:1864, liabQ1:1614, liabQoQ:15.5, liabYoY:44.8, liabRatio:5.8, liabRank:19, liabPeriod:"2026Q2", liabSource:"公開資訊觀測站(MOPS)合併財報，先行版整理表(資料日期2026/08/23)"},
-  "4961": {liabQ2:1603, liabQ1:1371, liabQoQ:16.9, liabYoY:52.1, liabRatio:5.5, liabRank:21, liabPeriod:"2026Q2", liabSource:"公開資訊觀測站(MOPS)合併財報，先行版整理表(資料日期2026/08/23)"},
-  "9945": {liabQ2:4811, liabQ1:4307, liabQoQ:11.7, liabYoY:43.0, liabRatio:3.7, liabRank:33, liabPeriod:"2026Q2", liabSource:"公開資訊觀測站(MOPS)合併財報，先行版整理表(資料日期2026/08/23)"},
-  "6196": {liabQ2:2997, liabQ1:2677, liabQoQ:12.0, liabYoY:43.6, liabRatio:3.5, liabRank:35, liabPeriod:"2026Q2", liabSource:"公開資訊觀測站(MOPS)合併財報，先行版整理表(資料日期2026/08/23)"},
-  "2727": {liabQ2:1902, liabQ1:1689, liabQoQ:12.6, liabYoY:38.3, liabRatio:3.2, liabRank:38, liabPeriod:"2026Q2", liabSource:"公開資訊觀測站(MOPS)合併財報，先行版整理表(資料日期2026/08/23)"},
+  "9904": {eps:1.06, epsPeriod:"2025Q4單季", epsTTM:4.1, epsSource:"財報狗"},
+  "5871": {eps:2.65, epsPeriod:"2025Q3單季", epsTTM:11.23, epsSource:"財報狗"},
 };
 
 /* ========================= 資料抓取 ========================= */
@@ -456,7 +634,7 @@ function renderTop10(){
     top.map((r,i)=>{
       const f = FUNDAMENTALS[r.code] || {};
       const epsTxt = f.eps!=null ? `${f.eps} 元 <span class="data-pending">(${f.epsPeriod})</span>` : '<span class="data-pending">資料待補</span>';
-      const liabTxt = f.liabQ2!=null ? `${f.liabQ2.toLocaleString()} 百萬元 <span class="data-pending">(QoQ ${f.liabQoQ>=0?'+':''}${f.liabQoQ}%)</span>` : (f.liabNote ? `<span class="data-pending">${f.liabNote}</span>` : '<span class="data-pending">資料待補</span>');
+      const liabTxt = f.liabQ2!=null ? `${f.liabQ2.toLocaleString()} 億元 <span class="data-pending">(QoQ ${f.liabQoQ!=null?((f.liabQoQ>=0?'+':'')+f.liabQoQ+'%'):'-'})</span>` : '<span class="data-pending">資料待補</span>';
       return `<div class="top10-card">
         <span class="badge-rank">${i+1}</span>
         <div><div class="name">${r.name} <span class="code">${r.code}</span></div>
@@ -570,7 +748,7 @@ async function showModalChart(code){
     statHtml('MA5/10/20', `${r.last.ma5.toFixed(1)}/${r.last.ma10.toFixed(1)}/${r.last.ma20.toFixed(1)}`),
     statHtml('%B', r.last.percentB.toFixed(2), r.last.percentB>1?'highlight-red':''),
     statHtml('EPS', f.eps!=null?(f.eps+'元'):'待補'),
-    statHtml('合約負債(百萬)', f.liabQ2!=null?(f.liabQ2.toLocaleString()+' QoQ'+(f.liabQoQ>=0?'+':'')+f.liabQoQ+'%'):(f.liabNote?'部分資訊':'待補')),
+    statHtml('合約負債(億元)', f.liabQ2!=null?(f.liabQ2.toLocaleString()+' QoQ'+(f.liabQoQ!=null?((f.liabQoQ>=0?'+':'')+f.liabQoQ+'%'):'-')):'待補'),
   ].join('');
   bg.classList.add('show');
 }
@@ -619,19 +797,20 @@ function renderFundamentalTables(){
   const epsRows = [];
   STOCK_LIST.forEach(s=>{
     const f = FUNDAMENTALS[s.c];
-    if(f && (f.liabQ2!=null || f.liabNote)) liabRows.push({code:s.c,name:s.n,...f});
+    if(f && f.liabQ2!=null) liabRows.push({code:s.c,name:s.n,...f});
     if(f && f.eps!=null) epsRows.push({code:s.c,name:s.n,...f});
   });
   epsRows.sort((a,b)=> b.eps - a.eps);
-  liabRows.sort((a,b)=> (b.liabQ2!=null?b.liabQ2:-Infinity) - (a.liabQ2!=null?a.liabQ2:-Infinity));
+  liabRows.sort((a,b)=> b.liabQ2 - a.liabQ2);
   const liabTbody = document.querySelector('#liabTable tbody');
   liabTbody.innerHTML = liabRows.length ? liabRows.map((r,i)=>`<tr>
     <td>${i+1}</td><td>${r.name} ${r.code}</td>
-    <td>${r.liabQ2!=null? r.liabQ2.toLocaleString() : '<span class="data-pending">'+ (r.liabNote||'資料待補') +'</span>'}</td>
+    <td>${r.liabQ2.toLocaleString()}</td>
     <td>${r.liabQoQ!=null? (r.liabQoQ>=0?'+':'')+r.liabQoQ+'%' : '-'}</td>
     <td>${r.liabYoY!=null? (r.liabYoY>=0?'+':'')+r.liabYoY+'%' : '-'}</td>
     <td>${r.liabRatio!=null? r.liabRatio+'%' : '-'}</td>
-    <td>${r.liabPeriod||'-'}</td><td>${r.liabSource||'-'}</td>
+    <td>${r.liabBothUp? '<span class="tag tag-red">是</span>' : '<span class="tag tag-gray">否</span>'}</td>
+    <td>${r.liabSource||'-'}</td>
   </tr>`).join('') : `<tr><td colspan="8" class="empty-state">目前尚無已查證之合約負債數據，待後續分批補齊</td></tr>`;
 
   const epsTbody = document.querySelector('#epsTable tbody');

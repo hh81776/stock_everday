@@ -76,6 +76,7 @@ tbody tr:hover{background:var(--surface-2);}
 .tag-green{background:var(--down-bg);color:var(--down);}
 .tag-gray{background:var(--muted);color:var(--muted-text);}
 .tag-yellow{background:var(--neutral-bg);color:var(--neutral);}
+.tag-mark{background:var(--accent-bg);color:var(--accent-strong);border:1px solid var(--accent);}
 .highlight-red{color:var(--up);font-weight:700;}
 .highlight-green{color:var(--down);font-weight:700;}
 .badge-rank{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:5px;background:var(--board);color:#f3f0e6;font-weight:700;font-size:.74rem;font-family:"Roboto Mono",monospace;}
@@ -117,7 +118,8 @@ footer{text-align:center;color:var(--text-faint);font-size:.76rem;padding:22px 1
     <div class="desc" style="font-size:.85rem;">
       對每一檔個股，抓取近期股價，計算「5個交易日前收盤價 → 今日收盤價」與「10個交易日前收盤價 → 今日收盤價」的報酬率，
       並比對是否仍符合璞玉選股程式的技術面條件（MA5&gt;MA10&gt;MA20多頭排列、布林通道%B&gt;1.0突破）。
-      四項條件（多頭排列、布林突破、5日報酬為正、10日報酬為正）各算1分，總分0～4分換算成「今日觀察訊號」強弱，
+      另外新增「布林突破第2天」判斷：當日與前一日的%B皆已站上布林上軌，但再前一日尚未站上，代表恰好是連續突破的第2天（排除第一天可能是假突破、也排除已突破多日的情況），符合時會用金色記號特別標示提醒，但<b>不會</b>用來篩掉其他個股——只要符合多頭排列與布林突破兩項條件就會列入候選，「布林突破第2天」純粹是額外的視覺提醒。
+      「今日觀察訊號」仍依原本四項條件（多頭排列、布林突破、5日報酬為正、10日報酬為正）各算1分，總分0～4分換算強弱；
       清單「勝率」＝清單中5日／10日報酬率為正的檔數比例。<b>此為量化技術指標計算，不構成投資建議、不保證未來績效，請自行審慎判斷風險。</b>
     </div>
   </div>
@@ -126,7 +128,7 @@ footer{text-align:center;color:var(--text-faint);font-size:.76rem;padding:22px 1
   <div class="card">
     <span class="step">Step 1 · 全市場掃描</span>
     <h2>今日璞玉 Top10 動能訊號</h2>
-    <div class="desc">即時掃描331檔璞玉指數成分股，選出同時符合「多頭排列」與「布林通道突破」的候選股（依%B排序取前10檔），並附上5日／10日報酬率與觀察訊號。</div>
+    <div class="desc">即時掃描331檔璞玉指數成分股，選出同時符合「多頭排列」與「布林通道突破」的候選股（依%B排序取前10檔），其中恰好是 <span class="tag tag-mark" style="vertical-align:middle;">布林突破第2天</span> 的個股會特別用金色標示，並附上5日／10日報酬率與觀察訊號。</div>
     <div class="row">
       <button class="btn" id="scanBtn">開始／重新掃描全市場（331檔）</button>
       <span class="desc" style="margin:0;">首次掃描約需1～3分鐘，資料來源：證交所盤後資訊</span>
@@ -190,6 +192,7 @@ footer{text-align:center;color:var(--text-faint);font-size:.76rem;padding:22px 1
       <div class="row"><span class="tag tag-yellow">中性訊號</span><span>2分：條件約各半，多空不明顯，建議再觀察。</span></div>
       <div class="row"><span class="tag tag-green">偏弱訊號</span><span>1分：僅少數條件符合，動能轉弱。</span></div>
       <div class="row"><span class="tag tag-green">弱勢訊號</span><span>0分：皆未符合，短中期動能皆偏弱，建議觀望。</span></div>
+      <div class="row"><span class="tag tag-mark">布林突破第2天</span><span>特別記號（非計分項目，也不影響是否入選）：今日與昨日的%B皆已站上布林上軌，但前一日尚未站上，代表恰好是連續突破的第2天，用來提醒你留意這類「站穩上軌」而非單日假突破的個股。無論是Top10自動掃描或自訂名單，只要符合就會標示金色記號，但不會篩掉沒有這個記號的個股。</span></div>
     </div>
     <div class="disclaimer">
       本工具僅為公開股價資訊之技術指標量化計算，「觀察訊號」是依使用者設定的四項技術規則換算之量化分數，並非投資建議、買賣推薦，也不保證未來績效。
@@ -281,13 +284,18 @@ function computeIndicators(bars){
 
 function evaluateTechnical(bars){
   const n = bars.length;
-  const last = bars[n-1]; const prev = bars[n-2];
+  const last = bars[n-1]; const prev = bars[n-2]; const prev2 = bars[n-3];
   if(!last || last.ma5==null || last.ma10==null || last.ma20==null){
-    return {bullish:false, bollBreak:false};
+    return {bullish:false, bollBreak:false, day2Breakout:false};
   }
   const bullish = last.ma5 > last.ma10 && last.ma10 > last.ma20 && prev && last.ma5 >= prev.ma5;
   const bollBreak = last.percentB!=null && last.percentB > 1.0;
-  return {bullish, bollBreak};
+  // 突破一倍布林的第二天：今日與昨日的%B皆>1.0（連續兩天在上軌之上），但前日尚未突破 —— 排除「第一天突破」與「已突破多日」，只標示恰好第二天。
+  const todayAbove = last.percentB!=null && last.percentB > 1.0;
+  const yestAbove = prev && prev.percentB!=null && prev.percentB > 1.0;
+  const dayBeforeAbove = prev2 && prev2.percentB!=null && prev2.percentB > 1.0;
+  const day2Breakout = !!(todayAbove && yestAbove && !dayBeforeAbove);
+  return {bullish, bollBreak, day2Breakout};
 }
 
 /* ========================= 5日／10日報酬率計算（交易日為單位） ========================= */
@@ -318,7 +326,8 @@ function signalLabel(score){
 }
 function techTagsHtml(tech){
   return (tech.bullish? '<span class="tag tag-red">多頭排列</span>' : '<span class="tag tag-gray">非多頭</span>') + ' ' +
-         (tech.bollBreak? '<span class="tag tag-red">布林突破</span>' : '<span class="tag tag-gray">未突破</span>');
+         (tech.bollBreak? '<span class="tag tag-red">布林突破</span>' : '<span class="tag tag-gray">未突破</span>') +
+         (tech.day2Breakout? ' <span class="tag tag-mark">布林突破第2天</span>' : '');
 }
 function retTd(val){
   if(val==null || isNaN(val)) return '<td>-</td>';

@@ -118,7 +118,8 @@ footer{text-align:center;color:var(--text-faint);font-size:.76rem;padding:22px 1
     <div class="desc" style="font-size:.85rem;">
       對每一檔個股，抓取近期股價，計算「5個交易日前收盤價 → 今日收盤價」與「10個交易日前收盤價 → 今日收盤價」的報酬率，
       並比對是否仍符合璞玉選股程式的技術面條件（MA5&gt;MA10&gt;MA20多頭排列、布林通道%B&gt;1.0突破）。
-      另外新增「布林突破第2天」判斷：當日與前一日的%B皆已站上布林上軌，但再前一日尚未站上，代表恰好是連續突破的第2天（排除第一天可能是假突破、也排除已突破多日的情況），符合時會用金色記號特別標示提醒，但<b>不會</b>用來篩掉其他個股——只要符合多頭排列與布林突破兩項條件就會列入候選，「布林突破第2天」純粹是額外的視覺提醒。
+      另外新增「布林突破第2天」判斷：當日與前一日的%B皆已站上布林上軌，但再前一日尚未站上，代表恰好是連續突破的第2天（排除第一天可能是假突破、也排除已突破多日的情況），符合時會用金色記號特別標示。
+      Top10 自動篩選為必要條件：候選股須同時符合多頭排列、布林突破、且恰為突破第2天，才會列入清單，因此某些日子候選檔數可能低於10檔甚至掛零，屬如實反映當下市況。
       「今日觀察訊號」仍依原本四項條件（多頭排列、布林突破、5日報酬為正、10日報酬為正）各算1分，總分0～4分換算強弱；
       清單「勝率」＝清單中5日／10日報酬率為正的檔數比例。<b>此為量化技術指標計算，不構成投資建議、不保證未來績效，請自行審慎判斷風險。</b>
     </div>
@@ -128,7 +129,7 @@ footer{text-align:center;color:var(--text-faint);font-size:.76rem;padding:22px 1
   <div class="card">
     <span class="step">Step 1 · 全市場掃描</span>
     <h2>今日璞玉 Top10 動能訊號</h2>
-    <div class="desc">即時掃描331檔璞玉指數成分股，選出同時符合「多頭排列」與「布林通道突破」的候選股（依%B排序取前10檔），其中恰好是 <span class="tag tag-mark" style="vertical-align:middle;">布林突破第2天</span> 的個股會特別用金色標示，並附上5日／10日報酬率與觀察訊號。</div>
+    <div class="desc">即時掃描331檔璞玉指數成分股，選出同時符合「多頭排列」「布林通道突破」與 <span class="tag tag-mark" style="vertical-align:middle;">布林突破第2天</span> 三項條件的候選股（依%B排序取前10檔），並附上5日／10日報酬率與觀察訊號。</div>
     <div class="row">
       <button class="btn" id="scanBtn">開始／重新掃描全市場（331檔）</button>
       <span class="desc" style="margin:0;">首次掃描約需1～3分鐘，資料來源：證交所盤後資訊</span>
@@ -192,7 +193,7 @@ footer{text-align:center;color:var(--text-faint);font-size:.76rem;padding:22px 1
       <div class="row"><span class="tag tag-yellow">中性訊號</span><span>2分：條件約各半，多空不明顯，建議再觀察。</span></div>
       <div class="row"><span class="tag tag-green">偏弱訊號</span><span>1分：僅少數條件符合，動能轉弱。</span></div>
       <div class="row"><span class="tag tag-green">弱勢訊號</span><span>0分：皆未符合，短中期動能皆偏弱，建議觀望。</span></div>
-      <div class="row"><span class="tag tag-mark">布林突破第2天</span><span>特別記號（非計分項目，也不影響是否入選）：今日與昨日的%B皆已站上布林上軌，但前一日尚未站上，代表恰好是連續突破的第2天，用來提醒你留意這類「站穩上軌」而非單日假突破的個股。無論是Top10自動掃描或自訂名單，只要符合就會標示金色記號，但不會篩掉沒有這個記號的個股。</span></div>
+      <div class="row"><span class="tag tag-mark">布林突破第2天</span><span>特別記號（非計分項目）：今日與昨日的%B皆已站上布林上軌，但前一日尚未站上，代表恰好是連續突破的第2天，用來提醒你留意這類「站穩上軌」而非單日假突破的個股。Top10自動篩選要求必須符合此記號才會入選；自訂名單則僅供標示參考，不影響是否顯示。</span></div>
     </div>
     <div class="disclaimer">
       本工具僅為公開股價資訊之技術指標量化計算，「觀察訊號」是依使用者設定的四項技術規則換算之量化分數，並非投資建議、買賣推薦，也不保證未來績效。
@@ -377,7 +378,7 @@ async function scanAll(){
   document.getElementById('scanTime').textContent = '掃描時間：' + new Date().toLocaleString('zh-TW');
   text.textContent += ' ｜ 完成';
 
-  const candidates = results.filter(r=>!r.error && r.tech.bullish && r.tech.bollBreak);
+  const candidates = results.filter(r=>!r.error && r.tech.bullish && r.tech.bollBreak && r.tech.day2Breakout);
   candidates.sort((a,b)=> (b.percentB||0) - (a.percentB||0));
   const top = candidates.slice(0,10);
   renderResultTable('autoTable', 'autoSummary', top, true, candidates.length);
@@ -391,7 +392,7 @@ function renderResultTable(tableId, summaryId, list, showRank, totalCandidates){
   const summaryBox = document.getElementById(summaryId);
 
   if(list.length===0){
-    tbody.innerHTML = `<tr><td colspan="${showRank?9:8}" class="empty-state">${showRank? '今日全市場331檔中，沒有個股同時符合多頭排列與布林通道突破兩項技術條件。' : '尚無有效資料'}</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="${showRank?9:8}" class="empty-state">${showRank? '今日全市場331檔中，沒有個股同時符合多頭排列、布林通道突破、且恰為突破第2天這三項技術條件。' : '尚無有效資料'}</td></tr>`;
     summaryBox.innerHTML = showRank ? `<div class="desc">今日候選檔數：0 檔（技術面篩選結果如實反映當下市況，不會為了湊數而放寬標準）</div>` : '';
     return;
   }
@@ -508,3 +509,4 @@ async function runManual(){
 </script>
 </body>
 </html>
+

@@ -1,0 +1,30 @@
+name: 台股選股中心 - 每日資料更新
+
+on:
+  schedule:
+    - cron: "30 6 * * 1-5"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: twstock-screen
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+      - name: setup python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: run update script
+        run: python3 update_data.py
+      - name: commit data.json
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "auto update stock screen data [skip ci]"
+          file_pattern: "twstock-screen/data.json"

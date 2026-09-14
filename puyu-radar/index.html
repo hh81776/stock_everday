@@ -1108,3 +1108,1113 @@ document.addEventListener('click', async (e)=>{
 </script>
 </body>
 </html>
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>璞玉指數 動能轉強雷達</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@600;700;900&family=Noto+Sans+TC:wght@400;500;600;700&family=Roboto+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#eef1ec; --surface:#ffffff; --surface-2:#f5f7f2; --border:#dde3d9;
+  --text:#182420; --text-dim:#5c675f; --text-faint:#8a948b;
+  --board:#142a24; --board-2:#1c3830;
+  --accent:#a8791f; --accent-strong:#7d5a17; --accent-bg:#f6ecd7;
+  --up:#b23b2e; --up-bg:#fbeae6; --down:#1e7a52; --down-bg:#e6f4ec;
+  --neutral:#9c7a1f; --neutral-bg:#faf1dc; --muted:#eef0ea; --muted-text:#6b756c;
+  --shadow:0 1px 2px rgba(20,42,36,.06), 0 6px 20px -12px rgba(20,42,36,.18);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0d1512; --surface:#131f1a; --surface-2:#182620; --border:#26362e;
+    --text:#eef1ec; --text-dim:#a9b5ac; --text-faint:#78857c;
+    --board:#0a1512; --board-2:#122019;
+    --accent:#e0ab4c; --accent-strong:#f2c369; --accent-bg:rgba(224,171,76,.14);
+    --up:#e2756a; --up-bg:rgba(226,117,106,.16); --down:#4fbf8e; --down-bg:rgba(79,191,142,.16);
+    --neutral:#e0ab4c; --neutral-bg:rgba(224,171,76,.14); --muted:#1c2822; --muted-text:#9aa69d;
+    --shadow:0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.5);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0d1512; --surface:#131f1a; --surface-2:#182620; --border:#26362e;
+  --text:#eef1ec; --text-dim:#a9b5ac; --text-faint:#78857c;
+  --board:#0a1512; --board-2:#122019;
+  --accent:#e0ab4c; --accent-strong:#f2c369; --accent-bg:rgba(224,171,76,.14);
+  --up:#e2756a; --up-bg:rgba(226,117,106,.16); --down:#4fbf8e; --down-bg:rgba(79,191,142,.16);
+  --neutral:#e0ab4c; --neutral-bg:rgba(224,171,76,.14); --muted:#1c2822; --muted-text:#9aa69d;
+  --shadow:0 1px 2px rgba(0,0,0,.3), 0 8px 24px -12px rgba(0,0,0,.5);
+}
+*{box-sizing:border-box;}
+body{margin:0;font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",-apple-system,sans-serif;background:var(--bg);color:var(--text);line-height:1.6;}
+h1,h2{font-family:"Noto Serif TC","Noto Sans TC",serif;text-wrap:balance;}
+table,.mono{font-family:"Roboto Mono","Noto Sans TC",ui-monospace,monospace;font-variant-numeric:tabular-nums;}
+header{background:linear-gradient(160deg,var(--board),var(--board-2));color:#f3f0e6;padding:26px 20px 22px;border-bottom:3px solid var(--accent);}
+header .eyebrow{font-family:"Roboto Mono",monospace;font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--accent-strong);margin-bottom:6px;}
+header h1{margin:0 0 6px;font-size:1.55rem;font-weight:800;letter-spacing:.02em;}
+header .sub{color:#c9d2c6;font-size:.86rem;max-width:66ch;}
+header .meta{margin-top:14px;display:flex;flex-wrap:wrap;gap:8px;font-size:.74rem;font-family:"Roboto Mono",monospace;}
+header .meta span{background:rgba(243,240,230,.1);border:1px solid rgba(243,240,230,.16);padding:4px 10px;border-radius:6px;color:#e7e3d6;}
+.container{max-width:1220px;margin:0 auto;padding:16px;}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:20px 22px;margin-bottom:16px;box-shadow:var(--shadow);}
+.card .step{font-family:"Roboto Mono",monospace;font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:6px;display:block;}
+.card h2{margin:0 0 4px;font-size:1.08rem;color:var(--text);font-weight:700;}
+.card .desc{color:var(--text-dim);font-size:.85rem;margin-bottom:14px;max-width:82ch;}
+.btn{background:var(--board);color:#f3f0e6;border:1px solid var(--board);padding:10px 18px;border-radius:7px;font-size:.87rem;font-weight:600;cursor:pointer;font-family:"Noto Sans TC",sans-serif;}
+.btn:hover{background:var(--board-2);}
+.btn:disabled{background:var(--muted);color:var(--muted-text);border-color:var(--border);cursor:not-allowed;}
+.btn:focus-visible,textarea:focus-visible,input[type=text]:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
+textarea{border:1px solid var(--border);background:var(--surface-2);color:var(--text);padding:10px 12px;border-radius:7px;font-size:.86rem;width:100%;font-family:"Roboto Mono",monospace;min-height:76px;resize:vertical;}
+input[type=text]{border:1px solid var(--border);background:var(--surface-2);color:var(--text);padding:10px 12px;border-radius:7px;font-size:.88rem;font-family:"Roboto Mono",monospace;flex:1 1 220px;min-width:0;}
+.concept-input-row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;}
+.concept-result{margin-top:16px;}
+.concept-self{background:var(--accent-bg);border:1px solid var(--accent);border-radius:8px;padding:10px 14px;font-size:.86rem;color:var(--accent-strong);margin-bottom:14px;}
+.concept-theme{border:1px solid var(--border);border-radius:8px;padding:14px 16px;margin-bottom:12px;background:var(--surface-2);}
+.concept-theme h3{margin:0 0 10px;font-size:.92rem;color:var(--accent-strong);font-weight:700;display:flex;align-items:center;gap:8px;}
+.concept-theme h3 .count{font-size:.7rem;color:var(--text-faint);font-weight:500;}
+.concept-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:8px;}
+.concept-stock{display:flex;flex-direction:column;gap:2px;background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:7px 10px;font-size:.82rem;}
+.concept-stock.is-self{border-color:var(--accent);background:var(--accent-bg);}
+.concept-stock.expanded{grid-column:1/-1;}
+.concept-stock .c-name{display:flex;align-items:center;gap:6px;}
+.concept-stock .chart-wrap canvas{margin-top:8px;}
+.concept-stock .c-code{font-family:"Roboto Mono",monospace;color:var(--text-faint);font-size:.74rem;}
+.concept-stock .c-role{color:var(--text-dim);font-size:.7rem;}
+.chip-btn{display:inline-block;background:var(--surface-2);border:1px solid var(--border);color:var(--text);padding:4px 11px;border-radius:999px;font-size:.78rem;cursor:pointer;margin:2px 4px 2px 0;font-family:"Noto Sans TC",sans-serif;}
+.chip-btn:hover{background:var(--muted);}
+.row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+.progress-wrap{margin-top:12px;background:var(--muted);border-radius:20px;height:8px;overflow:hidden;display:none;}
+.progress-wrap.show{display:block;}
+.progress-bar{height:100%;background:var(--accent);width:0%;transition:width .2s;}
+.progress-text{font-size:.76rem;color:var(--text-dim);margin-top:6px;font-family:"Roboto Mono",monospace;}
+table{width:100%;border-collapse:collapse;font-size:.83rem;}
+th,td{padding:8px 9px;text-align:right;border-bottom:1px solid var(--border);white-space:nowrap;vertical-align:middle;}
+th:first-child,td:first-child,th:nth-child(2),td:nth-child(2){text-align:left;}
+th{background:var(--surface-2);color:var(--text-dim);font-weight:600;font-size:.7rem;letter-spacing:.03em;text-transform:uppercase;position:sticky;top:0;}
+tbody tr:hover{background:var(--surface-2);}
+.table-wrap{overflow-x:auto;border:1px solid var(--border);border-radius:8px;}
+.table-wrap table{border:none;}
+.tag{display:inline-block;padding:3px 9px;border-radius:5px;font-size:.7rem;font-weight:700;white-space:normal;font-family:"Noto Sans TC",sans-serif;line-height:1.4;text-align:center;}
+.tag-red{background:var(--up-bg);color:var(--up);}
+.tag-green{background:var(--down-bg);color:var(--down);}
+.tag-gray{background:var(--muted);color:var(--muted-text);}
+.tag-yellow{background:var(--neutral-bg);color:var(--neutral);}
+.tag-mark{background:var(--accent-bg);color:var(--accent-strong);border:1px solid var(--accent);}
+.highlight-red{color:var(--up);font-weight:700;}
+.highlight-green{color:var(--down);font-weight:700;}
+.badge-rank{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:5px;background:var(--board);color:#f3f0e6;font-weight:700;font-size:.74rem;font-family:"Roboto Mono",monospace;}
+.stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:1px;margin-top:10px;background:var(--border);border:1px solid var(--border);border-radius:8px;overflow:hidden;}
+.stat-box{background:var(--surface-2);padding:14px 10px;text-align:center;}
+.stat-box b{display:block;font-size:1.4rem;color:var(--text);font-family:"Roboto Mono",monospace;}
+.stat-box span{font-size:.7rem;color:var(--text-dim);}
+.empty-state{text-align:center;padding:30px 10px;color:var(--text-dim);font-family:"Noto Sans TC",sans-serif;white-space:normal;}
+.data-pending{color:var(--text-faint);font-style:italic;font-family:"Noto Sans TC",sans-serif;white-space:normal;}
+.disclaimer{background:var(--neutral-bg);border:1px solid var(--border);border-radius:8px;padding:12px 14px;font-size:.8rem;color:var(--text-dim);margin-top:14px;}
+.legend-list{display:flex;flex-direction:column;gap:10px;font-size:.84rem;color:var(--text-dim);}
+.legend-list .row{gap:12px;align-items:flex-start;}
+.legend-list .row > span:first-child{min-width:120px;flex-shrink:0;}
+.btn-chart,.btn-chart-sm{background:var(--surface-2);border:1px solid var(--border);color:var(--text);padding:5px 11px;border-radius:6px;font-size:.74rem;cursor:pointer;font-family:"Noto Sans TC",sans-serif;white-space:nowrap;}
+.btn-chart:hover,.btn-chart-sm:hover{background:var(--muted);}
+.btn-chart-sm{padding:3px 9px;font-size:.7rem;}
+tr.chart-row td{background:var(--surface-2);}
+.chart-wrap{padding:10px 4px;}
+canvas{width:100%;display:block;background:var(--surface);border:1px solid var(--border);border-radius:6px;}
+details summary{cursor:pointer;font-weight:700;color:var(--text);font-size:.92rem;}
+details summary::-webkit-details-marker{color:var(--accent);}
+footer{text-align:center;color:var(--text-faint);font-size:.76rem;padding:22px 10px 40px;}
+@media (max-width:640px){ th,td{font-size:.76rem;padding:6px 7px;} }
+</style>
+</head>
+<body>
+<header>
+  <div class="eyebrow">璞玉指數 · TWSE 331 檔成分股 · 5項條件同步命中</div>
+  <h1>璞玉指數 動能轉強雷達</h1>
+  <div class="sub">同步檢查日線均線多頭排列、KD剛黃金交叉、MACD轉強、布林軌道擠壓開口、外資與投信連續5日同步買超，全市場掃描候選股並附上線圖可供參考；另可輸入單一股票查詢相關產業概念股。</div>
+  <div class="meta">
+    <span id="scanTime">尚未掃描</span>
+    <span>成分股名單定審日 2026/04/21</span>
+  </div>
+</header>
+
+<div class="container">
+
+  <div class="card">
+    <h2>這個工具在檢查什麼？</h2>
+    <div class="desc" style="font-size:.85rem;">
+      對璞玉指數331檔成分股，逐一計算日線技術指標，並同時檢查以下5項條件——<b>全數符合才會列入候選名單</b>：
+      <br><br>
+      1. <b>均線多頭排列</b>：MA5 &gt; MA10 &gt; MA20 &gt; MA60，且收盤價站上5日均線。<br>
+      2. <b>KD日線剛黃金交叉</b>：KD(9,3,3) 今日K值剛上穿D值（昨日K≤D，今日K&gt;D）。<br>
+      3. <b>MACD綠柱收斂或紅柱轉強</b>：MACD(12,26,9)柱狀值（DIF−DEA）較昨日增加——仍為負值時代表「綠柱開始收斂」，轉正則代表「紅柱轉強」。<br>
+      4. <b>布林軌道擠壓到底剛開口向上</b>：布林通道(20,2)帶寬近期處於低檔（近120個交易日的後20%分位），且最近由低點開始擴張、股價同步走揚。<br>
+      5. <b>外資及投信連續5日買進</b>：近5個交易日，外資（外陸資＋外資自營商合計）與投信買賣超同步皆為正值。
+      <br><br>
+      以上為量化近似判斷，非市場唯一標準定義，僅供技術面參考，<b>不構成投資建議、不保證未來績效</b>。
+    </div>
+  </div>
+
+  <div class="card">
+    <span class="step">Step 1 · 全市場掃描</span>
+    <h2>璞玉指數全市場候選股（331檔）</h2>
+    <div class="desc">掃描全部331檔成分股，列出同時符合5項條件的候選股，並可展開個別線圖參考。首次掃描約需2～5分鐘（需逐檔取得股價與三大法人資料）。</div>
+    <div class="row">
+      <button class="btn" id="scanBtn">開始／重新掃描全市場（331檔）</button>
+      <span class="desc" style="margin:0;">資料來源：Yahoo財經 + 證交所STOCK_DAY（股價）、證交所T86（三大法人）</span>
+    </div>
+    <div class="progress-wrap" id="progressWrap">
+      <div class="progress-bar" id="progressBar"></div>
+    </div>
+    <div class="progress-text" id="progressText"></div>
+  </div>
+
+  <div class="card" id="autoResultCard" style="display:none;">
+    <h2>候選結果：5項條件全數命中</h2>
+    <div id="autoSummary"></div>
+    <div class="table-wrap" style="margin-top:12px;">
+      <table id="autoTable">
+        <thead><tr>
+          <th>排名</th><th>股票</th><th>收盤</th>
+          <th>均線多頭</th><th>KD黃金交叉</th><th>MACD轉強</th><th>布林擠壓開口</th><th>外資投信連買</th><th>線圖</th>
+        </tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <details id="fullScanDetails">
+      <summary>顯示全部331檔完整掃描結果（含未達標個股與命中數）</summary>
+      <div class="table-wrap" style="margin-top:12px;">
+        <table id="fullScanTable">
+          <thead><tr><th>股票</th><th>收盤</th><th>命中數</th><th>條件標記（均線／KD／MACD／布林／籌碼）</th></tr></thead>
+          <tbody><tr><td colspan="4" class="empty-state">尚未掃描</td></tr></tbody>
+        </table>
+      </div>
+    </details>
+  </div>
+
+  <div class="card">
+    <span class="step">Step 2 · 自訂觀察名單</span>
+    <h2>自訂名單（最多30檔）</h2>
+    <div class="desc">輸入任意台股代號（不限璞玉成分股），以逗號、空格或換行分隔，套用相同的5項條件評分並顯示線圖，此區塊不做篩選，一律列出所有輸入的股票。</div>
+    <textarea id="manualTextarea" placeholder="例如：2330, 2454, 3231&#10;2317 2603&#10;6488"></textarea>
+    <div class="row" style="margin-top:10px;">
+      <button class="btn" id="manualBtn">計算</button>
+      <span id="manualStatus" class="desc" style="margin:0;"></span>
+    </div>
+  </div>
+
+  <div class="card" id="manualResultCard" style="display:none;">
+    <h2>自訂名單評分結果</h2>
+    <div id="manualSummary"></div>
+    <div class="table-wrap" style="margin-top:12px;">
+      <table id="manualTable">
+        <thead><tr>
+          <th>序</th><th>股票</th><th>收盤</th>
+          <th>均線多頭</th><th>KD黃金交叉</th><th>MACD轉強</th><th>布林擠壓開口</th><th>外資投信連買</th><th>線圖</th>
+        </tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <span class="step">Step 3 · 概念股查詢</span>
+    <h2>相關產業概念股</h2>
+    <div class="desc">輸入單一股票代號或名稱，查詢全市場（上市＋上櫃）中屬於相同市場主題概念的關聯股票代碼與名稱。此為人工整理的靜態主題分類（非官方即時資料），目前收錄36個市場常見主題、213檔個股，詳見下方附錄說明。</div>
+    <div class="concept-input-row">
+      <input type="text" id="conceptInput" placeholder="輸入股票代號或名稱，例如：2330 或 台積電">
+      <button class="btn" id="conceptBtn">查詢概念股</button>
+    </div>
+    <div class="concept-result" id="conceptResult"></div>
+  </div>
+
+  <div class="card">
+    <span class="step">附錄</span>
+    <h2>條件定義與線圖說明</h2>
+    <div class="legend-list">
+      <div class="row"><span class="tag tag-red">均線多頭</span><span>日線 MA5 &gt; MA10 &gt; MA20 &gt; MA60，且收盤價站上5日均線，代表短中期均線呈多頭排列。</span></div>
+      <div class="row"><span class="tag tag-red">KD黃金交叉</span><span>KD(9,3,3)，今日K值剛上穿D值（昨日K≤D，今日K&gt;D），僅取「剛發生交叉」的當日，不含已交叉多日的個股。</span></div>
+      <div class="row"><span class="tag tag-red">MACD轉強</span><span>MACD(12,26,9)柱狀值（DIF−DEA）較昨日增加。仍為負值時標示「綠柱收斂」，轉為正值時標示「紅柱轉強」。</span></div>
+      <div class="row"><span class="tag tag-red">布林擠壓開口</span><span>布林通道(20,2)帶寬處於近120個交易日的後20%低分位（代表近期擠壓），且帶寬剛從近5日低點開始擴張、收盤價同步走揚，代表「擠壓到底剛要開口向上」。</span></div>
+      <div class="row"><span class="tag tag-red">外資投信連買</span><span>近5個交易日，外資（外陸資買賣超＋外資自營商買賣超合計）與投信買賣超每日皆為正值（同步買超）。</span></div>
+      <div class="row"><span>線圖</span><span>候選股與自訂名單每檔皆可展開線圖：上層為K線＋MA5/10/20/60＋布林通道，中層為KD線，下層為MACD柱狀圖與DIF/DEA線，皆取最近約90個交易日。</span></div>
+      <div class="row"><span>概念股查詢</span><span>人工整理的市場主題式概念股對照表（如AI伺服器、CPO矽光子、重電、機器人、記憶體、金融控股、航運等36個主題），輸入任一股票代號或名稱即可查出所屬主題與同主題關聯股，一檔股票可能同時屬於多個主題。此分類非官方標準、非即時資料，是靜態整理結果，僅供發想關聯標的參考，實際供應鏈關係與營收貢獻程度仍應自行查證。</span></div>
+    </div>
+    <div class="disclaimer">
+      本工具為公開股價與三大法人資訊之技術指標量化計算，所有條件皆為使用者設定的量化規則換算結果，並非投資建議、買賣推薦，也不保證未來績效。
+      三大法人資料（T86）主要涵蓋上市（TWSE）證券，若璞玉成分股或自訂名單中含上櫃個股，其外資／投信資料可能無法取得，將顯示「資料不足」並視為未達成該條件。
+      股價資料來源為 Yahoo財經（主）與證交所 STOCK_DAY（備援），少數個股可能因資料不足或連線異常而無法計算。「相關產業概念股」為人工靜態整理，非官方分類、不會自動更新，可能有遺漏或分類見仁見智之處。投資人應自行查證並審慎評估風險，投資一定有賺有賠。
+    </div>
+  </div>
+
+</div>
+
+<footer>璞玉指數 動能轉強雷達 · 資料僅供參考，不構成投資建議 · 頁面每次開啟即即時運算</footer>
+
+<script>
+/* ========================= 成分股清單（331檔，與璞玉系列工具共用） ========================= */
+const STOCK_LIST = [{"c": "1102", "n": "亞泥"}, {"c": "1104", "n": "環泥"}, {"c": "1210", "n": "大成"}, {"c": "1215", "n": "卜蜂"}, {"c": "1216", "n": "統一"}, {"c": "1225", "n": "福懋油"}, {"c": "1227", "n": "佳格"}, {"c": "1229", "n": "聯華"}, {"c": "1231", "n": "聯華食"}, {"c": "1232", "n": "大統益"}, {"c": "1256", "n": "鮮活果汁-KY"}, {"c": "1319", "n": "東陽"}, {"c": "1342", "n": "八貫"}, {"c": "1402", "n": "遠東新"}, {"c": "1416", "n": "廣豐"}, {"c": "1419", "n": "新紡"}, {"c": "1442", "n": "名軒"}, {"c": "1472", "n": "三洋實業"}, {"c": "1476", "n": "儒鴻"}, {"c": "1477", "n": "聚陽"}, {"c": "1503", "n": "士電"}, {"c": "1525", "n": "江申"}, {"c": "1535", "n": "中宇"}, {"c": "1537", "n": "廣隆"}, {"c": "1558", "n": "伸興"}, {"c": "1560", "n": "中砂"}, {"c": "1568", "n": "倉佑"}, {"c": "1590", "n": "亞德客-KY"}, {"c": "1597", "n": "直得"}, {"c": "1603", "n": "華電"}, {"c": "1608", "n": "華榮"}, {"c": "1612", "n": "宏泰"}, {"c": "1615", "n": "大山"}, {"c": "1618", "n": "合機"}, {"c": "1702", "n": "南僑"}, {"c": "1707", "n": "葡萄王"}, {"c": "1712", "n": "興農"}, {"c": "1713", "n": "國化"}, {"c": "1714", "n": "和桐"}, {"c": "1720", "n": "生達"}, {"c": "1723", "n": "中碳"}, {"c": "1731", "n": "美吾華"}, {"c": "1733", "n": "五鼎"}, {"c": "1734", "n": "杏輝"}, {"c": "1736", "n": "喬山"}, {"c": "1737", "n": "臺鹽"}, {"c": "1752", "n": "南光"}, {"c": "1760", "n": "寶齡富錦"}, {"c": "1773", "n": "勝一"}, {"c": "1783", "n": "和康生"}, {"c": "1789", "n": "神隆"}, {"c": "1795", "n": "美時"}, {"c": "1817", "n": "凱撒衛"}, {"c": "2006", "n": "東和鋼鐵"}, {"c": "2010", "n": "春源"}, {"c": "2013", "n": "中鋼構"}, {"c": "2020", "n": "美亞"}, {"c": "2049", "n": "上銀"}, {"c": "2107", "n": "厚生"}, {"c": "2108", "n": "南帝"}, {"c": "2201", "n": "裕隆"}, {"c": "2204", "n": "中華"}, {"c": "2206", "n": "三陽工業"}, {"c": "2207", "n": "和泰車"}, {"c": "2211", "n": "長榮鋼"}, {"c": "2228", "n": "劍麟"}, {"c": "2247", "n": "汎德永業"}, {"c": "2248", "n": "華勝-KY"}, {"c": "2250", "n": "IKKA-KY"}, {"c": "2316", "n": "楠梓電"}, {"c": "2328", "n": "廣宇"}, {"c": "2347", "n": "聯強"}, {"c": "2348", "n": "海悅"}, {"c": "2352", "n": "佳世達"}, {"c": "2354", "n": "鴻準"}, {"c": "2364", "n": "倫飛"}, {"c": "2374", "n": "佳能"}, {"c": "2376", "n": "技嘉"}, {"c": "2377", "n": "微星"}, {"c": "2385", "n": "群光"}, {"c": "2387", "n": "精元"}, {"c": "2393", "n": "億光"}, {"c": "2395", "n": "研華"}, {"c": "2397", "n": "友通"}, {"c": "2402", "n": "毅嘉"}, {"c": "2412", "n": "中華電"}, {"c": "2414", "n": "精技"}, {"c": "2420", "n": "新巨"}, {"c": "2421", "n": "建準"}, {"c": "2423", "n": "固緯"}, {"c": "2427", "n": "三商電"}, {"c": "2428", "n": "興勤"}, {"c": "2432", "n": "倚天酷碁-創"}, {"c": "2436", "n": "偉詮電"}, {"c": "2439", "n": "美律"}, {"c": "2441", "n": "超豐"}, {"c": "2442", "n": "新美齊"}, {"c": "2453", "n": "凌群"}, {"c": "2458", "n": "義隆"}, {"c": "2468", "n": "華經"}, {"c": "2471", "n": "資通"}, {"c": "2472", "n": "立隆電"}, {"c": "2476", "n": "鉅祥"}, {"c": "2477", "n": "美隆電"}, {"c": "2478", "n": "大毅"}, {"c": "2480", "n": "敦陽科"}, {"c": "2488", "n": "漢平"}, {"c": "2493", "n": "揚博"}, {"c": "2496", "n": "卓越"}, {"c": "2501", "n": "國建"}, {"c": "2504", "n": "國產"}, {"c": "2511", "n": "太子"}, {"c": "2520", "n": "冠德"}, {"c": "2528", "n": "皇普"}, {"c": "2534", "n": "宏盛"}, {"c": "2535", "n": "達欣工"}, {"c": "2539", "n": "櫻花建"}, {"c": "2543", "n": "皇昌"}, {"c": "2546", "n": "根基"}, {"c": "2597", "n": "潤弘"}, {"c": "2606", "n": "裕民"}, {"c": "2607", "n": "榮運"}, {"c": "2612", "n": "中航"}, {"c": "2613", "n": "中櫃"}, {"c": "2617", "n": "台航"}, {"c": "2630", "n": "亞航"}, {"c": "2633", "n": "台灣高鐵"}, {"c": "2636", "n": "台驊控股"}, {"c": "2645", "n": "長榮航太"}, {"c": "2707", "n": "晶華"}, {"c": "2727", "n": "王品"}, {"c": "2731", "n": "雄獅"}, {"c": "2753", "n": "八方雲集"}, {"c": "2762", "n": "世界健身-KY"}, {"c": "2812", "n": "台中銀"}, {"c": "2820", "n": "華票"}, {"c": "2832", "n": "台產"}, {"c": "2836", "n": "高雄銀"}, {"c": "2845", "n": "遠東銀"}, {"c": "2850", "n": "新產"}, {"c": "2851", "n": "中再保"}, {"c": "2852", "n": "第一保"}, {"c": "2889", "n": "國票金"}, {"c": "2897", "n": "王道銀行"}, {"c": "2903", "n": "遠百"}, {"c": "2912", "n": "統一超"}, {"c": "2915", "n": "潤泰全"}, {"c": "2945", "n": "三商家購"}, {"c": "3004", "n": "豐達科"}, {"c": "3005", "n": "神基"}, {"c": "3010", "n": "華立"}, {"c": "3013", "n": "晟銘電"}, {"c": "3014", "n": "聯陽"}, {"c": "3015", "n": "全漢"}, {"c": "3019", "n": "亞光"}, {"c": "3023", "n": "信邦"}, {"c": "3029", "n": "零壹"}, {"c": "3030", "n": "德律"}, {"c": "3031", "n": "佰鴻"}, {"c": "3035", "n": "智原"}, {"c": "3042", "n": "晶技"}, {"c": "3045", "n": "台灣大"}, {"c": "3046", "n": "建碁"}, {"c": "3052", "n": "夆典"}, {"c": "3059", "n": "華晶科"}, {"c": "3090", "n": "日電貿"}, {"c": "3130", "n": "一零四"}, {"c": "3257", "n": "虹冠電"}, {"c": "3311", "n": "閎暉"}, {"c": "3338", "n": "泰碩"}, {"c": "3406", "n": "玉晶光"}, {"c": "3413", "n": "京鼎"}, {"c": "3416", "n": "融程電"}, {"c": "3501", "n": "維熹"}, {"c": "3515", "n": "華擎"}, {"c": "3588", "n": "通嘉"}, {"c": "3592", "n": "瑞鼎"}, {"c": "3596", "n": "智易"}, {"c": "3617", "n": "碩天"}, {"c": "3622", "n": "洋華"}, {"c": "3652", "n": "精聯"}, {"c": "3694", "n": "海華"}, {"c": "3703", "n": "欣陸"}, {"c": "3705", "n": "永信"}, {"c": "3716", "n": "中化控股"}, {"c": "4104", "n": "佳醫"}, {"c": "4106", "n": "雃博"}, {"c": "4119", "n": "旭富"}, {"c": "4137", "n": "麗豐-KY"}, {"c": "4164", "n": "承業醫"}, {"c": "4439", "n": "冠星-KY"}, {"c": "4441", "n": "振大環球"}, {"c": "4532", "n": "瑞智"}, {"c": "4536", "n": "拓凱"}, {"c": "4552", "n": "力達-KY"}, {"c": "4560", "n": "強信-KY"}, {"c": "4571", "n": "鈞興-KY"}, {"c": "4576", "n": "大銀微系統"}, {"c": "4581", "n": "光隆精密-KY"}, {"c": "4583", "n": "台灣精銳"}, {"c": "4588", "n": "玖鼎電力"}, {"c": "4722", "n": "國精化"}, {"c": "4755", "n": "三福化"}, {"c": "4763", "n": "材料*-KY"}, {"c": "4766", "n": "南寶"}, {"c": "4770", "n": "上品"}, {"c": "4771", "n": "望隼"}, {"c": "4904", "n": "遠傳"}, {"c": "4915", "n": "致伸"}, {"c": "4935", "n": "茂林-KY"}, {"c": "4938", "n": "和碩"}, {"c": "4942", "n": "嘉彰"}, {"c": "4952", "n": "凌通"}, {"c": "4961", "n": "天鈺"}, {"c": "5222", "n": "全訊"}, {"c": "5225", "n": "東科-KY"}, {"c": "5234", "n": "達興材料"}, {"c": "5243", "n": "乙盛-KY"}, {"c": "5258", "n": "虹堡"}, {"c": "5284", "n": "jpp-KY"}, {"c": "5285", "n": "界霖"}, {"c": "5288", "n": "豐祥-KY"}, {"c": "5306", "n": "桂盟"}, {"c": "5388", "n": "中磊"}, {"c": "5434", "n": "崇越"}, {"c": "5469", "n": "瀚宇博"}, {"c": "5471", "n": "松翰"}, {"c": "5515", "n": "建國"}, {"c": "5519", "n": "隆大"}, {"c": "5534", "n": "長虹"}, {"c": "5607", "n": "遠雄港"}, {"c": "5706", "n": "鳳凰"}, {"c": "5871", "n": "中租-KY"}, {"c": "5876", "n": "上海商銀"}, {"c": "6005", "n": "群益證"}, {"c": "6024", "n": "群益期"}, {"c": "6112", "n": "邁達特"}, {"c": "6165", "n": "浪凡"}, {"c": "6176", "n": "瑞儀"}, {"c": "6191", "n": "精成科"}, {"c": "6192", "n": "巨路"}, {"c": "6196", "n": "帆宣"}, {"c": "6197", "n": "佳必琪"}, {"c": "6206", "n": "飛捷"}, {"c": "6214", "n": "精誠"}, {"c": "6215", "n": "和椿"}, {"c": "6235", "n": "華孚"}, {"c": "6271", "n": "同欣電"}, {"c": "6277", "n": "宏正"}, {"c": "6278", "n": "台表科"}, {"c": "6409", "n": "旭隼"}, {"c": "6412", "n": "群電"}, {"c": "6414", "n": "樺漢"}, {"c": "6416", "n": "瑞祺電通"}, {"c": "6438", "n": "迅得"}, {"c": "6449", "n": "鈺邦"}, {"c": "6472", "n": "保瑞"}, {"c": "6491", "n": "晶碩"}, {"c": "6525", "n": "捷敏-KY"}, {"c": "6526", "n": "達發"}, {"c": "6585", "n": "鼎基"}, {"c": "6591", "n": "動力-KY"}, {"c": "6592", "n": "和潤企業"}, {"c": "6605", "n": "帝寶"}, {"c": "6625", "n": "必應"}, {"c": "6670", "n": "復盛應用"}, {"c": "6689", "n": "伊雲谷"}, {"c": "6691", "n": "洋基工程"}, {"c": "6719", "n": "力智"}, {"c": "6753", "n": "龍德造船"}, {"c": "6754", "n": "匯僑設計"}, {"c": "6756", "n": "威鋒電子"}, {"c": "6768", "n": "志強-KY"}, {"c": "6771", "n": "平和環保-創"}, {"c": "6781", "n": "AES-KY"}, {"c": "6782", "n": "視陽"}, {"c": "6789", "n": "采鈺"}, {"c": "6790", "n": "永豐實"}, {"c": "6792", "n": "詠業"}, {"c": "6807", "n": "峰源-KY"}, {"c": "6873", "n": "泓德能源"}, {"c": "6890", "n": "來億-KY"}, {"c": "6914", "n": "阜爾運通"}, {"c": "6923", "n": "中台"}, {"c": "6924", "n": "榮惠-KY創"}, {"c": "6933", "n": "AMAX-KY"}, {"c": "6936", "n": "永鴻生技"}, {"c": "6937", "n": "天虹"}, {"c": "6944", "n": "兆聯實業"}, {"c": "6951", "n": "青新-創"}, {"c": "6957", "n": "裕慶-KY"}, {"c": "6962", "n": "奕力-KY"}, {"c": "6994", "n": "富威電力"}, {"c": "7631", "n": "聚賢研發-創"}, {"c": "7705", "n": "三商餐飲"}, {"c": "7736", "n": "虎山"}, {"c": "7765", "n": "中華資安"}, {"c": "7791", "n": "皇家可口"}, {"c": "8016", "n": "矽創"}, {"c": "8081", "n": "致新"}, {"c": "8114", "n": "振樺電"}, {"c": "8163", "n": "達方"}, {"c": "8213", "n": "志超"}, {"c": "8249", "n": "菱光"}, {"c": "8261", "n": "富鼎"}, {"c": "8341", "n": "日友"}, {"c": "8442", "n": "威宏-KY"}, {"c": "8454", "n": "富邦媒"}, {"c": "8462", "n": "柏文"}, {"c": "8463", "n": "潤泰材"}, {"c": "8464", "n": "億豐"}, {"c": "8476", "n": "台境*"}, {"c": "8478", "n": "東哥遊艇"}, {"c": "8482", "n": "商億-KY"}, {"c": "8487", "n": "愛爾達-創"}, {"c": "8499", "n": "鼎炫-KY"}, {"c": "8926", "n": "台汽電"}, {"c": "9802", "n": "鈺齊-KY"}, {"c": "9904", "n": "寶成"}, {"c": "9907", "n": "統一實"}, {"c": "9910", "n": "豐泰"}, {"c": "9911", "n": "櫻花"}, {"c": "9917", "n": "中保科"}, {"c": "9927", "n": "泰銘"}, {"c": "9930", "n": "中聯資源"}, {"c": "9938", "n": "百和"}, {"c": "9939", "n": "宏全"}, {"c": "9941", "n": "裕融"}, {"c": "9942", "n": "茂順"}, {"c": "9945", "n": "潤泰新"}, {"c": "9958", "n": "世紀鋼"}];
+const NAME_MAP = {};
+STOCK_LIST.forEach(s=>{ NAME_MAP[s.c] = s.n; });
+
+/* ========================= 市場主題概念股（人工整理，非官方分類，2026/09彙整） =========================
+   資料整理自公開概念股整理網站（finlab.finance 主題頁等），涵蓋全市場（上市+上櫃）常見熱門主題，
+   非官方標準分類，僅供發想關聯標的參考，不會自動更新，供 Step 3「概念股查詢」使用。 */
+const CONCEPT_THEMES = [
+  {theme:"AI伺服器", stocks:[
+    {c:"2317",n:"鴻海",r:"AI伺服器整機組裝（機櫃級）"},{c:"2382",n:"廣達",r:"AI伺服器代工"},
+    {c:"3231",n:"緯創",r:"GPU板卡與伺服器代工"},{c:"6669",n:"緯穎",r:"資料中心伺服器"},
+    {c:"2376",n:"技嘉",r:"AI伺服器與板卡"},{c:"2357",n:"華碩",r:"伺服器與品牌系統"},
+    {c:"2308",n:"台達電",r:"伺服器電源與散熱方案"},{c:"2301",n:"光寶科",r:"伺服器電源"}
+  ]},
+  {theme:"CPO共同封裝光學／矽光子", stocks:[
+    {c:"2330",n:"台積電",r:"CPO先進封裝與矽光子整合平台"},{c:"3363",n:"上詮",r:"光纖陣列與CPO封裝元件"},
+    {c:"3163",n:"波若威",r:"光被動元件與光纖陣列"},{c:"4979",n:"華星光",r:"光收發模組"},
+    {c:"3450",n:"聯鈞",r:"雷射二極體封裝測試"},{c:"3081",n:"聯亞",r:"雷射磊晶（上游材料）"},
+    {c:"4908",n:"前鼎",r:"光收發模組"},{c:"6442",n:"光聖",r:"光通訊連接與模組"},
+    {c:"4977",n:"眾達-KY",r:"高速光收發模組"},{c:"3105",n:"穩懋",r:"化合物半導體代工"},
+    {c:"8086",n:"宏捷科",r:"砷化鎵代工"}
+  ]},
+  {theme:"光通訊", stocks:[
+    {c:"3163",n:"波若威",r:"光被動元件與光纖陣列"},{c:"3450",n:"聯鈞",r:"雷射二極體封裝測試"},
+    {c:"4979",n:"華星光",r:"光收發模組"},{c:"6442",n:"光聖",r:"光通訊連接與模組"},
+    {c:"3081",n:"聯亞",r:"雷射磊晶"},{c:"4908",n:"前鼎",r:"光收發模組"},
+    {c:"4977",n:"眾達-KY",r:"高速光收發模組"},{c:"3234",n:"光環",r:"VCSEL與雷射二極體元件"},
+    {c:"3363",n:"上詮",r:"光纖陣列與封裝元件"}
+  ]},
+  {theme:"散熱／液冷", stocks:[
+    {c:"3017",n:"奇鋐",r:"散熱模組與液冷板"},{c:"3324",n:"雙鴻",r:"水冷板與液冷方案"},
+    {c:"2421",n:"建準",r:"散熱風扇與馬達"},{c:"3653",n:"健策",r:"均熱片(VC)與導熱介面"},
+    {c:"8996",n:"高力",r:"板式熱交換器"},{c:"3338",n:"泰碩",r:"熱管與散熱模組"},
+    {c:"6230",n:"尼得科超眾",r:"熱管與散熱模組"}
+  ]},
+  {theme:"重電／電網", stocks:[
+    {c:"1503",n:"士電",r:"變壓器與配電設備"},{c:"1504",n:"東元",r:"馬達與機電系統"},
+    {c:"1513",n:"中興電",r:"GIS開關與電力工程統包"},{c:"1514",n:"亞力",r:"變壓器與配電盤"},
+    {c:"1519",n:"華城",r:"變壓器（外銷美國電網）"},{c:"1618",n:"合機",r:"電力開關設備"},
+    {c:"1609",n:"大亞",r:"電線電纜"}
+  ]},
+  {theme:"機器人／工廠自動化", stocks:[
+    {c:"2049",n:"上銀",r:"線性滑軌與滾珠螺桿"},{c:"1590",n:"亞德客-KY",r:"氣動元件"},
+    {c:"2359",n:"所羅門",r:"機器視覺與AI檢測"},{c:"2464",n:"盟立",r:"自動化系統整合"},
+    {c:"6188",n:"廣明",r:"協作機器人（達明）集團"},{c:"8374",n:"羅昇",r:"自動化零組件通路"},
+    {c:"6215",n:"和椿",r:"自動化零組件與系統"}
+  ]},
+  {theme:"PCB／ABF載板", stocks:[
+    {c:"3037",n:"欣興",r:"ABF載板龍頭"},{c:"2313",n:"華通",r:"HDI板"},
+    {c:"2368",n:"金像電",r:"伺服器多層板"},{c:"4958",n:"臻鼎-KY",r:"PCB製造"},
+    {c:"6213",n:"聯茂",r:"銅箔基板(CCL)"},{c:"2383",n:"台光電",r:"高速銅箔基板"},
+    {c:"6274",n:"台燿",r:"高速銅箔基板"},{c:"8046",n:"南電",r:"ABF載板"},
+    {c:"3189",n:"景碩",r:"IC載板"}
+  ]},
+  {theme:"記憶體", stocks:[
+    {c:"2337",n:"旺宏",r:"NOR Flash製造"},{c:"2344",n:"華邦電",r:"NOR Flash與利基型DRAM製造"},
+    {c:"2408",n:"南亞科",r:"DRAM製造"},{c:"3006",n:"晶豪科",r:"利基型記憶體IC設計"},
+    {c:"8299",n:"群聯",r:"NAND控制晶片與模組"},{c:"2451",n:"創見",r:"記憶體模組與工控儲存"},
+    {c:"3260",n:"威剛",r:"記憶體模組"},{c:"4967",n:"十銓",r:"記憶體模組與電競儲存"},
+    {c:"8271",n:"宇瞻",r:"工控記憶體模組"}
+  ]},
+  {theme:"HBM", stocks:[
+    {c:"2408",n:"南亞科",r:"DRAM製造，開發自有HBM相關產品"},{c:"2344",n:"華邦電",r:"利基型記憶體與客製化記憶體方案"},
+    {c:"6531",n:"愛普*",r:"記憶體IP與先進封裝記憶體設計"},{c:"6770",n:"力積電",r:"記憶體與邏輯晶圓代工"},
+    {c:"2449",n:"京元電子",r:"晶圓針測與IC成品測試"},{c:"3131",n:"弘塑",r:"先進封裝濕製程與電鍍設備"},
+    {c:"3583",n:"辛耘",r:"晶粒堆疊暫時貼合與剝離設備"},{c:"6187",n:"萬潤",r:"堆疊封裝點膠與檢量測設備"},
+    {c:"6640",n:"均華",r:"黏晶機與晶片挑選設備"}
+  ]},
+  {theme:"先進封裝", stocks:[
+    {c:"2330",n:"台積電",r:"CoWoS/SoIC/InFO先進封裝平台"},{c:"3711",n:"日月光投控",r:"封測代工龍頭、CoWoS全製程"},
+    {c:"6239",n:"力成",r:"記憶體封測與FOPLP/TSV"},{c:"3374",n:"精材",r:"晶圓級封裝（台積電轉投資）"},
+    {c:"2449",n:"京元電子",r:"AI晶片測試（先進封裝後段）"},{c:"6515",n:"穎崴",r:"先進封裝測試介面/探針卡"},
+    {c:"6640",n:"均華",r:"先進封裝黏晶設備"},{c:"3131",n:"弘塑",r:"CoWoS濕製程設備"},
+    {c:"6187",n:"萬潤",r:"先進封裝點膠/檢測設備"},{c:"3680",n:"家登",r:"先進封裝載具"}
+  ]},
+  {theme:"半導體設備", stocks:[
+    {c:"3131",n:"弘塑",r:"濕製程與先進封裝設備"},{c:"3583",n:"辛耘",r:"自製濕製程設備、設備代理與晶圓再生"},
+    {c:"3413",n:"京鼎",r:"半導體前段設備關鍵模組"},{c:"6196",n:"帆宣",r:"半導體廠務工程與設備材料"},
+    {c:"2467",n:"志聖",r:"先進封裝與載板製程設備"},{c:"5443",n:"均豪",r:"檢測量測與研磨拋光設備"},
+    {c:"6640",n:"均華",r:"先進封裝Pick & Place設備"},{c:"6187",n:"萬潤",r:"先進封裝點膠／檢測設備"},
+    {c:"3680",n:"家登",r:"EUV光罩盒與先進封裝載具"},{c:"6438",n:"迅得",r:"半導體／載板自動化傳載設備"},
+    {c:"1560",n:"中砂",r:"鑽石碟與再生晶圓耗材"},{c:"6667",n:"信紘科",r:"高科技廠務供應系統"}
+  ]},
+  {theme:"低軌衛星", stocks:[
+    {c:"3491",n:"昇達科",r:"低軌衛星微波／毫米波元件"},{c:"2314",n:"台揚",r:"衛星通訊設備與相控陣列天線"},
+    {c:"6285",n:"啟碁",r:"低軌衛星寬頻終端設備"},{c:"2313",n:"華通",r:"衛星用PCB"},
+    {c:"3105",n:"穩懋",r:"衛星通訊用砷化鎵PA代工"},{c:"6271",n:"同欣電",r:"高頻通訊模組封裝"},
+    {c:"3419",n:"譁裕",r:"天線製造"}
+  ]},
+  {theme:"軍工／國防", stocks:[
+    {c:"2634",n:"漢翔",r:"軍機製造維修與航太發動機"},{c:"2208",n:"台船",r:"國艦國造（潛艦、軍艦建造）"},
+    {c:"6753",n:"龍德造船",r:"海軍艦艇與高性能船艇"},{c:"8033",n:"雷虎",r:"軍用商規無人機與無人艇"},
+    {c:"2630",n:"亞航",r:"軍機維修MRO"},{c:"5222",n:"全訊",r:"軍用微波元件"},
+    {c:"8222",n:"寶一",r:"航太發動機零組件"},{c:"4541",n:"晟田",r:"航太零組件加工與國防航太維修"},
+    {c:"6829",n:"千附精密",r:"航太結構件與國防高端精密零件"},{c:"4572",n:"駐龍",r:"航太機身結構件"},
+    {c:"5009",n:"榮剛",r:"航太／軍工特殊鋼上游材料"}
+  ]},
+  {theme:"無人機", stocks:[
+    {c:"8033",n:"雷虎",r:"無人機整機（軍用商規＋FPV）與無人艇"},{c:"3019",n:"亞光",r:"無人機光學鏡頭"},
+    {c:"3059",n:"華晶科",r:"無人機AI視覺與影像模組"},{c:"2374",n:"佳能",r:"無人機光學模組ODM"},
+    {c:"6928",n:"攸泰科技",r:"無人載具控制器與地面控制站(GCS)"}
+  ]},
+  {theme:"儲能", stocks:[
+    {c:"2308",n:"台達電",r:"儲能系統與能源基礎設施"},{c:"1513",n:"中興電",r:"儲能與微電網統包工程"},
+    {c:"3027",n:"盛達",r:"儲能／能源管理系統整合"},{c:"5309",n:"系統電",r:"BBU電池備援與儲能電池系統"},
+    {c:"4931",n:"新盛力",r:"高功率鋰電池模組與BMS"},{c:"3211",n:"順達",r:"伺服器BBU與ESS電池模組"},
+    {c:"6121",n:"新普",r:"資料中心BBU與BESS儲能系統"},{c:"5227",n:"立凱-KY",r:"磷酸鐵鋰正極材料與授權"},
+    {c:"1101",n:"台泥",r:"電池／儲能事業"}
+  ]},
+  {theme:"太陽能", stocks:[
+    {c:"6244",n:"茂迪",r:"太陽能電池與模組製造"},{c:"6443",n:"元晶",r:"太陽能電池／模組與系統"},
+    {c:"3576",n:"聯合再生",r:"垂直整合太陽能與儲能"},{c:"6477",n:"安集",r:"太陽能模組與電廠售電"},
+    {c:"3691",n:"碩禾",r:"太陽能導電漿材料"},{c:"5483",n:"中美晶",r:"矽晶圓與太陽能電池／模組"},
+    {c:"2406",n:"國碩",r:"太陽能導電銲帶與電廠工程"},{c:"6869",n:"雲豹能源",r:"太陽光電案場開發與綠電交易"},
+    {c:"6806",n:"森崴能源",r:"再生能源工程統包與售電"}
+  ]},
+  {theme:"風電", stocks:[
+    {c:"9958",n:"世紀鋼",r:"離岸風電水下基礎鋼構龍頭"},{c:"3708",n:"上緯投控",r:"風電葉片樹脂與複合材料"},
+    {c:"2013",n:"中鋼構",r:"離岸風電水下基礎製造"},{c:"2031",n:"新光鋼",r:"風電專案鋼材與鋼構"},
+    {c:"6806",n:"森崴能源",r:"離岸風電統包工程"},{c:"2208",n:"台船",r:"離岸風電海事工程"}
+  ]},
+  {theme:"電動車", stocks:[
+    {c:"2308",n:"台達電",r:"電動車電源系統與充電樁"},{c:"1536",n:"和大",r:"電動車減速齒輪與傳動系統"},
+    {c:"3665",n:"貿聯-KY",r:"車載高低壓線束與充電連接器"},{c:"3003",n:"健和興",r:"EV充電槍／座與電池連接器"},
+    {c:"6279",n:"胡連",r:"新能源車高壓連接器"},{c:"1533",n:"車王電",r:"電動巴士整車與三電底盤"},
+    {c:"4721",n:"美琪瑪",r:"電池材料（鎳鈷化學品）"},{c:"4739",n:"康普",r:"電池級硫酸鎳／鈷材料"},
+    {c:"4551",n:"智伸科",r:"新能源車精密零組件"}
+  ]},
+  {theme:"車用電子", stocks:[
+    {c:"2231",n:"為升",r:"車用感測與TPMS／毫米波雷達"},{c:"3552",n:"同致",r:"車用電子Tier 1（倒車雷達／ADAS）"},
+    {c:"2497",n:"怡利電",r:"車用抬頭顯示器(HUD)"},{c:"8255",n:"朋程",r:"車用功率二極體"},
+    {c:"6279",n:"胡連",r:"車用連接器與端子"},{c:"1533",n:"車王電",r:"汽車電子電控"}
+  ]},
+  {theme:"矽智財(IP)／ASIC設計服務", stocks:[
+    {c:"3529",n:"力旺",r:"嵌入式非揮發記憶體IP"},{c:"6533",n:"晶心科",r:"RISC-V處理器IP"},
+    {c:"6643",n:"M31",r:"基礎元件與介面IP"},{c:"3035",n:"智原",r:"ASIC設計服務與IP授權"},
+    {c:"3443",n:"創意",r:"ASIC設計服務（台積電生態系）"},{c:"3661",n:"世芯-KY",r:"高階ASIC turnkey設計服務"},
+    {c:"6531",n:"愛普*",r:"記憶體IP與客製化記憶體"}
+  ]},
+  {theme:"網通", stocks:[
+    {c:"2345",n:"智邦",r:"資料中心交換器（白牌龍頭）"},{c:"5388",n:"中磊",r:"電信寬頻CPE與FWA"},
+    {c:"6285",n:"啟碁",r:"無線通訊與網通設備（含衛星終端）"},{c:"3380",n:"明泰",r:"交換器與電信網路設備"},
+    {c:"4906",n:"正文",r:"無線寬頻與5G FWA設備"},{c:"3596",n:"智易",r:"智慧家庭閘道器與寬頻CPE"},
+    {c:"3704",n:"合勤控",r:"電信與企業網通設備"},{c:"3558",n:"神準",r:"交換器與無線基地台（自有品牌）"},
+    {c:"2332",n:"友訊",r:"品牌網通設備(D-Link)"}
+  ]},
+  {theme:"BBU伺服器備援電池", stocks:[
+    {c:"3211",n:"順達",r:"伺服器BBU電池模組"},{c:"3323",n:"加百裕",r:"伺服器與網通備用電源電池組"},
+    {c:"4931",n:"新盛力",r:"AI算力中心BBU／UPS電池備援模組"},{c:"6781",n:"AES-KY",r:"備援電池系統與工業儲能電池模組"},
+    {c:"6558",n:"興能高",r:"BBU與儲能用鋰電池芯"},{c:"2301",n:"光寶科",r:"AI資料中心高功率電源與機櫃整合"},
+    {c:"2308",n:"台達電",r:"資料中心電源方案與電源供應器龍頭"}
+  ]},
+  {theme:"資安", stocks:[
+    {c:"7765",n:"中華資安",r:"上網資安服務與資安專業服務"},{c:"6690",n:"安碁資訊",r:"SOC資安委外監控與滲透測試"},
+    {c:"3664",n:"安瑞-KY",r:"網路安全與應用交付設備"},{c:"6214",n:"精誠",r:"資訊服務，資安產品代理與導入"},
+    {c:"2480",n:"敦陽科",r:"系統整合，資安與雲端方案導入"},{c:"3029",n:"零壹",r:"企業級軟硬體與資安產品加值代理"},
+    {c:"2453",n:"凌群",r:"大型系統整合，金融與政府資安專案"},{c:"6752",n:"叡揚",r:"企業軟體與資訊安全治理服務"},
+    {c:"6245",n:"立端",r:"資安與網路設備硬體平台"},{c:"6865",n:"偉康科技",r:"金融業智慧資安與數位身分驗證"}
+  ]},
+  {theme:"玻璃基板", stocks:[
+    {c:"1802",n:"台玻",r:"玻璃材料本業，切入電子級玻璃基板"},{c:"3481",n:"群創",r:"面板廠轉型面板級封裝(FOPLP)"},
+    {c:"5234",n:"達興材料",r:"半導體與顯示器特用化學材料"},{c:"3583",n:"辛耘",r:"面板級封裝濕製程與貼合設備"},
+    {c:"2467",n:"志聖",r:"壓合與曝光設備，載板製程延伸"},{c:"3455",n:"由田",r:"自動光學檢測(AOI)設備"},
+    {c:"5443",n:"均豪",r:"檢測、研磨與拋光設備"},{c:"6187",n:"萬潤",r:"先進封裝點膠與光學檢量測設備"}
+  ]},
+  {theme:"蘋果供應鏈", stocks:[
+    {c:"2330",n:"台積電",r:"iPhone與Mac處理器晶圓代工"},{c:"2317",n:"鴻海",r:"iPhone組裝主力(EMS龍頭)"},
+    {c:"3008",n:"大立光",r:"iPhone高階鏡頭主要供應商"},{c:"4938",n:"和碩",r:"iPhone與周邊產品組裝"},
+    {c:"3406",n:"玉晶光",r:"iPhone鏡頭第二供應商"},{c:"4958",n:"臻鼎-KY",r:"iPhone軟板與類載板(SLP)"},
+    {c:"2439",n:"美律",r:"耳機與揚聲器聲學元件"},{c:"6176",n:"瑞儀",r:"iPad與Mac背光模組"},
+    {c:"2392",n:"正崴",r:"連接器與充電周邊"}
+  ]},
+  {theme:"IC設計", stocks:[
+    {c:"2454",n:"聯發科",r:"IC設計龍頭，智慧型手機／AI晶片"},{c:"3034",n:"聯詠",r:"面板驅動IC／系統單晶片"},
+    {c:"2379",n:"瑞昱",r:"網通／PC周邊IC"},{c:"6415",n:"矽力*-KY",r:"電源管理IC"},
+    {c:"4966",n:"譜瑞-KY",r:"顯示介面IC"},{c:"8016",n:"矽創",r:"顯示驅動IC"},
+    {c:"3227",n:"原相",r:"光學感測IC"}
+  ]},
+  {theme:"晶圓代工", stocks:[
+    {c:"2330",n:"台積電",r:"晶圓代工龍頭"},{c:"5347",n:"世界先進",r:"成熟製程晶圓代工"},
+    {c:"6770",n:"力積電",r:"記憶體與邏輯晶圓代工"}
+  ]},
+  {theme:"金融控股", stocks:[
+    {c:"2881",n:"富邦金",r:"金控（產壽險＋銀行）"},{c:"2882",n:"國泰金",r:"金控（壽險＋銀行）"},
+    {c:"2891",n:"中信金",r:"金控（銀行為主）"},{c:"2886",n:"兆豐金",r:"金控（銀行為主，公股）"},
+    {c:"2884",n:"玉山金",r:"金控（銀行為主）"},{c:"2892",n:"第一金",r:"金控（銀行為主，公股）"},
+    {c:"2887",n:"台新金",r:"金控（銀行＋證券）"},{c:"2880",n:"華南金",r:"金控（銀行為主，公股）"}
+  ]},
+  {theme:"航運", stocks:[
+    {c:"2603",n:"長榮",r:"貨櫃航運龍頭"},{c:"2609",n:"陽明",r:"貨櫃航運"},
+    {c:"2615",n:"萬海",r:"貨櫃航運（亞洲線為主）"},{c:"2618",n:"長榮航",r:"航空貨運／客運"},
+    {c:"2610",n:"華航",r:"航空貨運／客運"}
+  ]},
+  {theme:"生技新藥", stocks:[
+    {c:"6446",n:"藥華藥",r:"新藥研發（血液疾病）"},{c:"4174",n:"浩鼎",r:"新藥研發（癌症疫苗）"},
+    {c:"4142",n:"國光生",r:"疫苗研發與生產"},{c:"6547",n:"高端疫苗",r:"疫苗研發與生產"},
+    {c:"4123",n:"晟德",r:"生技控股與新藥開發投資"},{c:"6472",n:"保瑞",r:"藥品CDMO代工"}
+  ]},
+  {theme:"鋼鐵", stocks:[
+    {c:"2002",n:"中鋼",r:"鋼鐵龍頭（高爐）"},{c:"2015",n:"豐興",r:"電爐鋼筋"},
+    {c:"2006",n:"東和鋼鐵",r:"電爐型鋼"}
+  ]},
+  {theme:"營建", stocks:[
+    {c:"2542",n:"興富發",r:"住宅營建開發"},{c:"2545",n:"皇翔",r:"住宅營建開發"},
+    {c:"5522",n:"遠雄",r:"營建與資產開發"},{c:"2520",n:"冠德",r:"營建與資產開發"},
+    {c:"2534",n:"宏盛",r:"營建開發"}
+  ]},
+  {theme:"面板顯示器", stocks:[
+    {c:"2409",n:"友達",r:"面板雙虎之一"},{c:"3481",n:"群創",r:"面板雙虎之一"}
+  ]},
+  {theme:"石化", stocks:[
+    {c:"1301",n:"台塑",r:"石化／塑膠原料"},{c:"1303",n:"南亞",r:"石化／電子材料"},
+    {c:"1326",n:"台化",r:"石化／紡纖原料"},{c:"6505",n:"台塑化",r:"煉油／石化"}
+  ]},
+  {theme:"電信三雄", stocks:[
+    {c:"2412",n:"中華電",r:"電信龍頭（公股）"},{c:"3045",n:"台灣大",r:"電信三雄"},
+    {c:"4904",n:"遠傳",r:"電信三雄"}
+  ]},
+  {theme:"觀光餐飲", stocks:[
+    {c:"2707",n:"晶華",r:"飯店餐飲集團"},{c:"5706",n:"鳳凰",r:"旅行社／觀光"},
+    {c:"2727",n:"王品",r:"連鎖餐飲集團"}
+  ]}
+];
+const CONCEPT_INDEX = {};
+const CONCEPT_NAME_MAP = {};
+CONCEPT_THEMES.forEach(t=>{
+  t.stocks.forEach(s=>{
+    if(!CONCEPT_INDEX[s.c]) CONCEPT_INDEX[s.c] = [];
+    CONCEPT_INDEX[s.c].push(t.theme);
+    if(!CONCEPT_NAME_MAP[s.c]) CONCEPT_NAME_MAP[s.c] = s.n;
+  });
+});
+const ALL_NAME_MAP = Object.assign({}, CONCEPT_NAME_MAP, NAME_MAP);
+
+/* ========================= 共用工具 ========================= */
+function sleep(ms){ return new Promise(r=>setTimeout(r,ms)); }
+function pad2(n){ return n<10 ? ('0'+n) : (''+n); }
+function avg(arr){ return arr.reduce((a,b)=>a+b,0)/arr.length; }
+function stdev(arr,m){ const v = arr.reduce((s,x)=>s+(x-m)*(x-m),0)/arr.length; return Math.sqrt(v); }
+
+/* ========================= 股價資料抓取：Yahoo為主 + 證交所STOCK_DAY補齊 ========================= */
+async function fetchYahooRange(code, suffix, range){
+  const url = `https://query1.finance.yahoo.com/v8/finance/chart/${code}${suffix}?range=${range}&interval=1d`;
+  const res = await fetch(url, {mode:'cors'});
+  if(!res.ok) throw new Error('yahoo http '+res.status);
+  const json = await res.json();
+  const result = json.chart && json.chart.result && json.chart.result[0];
+  if(!result) throw new Error('yahoo no data');
+  const q = result.indicators.quote[0];
+  const ts = result.timestamp || [];
+  const bars = [];
+  for(let i=0;i<ts.length;i++){
+    if(q.close[i]==null) continue;
+    const d = new Date(ts[i]*1000);
+    const dateStr = d.toISOString().slice(0,10);
+    bars.push({date:dateStr, open:q.open[i], high:q.high[i], low:q.low[i], close:q.close[i], volume:q.volume[i]});
+  }
+  return bars;
+}
+
+async function fetchTwseMonth(code, yyyymm){
+  const url = `https://www.twse.com.tw/exchangeReport/STOCK_DAY?response=json&date=${yyyymm}01&stockNo=${code}`;
+  const res = await fetch(url, {mode:'cors'});
+  if(!res.ok) throw new Error('twse http '+res.status);
+  const json = await res.json();
+  if(json.stat !== 'OK' || !json.data) return [];
+  const clean = s => parseFloat(String(s).replace(/,/g,''));
+  return json.data.map(row=>{
+    const parts = String(row[0]).split('/');
+    const y = parseInt(parts[0],10) + 1911;
+    const dateStr = `${y}-${(parts[1]||'01').padStart(2,'0')}-${(parts[2]||'01').padStart(2,'0')}`;
+    return { date:dateStr, open:clean(row[3]), high:clean(row[4]), low:clean(row[5]), close:clean(row[6]), volume:clean(row[1]) };
+  }).filter(b=>!isNaN(b.close));
+}
+
+async function fetchTwseLong(code, monthsBack){
+  const bars = [];
+  const now = new Date();
+  const months = [];
+  for(let i=monthsBack;i>=0;i--){
+    const d = new Date(now.getFullYear(), now.getMonth()-i, 1);
+    months.push(d.getFullYear()+pad2(d.getMonth()+1));
+  }
+  for(const ym of months){
+    try{
+      const rows = await fetchTwseMonth(code, ym);
+      bars.push(...rows);
+    }catch(e){}
+    await sleep(130);
+  }
+  return bars;
+}
+
+async function fetchBarsLong(code){
+  let best = [], source = '';
+  for(const suffix of ['.TW','.TWO']){
+    try{
+      let bars = await fetchYahooRange(code, suffix, '2y');
+      if(bars.length < 200){
+        const retry = await fetchYahooRange(code, suffix, '2y').catch(()=>[]);
+        if(retry.length > bars.length) bars = retry;
+      }
+      if(bars.length > best.length){ best = bars; source = 'yahoo'+suffix; }
+      if(best.length >= 200) break;
+    }catch(e){}
+  }
+  if(best.length < 200){
+    try{
+      const twse = await fetchTwseLong(code, 10);
+      if(twse.length > best.length){ best = twse; source = 'twse'; }
+    }catch(e){}
+  }
+  if(best.length < 30) throw new Error('資料不足（僅'+best.length+'日）');
+  return { bars: best, source, days: best.length };
+}
+
+/* ========================= 三大法人（T86，外資＋投信） ========================= */
+async function fetchT86(dateStr){
+  const url = `https://www.twse.com.tw/rwd/zh/fund/T86?response=json&date=${dateStr}&selectType=ALLBUT0999`;
+  const res = await fetch(url, {mode:'cors'});
+  if(!res.ok) throw new Error('t86 http '+res.status);
+  const json = await res.json();
+  if(json.stat !== 'OK' || !json.data) return null;
+  const fields = json.fields || [];
+  const idxCode = fields.findIndex(f=>f.includes('證券代號'));
+  const idxForeignExcl = fields.findIndex(f=>f.includes('外陸資買賣超股數') && !f.includes('自營商'));
+  const idxForeignDealer = fields.findIndex(f=>f.includes('外資自營商買賣超股數'));
+  const idxTrust = fields.findIndex(f=>f.includes('投信買賣超股數'));
+  if(idxCode<0 || idxTrust<0) return null;
+  const clean = s => parseFloat(String(s).replace(/,/g,'')) || 0;
+  const map = {};
+  json.data.forEach(row=>{
+    const code = String(row[idxCode]).trim();
+    const foreign = (idxForeignExcl>=0?clean(row[idxForeignExcl]):0) + (idxForeignDealer>=0?clean(row[idxForeignDealer]):0);
+    const trust = idxTrust>=0?clean(row[idxTrust]):0;
+    map[code] = { foreign, trust };
+  });
+  return map;
+}
+
+let instHistoryCache = null;
+async function ensureInstHistory(){
+  if(instHistoryCache) return instHistoryCache;
+  const history = {};
+  let collected = 0, daysBack = 0;
+  const maxDaysBack = 25;
+  while(collected < 6 && daysBack < maxDaysBack){
+    const d = new Date();
+    d.setDate(d.getDate()-daysBack);
+    daysBack++;
+    const dow = d.getDay();
+    if(dow===0 || dow===6) continue;
+    const dateStr = ''+d.getFullYear()+pad2(d.getMonth()+1)+pad2(d.getDate());
+    try{
+      const map = await fetchT86(dateStr);
+      if(map && Object.keys(map).length>0){
+        Object.entries(map).forEach(([code,v])=>{
+          if(!history[code]) history[code] = [];
+          history[code].push({ date:dateStr, foreign:v.foreign, trust:v.trust });
+        });
+        collected++;
+      }
+    }catch(e){}
+    await sleep(80);
+  }
+  Object.keys(history).forEach(code=>{ history[code].reverse(); });
+  instHistoryCache = history;
+  return history;
+}
+
+/* ========================= 技術指標計算：均線／KD／MACD／布林 ========================= */
+function computeIndicators(bars){
+  const closes = bars.map(b=>b.close);
+  const n = bars.length;
+  for(let i=0;i<n;i++){
+    if(i>=4) bars[i].ma5 = avg(closes.slice(i-4,i+1));
+    if(i>=9) bars[i].ma10 = avg(closes.slice(i-9,i+1));
+    if(i>=19){
+      const win = closes.slice(i-19,i+1);
+      const m = avg(win), sd = stdev(win,m);
+      bars[i].ma20 = m; bars[i].upper = m+2*sd; bars[i].lower = m-2*sd;
+      bars[i].bw = m!==0 ? (bars[i].upper-bars[i].lower)/m : null;
+      bars[i].percentB = (bars[i].upper===bars[i].lower) ? null : (bars[i].close-bars[i].lower)/(bars[i].upper-bars[i].lower);
+    }
+    if(i>=59) bars[i].ma60 = avg(closes.slice(i-59,i+1));
+  }
+  let prevK = 50, prevD = 50;
+  for(let i=0;i<n;i++){
+    if(i>=8){
+      const win = bars.slice(i-8,i+1);
+      const hh = Math.max(...win.map(b=>b.high));
+      const ll = Math.min(...win.map(b=>b.low));
+      const rsv = (hh===ll) ? 50 : (bars[i].close-ll)/(hh-ll)*100;
+      const k = prevK*2/3 + rsv/3;
+      const d = prevD*2/3 + k/3;
+      bars[i].k = k; bars[i].d = d; bars[i].rsv = rsv;
+      prevK = k; prevD = d;
+    }
+  }
+  let ema12 = null, ema26 = null, dea = null;
+  const k12 = 2/13, k26 = 2/27, k9 = 2/10;
+  for(let i=0;i<n;i++){
+    const c = closes[i];
+    ema12 = ema12===null ? c : c*k12 + ema12*(1-k12);
+    ema26 = ema26===null ? c : c*k26 + ema26*(1-k26);
+    const dif = ema12-ema26;
+    bars[i].dif = dif;
+    if(i>=25){
+      dea = dea===null ? dif : dif*k9 + dea*(1-k9);
+      bars[i].dea = dea;
+      bars[i].hist = dif-dea;
+    }
+  }
+  return bars;
+}
+
+/* ========================= 5項條件評估 ========================= */
+function evalMA(bars){
+  const last = bars[bars.length-1];
+  if(!last || last.ma5==null || last.ma10==null || last.ma20==null || last.ma60==null) return {pass:false};
+  const pass = last.ma5>last.ma10 && last.ma10>last.ma20 && last.ma20>last.ma60 && last.close>last.ma5;
+  return {pass};
+}
+function evalKD(bars){
+  const n = bars.length;
+  const last = bars[n-1], prev = bars[n-2];
+  if(!last || !prev || last.k==null || last.d==null || prev.k==null || prev.d==null) return {pass:false};
+  const pass = last.k>last.d && prev.k<=prev.d;
+  return {pass, k:last.k, d:last.d};
+}
+function evalMACD(bars){
+  const n = bars.length;
+  const last = bars[n-1], prev = bars[n-2];
+  if(!last || !prev || last.hist==null || prev.hist==null) return {pass:false};
+  const pass = last.hist > prev.hist;
+  const kind = last.hist < 0 ? '綠柱收斂' : '紅柱轉強';
+  return {pass, hist:last.hist, kind};
+}
+function evalSqueeze(bars){
+  const n = bars.length;
+  const last = bars[n-1];
+  if(!last || last.bw==null) return {pass:false};
+  const bwSeries = bars.map(b=>b.bw).filter(v=>v!=null);
+  if(bwSeries.length < 40) return {pass:false};
+  const lookbackN = Math.min(120, bwSeries.length);
+  const recentBW = bars.slice(n-lookbackN).map(b=>b.bw).filter(v=>v!=null);
+  const sorted = [...recentBW].sort((a,b)=>a-b);
+  let rank = sorted.findIndex(v=>v>=last.bw);
+  if(rank<0) rank = sorted.length-1;
+  const percentile = sorted.length>1 ? rank/(sorted.length-1) : 0;
+  const win = bars.slice(Math.max(0,n-6), n).map(b=>b.bw);
+  const pastWin = win.slice(0,-1).filter(v=>v!=null);
+  if(pastWin.length===0) return {pass:false, percentile, bw:last.bw};
+  const minPast = Math.min(...pastWin);
+  const prev = bars[n-2];
+  const risingToday = prev && prev.bw!=null ? last.bw > prev.bw : false;
+  const expanding = last.bw > minPast;
+  const priceUp = prev ? last.close >= prev.close : false;
+  const wasSqueezed = percentile <= 0.2;
+  const pass = wasSqueezed && expanding && risingToday && priceUp;
+  return {pass, percentile, bw:last.bw};
+}
+function evalInst(code, instHistory){
+  const hist = instHistory[code];
+  if(!hist || hist.length<5) return {pass:false, days: hist ? hist.length : 0};
+  const last5 = hist.slice(-5);
+  const pass = last5.every(d=>d.foreign>0 && d.trust>0);
+  const totalVol = last5.reduce((s,d)=>s+d.foreign+d.trust,0);
+  return {pass, days:last5.length, totalVol};
+}
+function evaluateAll(code, name, bars, instHistory){
+  const c1 = evalMA(bars), c2 = evalKD(bars), c3 = evalMACD(bars), c4 = evalSqueeze(bars), c5 = evalInst(code, instHistory);
+  const passCount = [c1.pass,c2.pass,c3.pass,c4.pass,c5.pass].filter(Boolean).length;
+  const last = bars[bars.length-1];
+  return { code, name, c1, c2, c3, c4, c5, passCount, close: last ? last.close : null, instVol: c5.totalVol || 0 };
+}
+
+/* ========================= 表格渲染 ========================= */
+function tag(pass, label, extra){
+  const cls = pass ? 'tag-red' : 'tag-gray';
+  return `<span class="tag ${cls}">${label}${extra?('<br><span style="font-weight:400;font-size:.68rem;">'+extra+'</span>'):''}</span>`;
+}
+function candidateRowHtml(r, i, ns){
+  const c1t = tag(r.c1.pass, r.c1.pass?'多頭排列':'未排列');
+  const c2t = tag(r.c2.pass, r.c2.pass?'剛黃金交叉':'無交叉', (r.c2.k!=null? ('K'+r.c2.k.toFixed(1)+' D'+r.c2.d.toFixed(1)):''));
+  const c3t = tag(r.c3.pass, r.c3.pass?(r.c3.kind||'轉強'):'未轉強', r.c3.hist!=null? ('柱'+r.c3.hist.toFixed(2)):'');
+  const c4t = tag(r.c4.pass, r.c4.pass?'擠壓開口':'未達條件', r.c4.percentile!=null? ('位階'+(r.c4.percentile*100).toFixed(0)+'%'):'');
+  const c5t = tag(r.c5.pass, r.c5.pass?'連5買':'未達成', r.c5.totalVol? (r.c5.days+'日/'+Math.round(r.c5.totalVol/1000)+'張') : (r.c5.days!=null?'資料不足('+r.c5.days+'日)':'資料不足'));
+  const id = ns+'-'+r.code;
+  return `<tr>
+    <td><span class="badge-rank">${i+1}</span></td>
+    <td>${r.name||NAME_MAP[r.code]||'-'} <span style="color:var(--text-faint);font-size:.78rem;">${r.code}</span></td>
+    <td>${r.close!=null? r.close.toFixed(2):'-'}</td>
+    <td>${c1t}</td><td>${c2t}</td><td>${c3t}</td><td>${c4t}</td><td>${c5t}</td>
+    <td><button class="btn-chart" data-code="${r.code}" data-ns="${ns}">查看線圖</button></td>
+  </tr>
+  <tr class="chart-row" id="chartrow-${id}" style="display:none;">
+    <td colspan="9"><div class="chart-wrap"><canvas id="chart-${id}"></canvas></div></td>
+  </tr>`;
+}
+function errorRowHtml(r, ns){
+  return `<tr><td colspan="2">${r.name||NAME_MAP[r.code]||'-'} <span style="color:var(--text-faint);font-size:.78rem;">${r.code}</span></td><td colspan="7" class="data-pending">⚠️ 資料無法取得（可能是代號有誤，或資料來源暫時無法連線）</td></tr>`;
+}
+function renderCandidates(tableId, summaryId, list, totalScanned){
+  const tbody = document.querySelector('#'+tableId+' tbody');
+  const summary = document.getElementById(summaryId);
+  if(list.length===0){
+    tbody.innerHTML = `<tr><td colspan="9" class="empty-state">今日全市場${totalScanned}檔中，沒有個股同時符合5項條件（均線多頭排列＋KD剛黃金交叉＋MACD轉強＋布林擠壓開口＋外資投信連5買）。市況如實反映，不會為了湊數放寬標準。</td></tr>`;
+    summary.innerHTML = `<div class="desc">符合檔數：0 / ${totalScanned}</div>`;
+    return;
+  }
+  tbody.innerHTML = list.map((r,i)=>candidateRowHtml(r,i,'auto')).join('');
+  summary.innerHTML = `<div class="stat-grid"><div class="stat-box"><b>${list.length}</b><span>5項條件全數命中</span></div><div class="stat-box"><b>${totalScanned}</b><span>掃描檔數</span></div></div>`;
+}
+function fullScanRowHtml(r){
+  if(r.error) return `<tr><td>${r.name||NAME_MAP[r.code]||'-'} <span style="color:var(--text-faint);font-size:.78rem;">${r.code}</span></td><td colspan="3" class="data-pending">⚠️ 資料無法取得</td></tr>`;
+  const tags = [tag(r.c1.pass,'均線'), tag(r.c2.pass,'KD'), tag(r.c3.pass,'MACD'), tag(r.c4.pass,'布林'), tag(r.c5.pass,'籌碼')].join(' ');
+  return `<tr><td>${r.name||NAME_MAP[r.code]||'-'} <span style="color:var(--text-faint);font-size:.78rem;">${r.code}</span></td><td>${r.close!=null?r.close.toFixed(2):'-'}</td><td>${r.passCount!=null? r.passCount+'/5':'-'}</td><td>${tags}</td></tr>`;
+}
+function renderFullScan(list){
+  const tbody = document.querySelector('#fullScanTable tbody');
+  tbody.innerHTML = list.map(fullScanRowHtml).join('');
+}
+
+/* ========================= 線圖：K線＋MA＋布林／KD／MACD 三層 canvas ========================= */
+let barsCache = {};
+function drawStockChart(canvas, bars){
+  if(!bars || bars.length===0) return;
+  const N = Math.min(90, bars.length);
+  const data = bars.slice(bars.length-N);
+  const dpr = window.devicePixelRatio || 1;
+  const cssW = canvas.parentElement.clientWidth || 600;
+  const cssH = 340;
+  canvas.width = cssW*dpr; canvas.height = cssH*dpr;
+  canvas.style.width = cssW+'px'; canvas.style.height = cssH+'px';
+  const ctx = canvas.getContext('2d');
+  ctx.setTransform(1,0,0,1,0,0);
+  ctx.scale(dpr,dpr);
+  ctx.clearRect(0,0,cssW,cssH);
+  const rootDark = document.documentElement.getAttribute('data-theme');
+  const isDark = rootDark==='dark' || (rootDark!=='light' && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
+  const colors = {
+    text: isDark?'#a9b5ac':'#5c675f', grid: isDark?'#26362e':'#dde3d9',
+    up: isDark?'#e2756a':'#b23b2e', down: isDark?'#4fbf8e':'#1e7a52',
+    ma5:'#e0ab4c', ma10:'#5b9bd5', ma20:'#8e6fd1', ma60:'#8a948b',
+    boll: isDark?'rgba(224,171,76,.16)':'rgba(168,121,31,.10)',
+    k:'#e0ab4c', d:'#5b9bd5'
+  };
+  const padL=44, padR=10, padT=10;
+  const priceH=190, kdH=56, macdH=56, gap=16;
+  const priceTop=padT, kdTop=priceTop+priceH+gap, macdTop=kdTop+kdH+gap;
+  const plotW = cssW-padL-padR;
+  const bw = plotW/N;
+  let pmin=Infinity, pmax=-Infinity;
+  data.forEach(b=>{
+    pmin = Math.min(pmin, b.low, b.lower!=null?b.lower:b.low, b.ma60!=null?b.ma60:b.low);
+    pmax = Math.max(pmax, b.high, b.upper!=null?b.upper:b.high, b.ma60!=null?b.ma60:b.high);
+  });
+  if(!isFinite(pmin)){ pmin=0; pmax=1; }
+  const ppad = (pmax-pmin)*0.06 || 1;
+  pmin -= ppad; pmax += ppad;
+  const yP = v => priceTop + priceH - (v-pmin)/(pmax-pmin)*priceH;
+  ctx.font = '10px Roboto Mono, monospace';
+  ctx.strokeStyle = colors.grid; ctx.fillStyle = colors.text; ctx.lineWidth = 1;
+  for(let i=0;i<=4;i++){
+    const v = pmin + (pmax-pmin)*i/4;
+    const y = yP(v);
+    ctx.beginPath(); ctx.moveTo(padL,y); ctx.lineTo(padL+plotW,y); ctx.stroke();
+    ctx.fillText(v.toFixed(1), 2, y+3);
+  }
+  ctx.beginPath();
+  let boundStarted = false;
+  data.forEach((b,i)=>{
+    if(b.upper==null) return;
+    const x = padL + i*bw + bw/2;
+    if(!boundStarted){ ctx.moveTo(x, yP(b.upper)); boundStarted = true; } else ctx.lineTo(x, yP(b.upper));
+  });
+  for(let i=data.length-1;i>=0;i--){
+    const b = data[i]; if(b.lower==null) continue;
+    const x = padL + i*bw + bw/2;
+    ctx.lineTo(x, yP(b.lower));
+  }
+  ctx.closePath(); ctx.fillStyle = colors.boll; ctx.fill();
+  function drawLine(key, color, top, height, scaleFn){
+    ctx.beginPath(); let started=false;
+    data.forEach((b,i)=>{
+      if(b[key]==null) return;
+      const x = padL+i*bw+bw/2, y = scaleFn(b[key]);
+      if(!started){ ctx.moveTo(x,y); started=true; } else ctx.lineTo(x,y);
+    });
+    ctx.strokeStyle = color; ctx.lineWidth = 1.3; ctx.stroke();
+  }
+  drawLine('ma5', colors.ma5, priceTop, priceH, yP);
+  drawLine('ma10', colors.ma10, priceTop, priceH, yP);
+  drawLine('ma20', colors.ma20, priceTop, priceH, yP);
+  drawLine('ma60', colors.ma60, priceTop, priceH, yP);
+  data.forEach((b,i)=>{
+    const x = padL + i*bw + bw/2;
+    const up = b.close>=b.open;
+    ctx.strokeStyle = up?colors.up:colors.down;
+    ctx.fillStyle = up?colors.up:colors.down;
+    ctx.beginPath(); ctx.moveTo(x, yP(b.high)); ctx.lineTo(x, yP(b.low)); ctx.stroke();
+    const bodyTop = yP(Math.max(b.open,b.close)), bodyBot = yP(Math.min(b.open,b.close));
+    const w = Math.max(1, bw*0.55);
+    ctx.fillRect(x-w/2, bodyTop, w, Math.max(1, bodyBot-bodyTop));
+  });
+  ctx.strokeStyle = colors.grid;
+  ctx.strokeRect(padL, kdTop, plotW, kdH);
+  const yKD = v => kdTop + kdH - v/100*kdH;
+  ctx.setLineDash([2,2]);
+  [20,50,80].forEach(v=>{
+    ctx.beginPath(); ctx.moveTo(padL,yKD(v)); ctx.lineTo(padL+plotW,yKD(v)); ctx.stroke();
+  });
+  ctx.setLineDash([]);
+  drawLine('k', colors.k, kdTop, kdH, yKD);
+  drawLine('d', colors.d, kdTop, kdH, yKD);
+  ctx.fillStyle = colors.text; ctx.fillText('KD', 2, kdTop+10);
+  ctx.strokeStyle = colors.grid;
+  ctx.strokeRect(padL, macdTop, plotW, macdH);
+  let hmin=0, hmax=0;
+  data.forEach(b=>{ if(b.hist!=null){ hmin=Math.min(hmin,b.hist); hmax=Math.max(hmax,b.hist); } });
+  if(hmin===hmax){ hmin=-1; hmax=1; }
+  const hpad = (hmax-hmin)*0.1 || 0.1;
+  hmin -= hpad; hmax += hpad;
+  const yM = v => macdTop + macdH - (v-hmin)/(hmax-hmin)*macdH;
+  const zeroY = yM(0);
+  ctx.beginPath(); ctx.strokeStyle = colors.grid; ctx.moveTo(padL, zeroY); ctx.lineTo(padL+plotW, zeroY); ctx.stroke();
+  data.forEach((b,i)=>{
+    if(b.hist==null) return;
+    const x = padL + i*bw + bw/2;
+    const y1 = yM(b.hist);
+    ctx.fillStyle = b.hist>=0 ? colors.up : colors.down;
+    const w = Math.max(1, bw*0.55);
+    ctx.fillRect(x-w/2, Math.min(zeroY,y1), w, Math.max(1,Math.abs(y1-zeroY)));
+  });
+  drawLine('dif', colors.ma5, macdTop, macdH, yM);
+  drawLine('dea', colors.d, macdTop, macdH, yM);
+  ctx.fillStyle = colors.text; ctx.fillText('MACD', 2, macdTop+10);
+  const labelEvery = Math.max(1, Math.floor(N/5));
+  data.forEach((b,i)=>{
+    if(i%labelEvery!==0) return;
+    const x = padL + i*bw + bw/2;
+    const lbl = b.date ? b.date.slice(5) : '';
+    ctx.fillText(lbl, x-14, macdTop+macdH+14);
+  });
+}
+document.addEventListener('click', (e)=>{
+  const btn = e.target.closest('.btn-chart');
+  if(!btn) return;
+  const code = btn.dataset.code, ns = btn.dataset.ns;
+  const row = document.getElementById('chartrow-'+ns+'-'+code);
+  if(!row) return;
+  const showing = row.style.display !== 'none';
+  if(showing){ row.style.display = 'none'; btn.textContent = '查看線圖'; return; }
+  row.style.display = 'table-row';
+  btn.textContent = '收合線圖';
+  const canvas = document.getElementById('chart-'+ns+'-'+code);
+  const bars = barsCache[code];
+  if(bars) drawStockChart(canvas, bars);
+});
+
+/* ========================= Step 1：全市場掃描 ========================= */
+let scanningAll = false;
+async function scanAll(){
+  if(scanningAll) return;
+  scanningAll = true;
+  const btn = document.getElementById('scanBtn');
+  btn.disabled = true;
+  const wrap = document.getElementById('progressWrap');
+  const bar = document.getElementById('progressBar');
+  const text = document.getElementById('progressText');
+  wrap.classList.add('show');
+  text.textContent = '正在取得三大法人資料…';
+  const instHistory = await ensureInstHistory();
+  let done = 0;
+  const total = STOCK_LIST.length;
+  const results = [];
+  const concurrency = 6;
+  let idx = 0;
+  async function worker(){
+    while(idx < STOCK_LIST.length){
+      const my = STOCK_LIST[idx++];
+      try{
+        const {bars} = await fetchBarsLong(my.c);
+        computeIndicators(bars);
+        barsCache[my.c] = bars;
+        results.push(evaluateAll(my.c, my.n, bars, instHistory));
+      }catch(e){
+        results.push({code:my.c, name:my.n, error:true});
+      }
+      done++;
+      const pct = Math.round(done/total*100);
+      bar.style.width = pct+'%';
+      text.textContent = `已掃描 ${done} / ${total} 檔（${pct}%）`;
+    }
+  }
+  await Promise.all(Array.from({length:concurrency}, worker));
+  scanningAll = false;
+  btn.disabled = false;
+  document.getElementById('scanTime').textContent = '掃描時間：' + new Date().toLocaleString('zh-TW');
+  text.textContent += ' ｜ 完成';
+
+  const candidates = results.filter(r=>!r.error && r.passCount===5);
+  candidates.sort((a,b)=> (b.instVol||0)-(a.instVol||0));
+  renderCandidates('autoTable', 'autoSummary', candidates, results.length);
+  document.getElementById('autoResultCard').style.display = 'block';
+
+  const allSorted = [...results].sort((a,b)=>{
+    if(a.error && !b.error) return 1;
+    if(!a.error && b.error) return -1;
+    return (b.passCount||0) - (a.passCount||0);
+  });
+  renderFullScan(allSorted);
+}
+document.getElementById('scanBtn').addEventListener('click', scanAll);
+
+/* ========================= Step 2：自訂名單（最多30檔） ========================= */
+document.getElementById('manualBtn').addEventListener('click', runManual);
+async function runManual(){
+  const ta = document.getElementById('manualTextarea');
+  const raw = ta.value.split(/[\s,，、;；]+/).map(s=>s.trim()).filter(Boolean);
+  const codes = [...new Set(raw)].slice(0,30);
+  const status = document.getElementById('manualStatus');
+  const card = document.getElementById('manualResultCard');
+  if(codes.length===0){ status.textContent = '請至少輸入一檔股票代號'; return; }
+  status.textContent = raw.length>30 ? '已偵測到超過30檔，僅計算前30檔' : '';
+  const btn = document.getElementById('manualBtn');
+  btn.disabled = true;
+  card.style.display = 'none';
+  const instHistory = await ensureInstHistory();
+  const results = [];
+  let done = 0;
+  for(const code of codes){
+    try{
+      const {bars} = await fetchBarsLong(code);
+      computeIndicators(bars);
+      barsCache[code] = bars;
+      results.push(evaluateAll(code, NAME_MAP[code]||null, bars, instHistory));
+    }catch(e){
+      results.push({code, name:NAME_MAP[code]||null, error:true});
+    }
+    done++;
+    status.textContent = `查詢中…（${done}/${codes.length}）`;
+  }
+  btn.disabled = false;
+  status.textContent = `完成，共查詢 ${codes.length} 檔｜查詢時間：${new Date().toLocaleString('zh-TW')}`;
+  const tbody = document.querySelector('#manualTable tbody');
+  tbody.innerHTML = results.map((r,i)=> r.error ? errorRowHtml(r,'manual') : candidateRowHtml(r,i,'manual')).join('');
+  const hitCount = results.filter(r=>!r.error && r.passCount===5).length;
+  document.getElementById('manualSummary').innerHTML = `<div class="stat-grid"><div class="stat-box"><b>${hitCount}</b><span>5項條件全數命中</span></div><div class="stat-box"><b>${results.length}</b><span>查詢檔數</span></div></div>`;
+  card.style.display = 'block';
+}
+
+/* ========================= Step 3：概念股查詢 ========================= */
+function escapeHtml(s){
+  return String(s).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+function resolveQuery(input){
+  const q = (input||'').trim();
+  if(!q) return {status:'empty'};
+  const qUpper = q.toUpperCase();
+  if(ALL_NAME_MAP[qUpper]) return {status:'ok', code:qUpper, name:ALL_NAME_MAP[qUpper]};
+  const entries = Object.entries(ALL_NAME_MAP);
+  const exact = entries.filter(([c,n])=>n===q);
+  if(exact.length===1) return {status:'ok', code:exact[0][0], name:exact[0][1]};
+  if(exact.length>1) return {status:'multiple', candidates:exact};
+  const partial = entries.filter(([c,n])=>n.includes(q) || c.includes(qUpper));
+  if(partial.length===1) return {status:'ok', code:partial[0][0], name:partial[0][1]};
+  if(partial.length>1) return {status:'multiple', candidates:partial.slice(0,20)};
+  return {status:'notfound'};
+}
+function conceptStockRowHtml(s, selfCode){
+  const isSelf = s.c===selfCode;
+  const id = 'concept-'+s.c;
+  return `<div class="concept-stock${isSelf?' is-self':''}">
+    <div class="c-name">${s.n}${isSelf?' <span class="self-mark">（本股）</span>':''} <span class="c-code">${s.c}</span>
+      <button class="btn-chart-sm" data-code="${s.c}" style="margin-left:auto;">線圖</button>
+    </div>
+    ${s.r?`<span class="c-role">${s.r}</span>`:''}
+    <div class="chart-row" id="chartrow-concept-${s.c}" style="display:none;"><div class="chart-wrap"><canvas id="chart-concept-${s.c}"></canvas></div></div>
+  </div>`;
+}
+function renderConceptResult(input){
+  const box = document.getElementById('conceptResult');
+  const resolved = resolveQuery(input);
+  if(resolved.status==='empty'){
+    box.innerHTML = '<div class="desc" style="margin:0;">請輸入股票代號或名稱。</div>';
+    return;
+  }
+  if(resolved.status==='notfound'){
+    box.innerHTML = `<div class="desc" style="margin:0;">查無「${escapeHtml(input)}」對應的股票代號或名稱，請確認輸入是否正確（可輸入代號或中文簡稱）。</div>`;
+    return;
+  }
+  if(resolved.status==='multiple'){
+    const chips = resolved.candidates.map(([c,n])=>`<button class="chip-btn" data-pick="${c}">${n}（${c}）</button>`).join('');
+    box.innerHTML = `<div class="desc" style="margin:0 0 8px;">找到多筆符合「${escapeHtml(input)}」的股票，請選擇：</div><div>${chips}</div>`;
+    return;
+  }
+  const code = resolved.code, name = resolved.name;
+  const themes = CONCEPT_INDEX[code] || [];
+  if(themes.length===0){
+    box.innerHTML = `<div class="concept-self">${name}（${code}）</div><div class="desc" style="margin:0;">目前概念股對照表尚未收錄這檔股票所屬的市場主題分類（可能不是目前收錄的36個熱門主題成分股，或尚未建檔），僅供參考，之後可能持續擴充。</div>`;
+    return;
+  }
+  let html = `<div class="concept-self">${name}（${code}）　·　共命中 ${themes.length} 個主題</div>`;
+  themes.forEach(themeName=>{
+    const themeObj = CONCEPT_THEMES.find(t=>t.theme===themeName);
+    if(!themeObj) return;
+    const stocksHtml = themeObj.stocks.map(s=>conceptStockRowHtml(s, code)).join('');
+    html += `<div class="concept-theme"><h3>${themeName} <span class="count">共${themeObj.stocks.length}檔</span></h3><div class="concept-grid">${stocksHtml}</div></div>`;
+  });
+  box.innerHTML = html;
+}
+document.getElementById('conceptBtn').addEventListener('click', ()=>{
+  renderConceptResult(document.getElementById('conceptInput').value);
+});
+document.getElementById('conceptInput').addEventListener('keydown', (e)=>{
+  if(e.key==='Enter'){ e.preventDefault(); renderConceptResult(document.getElementById('conceptInput').value); }
+});
+document.addEventListener('click', (e)=>{
+  const chip = e.target.closest('.chip-btn[data-pick]');
+  if(!chip) return;
+  const code = chip.dataset.pick;
+  document.getElementById('conceptInput').value = code;
+  renderConceptResult(code);
+});
+document.addEventListener('click', async (e)=>{
+  const btn = e.target.closest('.btn-chart-sm');
+  if(!btn) return;
+  const code = btn.dataset.code;
+  const row = document.getElementById('chartrow-concept-'+code);
+  const parentStock = btn.closest('.concept-stock');
+  if(!row) return;
+  const showing = row.style.display !== 'none';
+  if(showing){ row.style.display = 'none'; btn.textContent = '線圖'; if(parentStock) parentStock.classList.remove('expanded'); return; }
+  row.style.display = 'block';
+  btn.textContent = '收合';
+  if(parentStock) parentStock.classList.add('expanded');
+  const canvas = document.getElementById('chart-concept-'+code);
+  let bars = barsCache[code];
+  if(!bars){
+    btn.disabled = true;
+    btn.textContent = '載入中';
+    try{
+      const fetched = await fetchBarsLong(code);
+      bars = fetched.bars;
+      computeIndicators(bars);
+      barsCache[code] = bars;
+    }catch(err){
+      row.querySelector('.chart-wrap').innerHTML = '<div class="data-pending">⚠️ 資料無法取得</div>';
+      btn.disabled = false;
+      btn.textContent = '線圖';
+      return;
+    }
+    btn.disabled = false;
+    btn.textContent = '收合';
+  }
+  drawStockChart(canvas, bars);
+});
+</script>
+</body>
+</html>
